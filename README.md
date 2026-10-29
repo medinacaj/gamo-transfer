@@ -25,7 +25,7 @@ Desde la raíz del repositorio:
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-Abrir el servidor en un navegador moderno. El HTML usa rutas relativas y navegación hash: funciona bajo `/gamo-app/` en GitHub Pages. Se recomienda servir por HTTP en vez de abrir como archivo para que el almacenamiento tenga un origen estable.
+Abrir el servidor en un navegador moderno. El HTML usa rutas relativas y navegación hash: funciona bajo `/gamo-transfer/` en GitHub Pages. Se recomienda servir por HTTP en vez de abrir como archivo para que el almacenamiento tenga un origen estable.
 
 ## Recorrido para presentar al cliente
 
@@ -79,7 +79,7 @@ El runner levanta su servidor en el puerto 8765 y usa contextos aislados; no mod
 
 ## GitHub Pages
 
-URL prevista: **https://medinacaj.github.io/gamo-app/**
+URL prevista: **https://medinacaj.github.io/gamo-transfer/**
 
 El workflow `.github/workflows/pages.yml` valida el dominio, prepara únicamente los cuatro archivos públicos y despliega desde `main`. En GitHub, configurar **Settings → Pages → Source → GitHub Actions** si aún no está habilitado. Luego ejecutar el workflow o enviar cambios a `main`. La publicación depende de los permisos y ajustes del repositorio.
 

@@ -1,47 +1,128 @@
 <!doctype html>
 <html lang="es-AR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101d30">
-  <meta name="description" content="Gamo APP · Demo interactiva de gestión para transporte ejecutivo en Argentina.">
-  <title>Gamo APP | Gestión de transporte</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div id="shell" class="shell">
-    <div id="scrim" class="scrim" aria-hidden="true"></div>
-    <aside id="sidebar" class="sidebar" aria-label="Navegación principal">
-      <div class="brand">
-        <span class="brand-icon" aria-hidden="true">G</span>
-        <span class="brand-copy"><strong>GAMO<span> APP</span></strong><small>TRANSPORTE EXECUTIVE</small></span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101d30" />
+    <meta
+      name="description"
+      content="Gamo APP · Demo interactiva de gestión para transporte ejecutivo en Argentina."
+    />
+    <title>Gamo APP | Gestión de transporte</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2321b8a3'/%3E%3Ctext x='9' y='30' font-size='30' font-family='sans-serif' fill='%23111d31'%3EG%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="shell" class="shell">
+      <div id="scrim" class="scrim" aria-hidden="true"></div>
+      <aside id="sidebar" class="sidebar" aria-label="Navegación principal">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">G</span>
+          <span class="brand-copy"
+            ><strong>GAMO<span> APP</span></strong
+            ><small>TRANSPORTE EJECUTIVO</small></span
+          >
+        </div>
+        <p class="nav-caption">ESPACIO DE TRABAJO</p>
+        <nav id="nav" class="nav">
+          <a href="#/inicio" data-page="inicio"
+            ><span class="nav-ico" data-icon="layout"></span>Resumen</a
+          >
+          <a href="#/reservas" data-page="reservas"
+            ><span class="nav-ico" data-icon="calendar"></span>Reservas<span
+              id="nav-count"
+              class="nav-count"
+            ></span
+          ></a>
+          <a href="#/agenda" data-page="agenda"
+            ><span class="nav-ico" data-icon="clock"></span>Agenda</a
+          >
+          <a href="#/conductores" data-page="conductores"
+            ><span class="nav-ico" data-icon="users"></span>Conductores</a
+          >
+          <a href="#/vehiculos" data-page="vehiculos"
+            ><span class="nav-ico" data-icon="car"></span>Vehículos</a
+          >
+          <a href="#/clientes" data-page="clientes"
+            ><span class="nav-ico" data-icon="building"></span>Empresas</a
+          >
+          <a href="#/facturacion" data-page="facturacion"
+            ><span class="nav-ico" data-icon="invoice"></span>Facturación
+            internacional</a
+          >
+          <a href="#/cobros" data-page="cobros"
+            ><span class="nav-ico" data-icon="wallet"></span>Cuentas por
+            cobrar</a
+          >
+          <a href="#/reportes" data-page="reportes"
+            ><span class="nav-ico" data-icon="chart"></span>Reportes</a
+          >
+          <a href="#/finanzas" data-page="finanzas"
+            ><span class="nav-ico" data-icon="wallet"></span>Rentabilidad</a
+          >
+        </nav>
+        <div class="side-bottom">
+          <div class="demo-note">
+            <span class="pulse-dot"></span>
+            <div>
+              <strong>Modo demostración</strong
+              ><small>Datos ficticios · Guardado local</small>
+            </div>
+          </div>
+          <div class="side-user">
+            <span class="avatar avatar-admin">GA</span>
+            <div><strong>Administrador</strong><small>Gamo APP</small></div>
+            <button
+              class="reset-demo"
+              data-action="reset"
+              title="Restaurar datos demo"
+              aria-label="Restaurar datos demo"
+            >
+              ↺
+            </button>
+          </div>
+        </div>
+      </aside>
+      <div class="workspace">
+        <header class="topbar">
+          <div class="top-left">
+            <button
+              class="icon-button mobile-menu"
+              id="menu-btn"
+              aria-label="Abrir menú"
+            >
+              <span data-icon="menu"></span>
+            </button>
+            <div>
+              <span class="top-breadcrumb"
+                >Gamo APP <span class="top-slash">/</span></span
+              >
+              <strong id="section-name">Resumen</strong>
+            </div>
+          </div>
+          <div class="top-right">
+            <span class="top-date" id="today-date"></span
+            ><span class="top-divider"></span
+            ><span class="top-demo">ENTORNO DEMO</span
+            ><span class="avatar top-avatar">GA</span>
+          </div>
+        </header>
+        <main id="content" tabindex="-1"></main>
+        <footer class="footer">
+          <span>© <span id="year"></span> Gamo APP · Demo conceptual</span
+          ><span
+            >Argentina · Pesos argentinos (ARS) · Sin conexión a datos
+            reales</span
+          >
+        </footer>
       </div>
-      <p class="nav-caption">ESPACIO DE TRABAJO</p>
-      <nav id="nav" class="nav">
-        <a href="#/inicio" data-page="inicio"><span class="nav-ico" data-icon="layout"></span>Resumen</a>
-        <a href="#/reservas" data-page="reservas"><span class="nav-ico" data-icon="calendar"></span>Reservas<span id="nav-count" class="nav-count"></span></a>
-        <a href="#/agenda" data-page="agenda"><span class="nav-ico" data-icon="clock"></span>Agenda</a>
-        <a href="#/conductores" data-page="conductores"><span class="nav-ico" data-icon="users"></span>Conductores</a>
-        <a href="#/vehiculos" data-page="vehiculos"><span class="nav-ico" data-icon="car"></span>Vehículos</a>
-        <a href="#/clientes" data-page="clientes"><span class="nav-ico" data-icon="building"></span>Clientes</a>
-        <a href="#/finanzas" data-page="finanzas"><span class="nav-ico" data-icon="wallet"></span>Finanzas</a>
-      </nav>
-      <div class="side-bottom">
-        <div class="demo-note"><span class="pulse-dot"></span><div><strong>Modo demostración</strong><small>Datos ficticios · Guardado local</small></div></div>
-        <div class="side-user"><span class="avatar avatar-admin">GA</span><div><strong>Administrador</strong><small>Gamo APP</small></div><span class="side-gear" data-icon="settings"></span></div>
-      </div>
-    </aside>
-    <div class="workspace">
-      <header class="topbar">
-        <div class="top-left"><button class="icon-button mobile-menu" id="menu-btn" aria-label="Abrir menú"><span data-icon="menu"></span></button><div><span class="top-breadcrumb">Gamo APP <span class="top-slash">/</span></span> <strong id="section-name">Resumen</strong></div></div>
-        <div class="top-right"><span class="top-date" id="today-date"></span><span class="top-divider"></span><span class="top-demo">ENTORNO DEMO</span><span class="avatar top-avatar">GA</span></div>
-      </header>
-      <main id="content" tabindex="-1"></main>
-      <footer class="footer"><span>© <span id="year"></span> Gamo APP · Demo conceptual</span><span>Argentina · Pesos argentinos (ARS) · Sin conexión a datos reales</span></footer>
     </div>
-  </div>
-  <div id="modal-root"></div>
-  <div id="toast-root" class="toast-root" aria-live="polite"></div>
-  <script src="app.js" defer></script>
-</body>
+    <div id="modal-root"></div>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+    <script src="domain.js" defer></script>
+    <script src="app.js" defer></script>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-name: Validate and deploy GAMO demo
+name: Validate and deploy GAMO TRANSFER
 on:
   push:
     branches: [main]

@@ -1,6 +1,21 @@
-# GAMO APP · Transporte ejecutivo B2B internacional
+# GAMO TRANSFER · Transporte ejecutivo B2B internacional
 
 Demo comercial funcional para un operador argentino cuyos clientes contratan viajes para terceros. La **empresa contratante** recibe el documento y paga; los **pasajeros** reciben el traslado. No requiere backend, instalación de dependencias ni compilación.
+
+## Identidad corporativa
+
+Paleta propuesta a partir del logo de GAMO TRANSFER, con colores planos y sin gradientes:
+
+| Color | Código | Uso |
+|---|---|---|
+| Azul marino | `#002B49` | Navegación, cabecera destacada y marca |
+| Azul corporativo | `#006BA0` | Botones, enlaces, gráficos y foco |
+| Celeste | `#009EDB` | Acentos decorativos |
+| Azul hielo | `#E7F3FA` | Fondos de avisos y selecciones |
+| Gris claro | `#F4F7FA` | Fondo general |
+| Blanco | `#FFFFFF` | Tarjetas y formularios |
+
+El azul corporativo mantiene contraste con texto blanco. El celeste se reserva para detalles y no para texto pequeño sobre blanco. Verde, ámbar y rojo conservan significado funcional de éxito, advertencia y error.
 
 ## Ejecutar
 

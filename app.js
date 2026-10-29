@@ -1,4 +1,4 @@
-/* GAMO APP: demo local, sin servicios remotos ni transacciones reales. */
+/* GAMO TRANSFER: demo local, sin servicios remotos ni transacciones reales. */
 (() => {
   "use strict";
   const D = window.Gamo,
@@ -98,7 +98,7 @@
       )
       .join("");
   const title = (name, sub, actions = "") =>
-    `<div class="page-header"><div><div class="eyebrow">GAMO · TRANSPORTE EJECUTIVO</div><h1>${name}</h1><p class="subheading">${sub}</p></div><div class="header-actions">${actions}</div></div>`;
+    `<div class="page-header"><div><div class="eyebrow">GAMO TRANSFER · TRANSPORTE EJECUTIVO</div><h1>${name}</h1><p class="subheading">${sub}</p></div><div class="header-actions">${actions}</div></div>`;
   const options = (items, selected, blank = "") =>
     (blank ? `<option value="">${blank}</option>` : "") +
     items
@@ -233,7 +233,7 @@
       title(
         "Tu operación, en un vistazo",
         "Viajes en Argentina. Empresas conectadas con el mundo.",
-        btn("Nueva reserva", "booking", "", "mint"),
+        btn("Nueva reserva", "booking", "", "accent"),
       ) +
       `<div class="hero-banner"><div><span class="hero-tag">CONTROL OPERATIVO & FINANCIERO</span><h2>Cada viaje cuenta.<br>Cada cuenta, en orden.</h2><p>Reservas, despacho y cobros internacionales en un mismo lugar.</p><a class="btn btn-light" href="#/facturacion">Preparar una liquidación →</a></div><div class="hero-route"><span>EZE</span><i>·········· ✈ ··········</i><span>CABA</span><small>Movilidad ejecutiva · Argentina</small></div></div>` +
       `<div class="grid-kpi">${kpi("Servicios de hoy", daily.length, "Hora local de Argentina", "calendar")}${kpi("Alertas de despacho", missing.length, "Servicios próximos con alertas", "clock")}${kpi("Conductores disponibles", state.drivers.filter((d) => d.status === "Disponible").length, "De " + state.drivers.length + " conductores", "users")}${kpi("Vehículos operativos", state.vehicles.filter((v) => v.status === "Operativo").length, "De " + state.vehicles.length + " unidades", "car")}</div>` +
@@ -288,7 +288,7 @@
         "Reservas y viajes",
         "Empresa contratante → pasajeros → servicio. Horarios de Argentina.",
         btn("Exportar CSV", "export", "reservas") +
-          btn("Nueva reserva", "booking", "", "mint"),
+          btn("Nueva reserva", "booking", "", "accent"),
       ) +
       `<div class="toolbar"><label class="search-wrap"><span>⌕</span><input id="booking-search" placeholder="Buscar pasajero, empresa o recorrido" aria-label="Buscar reservas"></label><div class="toolbar-controls"><select id="booking-status" class="field-select" aria-label="Estado operativo">${options(D.statuses, "", "Todos los estados")}</select><select id="booking-company" class="field-select" aria-label="Empresa">${options(state.companies, "", "Todas las empresas")}</select><input type="date" id="booking-day" class="field-input" aria-label="Fecha del servicio"></div></div><section class="panel" id="booking-results">${bookingTable([...state.bookings].sort((a, b) => b.date.localeCompare(a.date)))}</section>`
     );
@@ -500,7 +500,7 @@
       title(
         "Agenda y despacho",
         "Planificación diaria y semanal · America/Argentina/Buenos_Aires",
-        btn("Nueva reserva", "booking", "", "mint"),
+        btn("Nueva reserva", "booking", "", "accent"),
       ) +
       `<div class="toolbar"><div class="toolbar-controls"><label>Desde <input type="date" id="agenda-date" class="field-input" value="${D.today()}"></label><label>Vista <select id="agenda-view" class="field-select"><option value="7">Semana</option><option value="1">Día</option></select></label></div></div><div id="agenda-results"></div><div class="notice">Las reservas sin conductor o vehículo aparecen en amarillo. Se validan solapamientos de 90 minutos al guardar una asignación. Revisá la duración real antes de operar.</div>`
     );
@@ -545,7 +545,7 @@
       title(
         config[0],
         config[1],
-        btn("Nuevo registro", config[2] + "-new", "", "mint"),
+        btn("Nuevo registro", config[2] + "-new", "", "accent"),
       ) +
       `<label class="search-wrap entity-search"><input id="entity-search" placeholder="Buscar por nombre, país o patente" aria-label="Buscar registros"></label><div class="cards-3" id="entity-results">${config[3].map((e) => entityCard(type, e)).join("")}</div>`
     );
@@ -933,7 +933,7 @@
         "Facturación internacional",
         "Consolidá servicios completados por empresa y moneda.",
         btn("Exportar documentos", "export", "facturas") +
-          btn("Preparar documento", "invoice-new", "", "mint"),
+          btn("Preparar documento", "invoice-new", "", "accent"),
       ) +
       notice +
       `<div class="space-top">${panel("Documentos comerciales", invoiceTable([...state.invoices].reverse()), "Estados de emisión y cobro independientes. Las preparaciones reservan sus servicios.")}</div>`
@@ -1074,7 +1074,7 @@
       payments = state.payments.filter((p) => p.invoiceId === iid);
     detailModal(
       "Documento · " + esc(i.number || "Preparado"),
-      `<article class="document-sheet" id="print-document"><div class="document-brand"><strong>GAMO APP</strong><span>DEMO · SIN VALIDEZ FISCAL</span></div><h2>${esc(i.type)}</h2><p>${esc(i.number || "Documento preparado, sin emitir")} · ${date(i.date)} · Vence ${date(i.due)}</p><h3>${esc(c.name)} · ${esc(c.country)}</h3><p>${esc(c.address)} · ID fiscal ${esc(c.taxId)}<br>${esc(c.billingEmail)}</p>${table(
+      `<article class="document-sheet" id="print-document"><div class="document-brand"><strong>GAMO TRANSFER</strong><span>DEMO · SIN VALIDEZ FISCAL</span></div><h2>${esc(i.type)}</h2><p>${esc(i.number || "Documento preparado, sin emitir")} · ${date(i.date)} · Vence ${date(i.due)}</p><h3>${esc(c.name)} · ${esc(c.country)}</h3><p>${esc(c.address)} · ID fiscal ${esc(c.taxId)}<br>${esc(c.billingEmail)}</p>${table(
         ["Servicio", "Fecha", "Pasajeros / recorrido", "Importe"],
         i.lines.map((l) => [
           esc(l.bookingId),
@@ -1104,7 +1104,7 @@
           esc(money(p.applied, i.currency)),
           `1 ${p.currency} = ${p.conversion} ${i.currency}<br>1 ${p.currency} = ${p.arsRate} ARS<span class="secondary-cell">${date(p.rateDate)} · ${esc(p.source)}<br>Diferencia: ${esc(money(p.exchangeDifference))}</span>`,
         ]),
-      )}<p class="footer-note">Documento comercial simulado. No implica exportación de servicios ni comprobante fiscal. Validación profesional requerida.</p></article><div class="detail-actions">${btn("Imprimir / guardar PDF", "print", i.id)}${i.status === "Preparada" ? btn("Marcar emitida (DEMO)", "issue", i.id, "mint") : ""}${i.status === "Emitida" && D.balance(state, i) > 0 ? btn("Registrar pago", "payment", i.id, "mint") : ""}${i.status !== "Anulada" && !payments.length ? btn("Anular con motivo", "cancel-doc", i.id, "danger") : ""}</div>`,
+      )}<p class="footer-note">Documento comercial simulado. No implica exportación de servicios ni comprobante fiscal. Validación profesional requerida.</p></article><div class="detail-actions">${btn("Imprimir / guardar PDF", "print", i.id)}${i.status === "Preparada" ? btn("Marcar emitida (DEMO)", "issue", i.id, "accent") : ""}${i.status === "Emitida" && D.balance(state, i) > 0 ? btn("Registrar pago", "payment", i.id, "accent") : ""}${i.status !== "Anulada" && !payments.length ? btn("Anular con motivo", "cancel-doc", i.id, "danger") : ""}</div>`,
     );
   }
   function issueForm(iid) {

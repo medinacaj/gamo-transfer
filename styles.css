@@ -1,12 +1,13 @@
 :root {
-  --navy: #111d31;
-  --navy2: #17263d;
-  --mint: #21b8a3;
-  --mint2: #d9f6f0;
-  --ink: #182436;
-  --muted: #758195;
-  --line: #e7ebf1;
-  --bg: #f6f8fb;
+  --navy: #002b49;
+  --navy2: #003b60;
+  --accent: #006ba0;
+  --cyan: #009edb;
+  --accent-soft: #e7f3fa;
+  --ink: #122d40;
+  --muted: #607486;
+  --line: #dfe8ef;
+  --bg: #f4f7fa;
   --card: #fff;
   --shadow: 0 5px 25px rgba(25, 41, 63, 0.035);
   --radius: 15px;
@@ -46,7 +47,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid rgba(33, 184, 163, 0.35);
+  outline: 3px solid rgba(0, 107, 160, 0.35);
   outline-offset: 2px;
 }
 svg {
@@ -102,7 +103,7 @@ p {
   height: 39px;
   display: grid;
   place-items: center;
-  background: var(--mint);
+  background: var(--cyan);
   color: var(--navy);
   border-radius: 11px;
   font-size: 25px;
@@ -116,8 +117,12 @@ p {
   letter-spacing: -0.8px;
 }
 .brand-copy strong span {
-  font-weight: 400;
-  color: #9dabbc;
+  display: block;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 2.6px;
+  margin-top: 3px;
+  color: #d2e4f0;
 }
 .brand-copy small {
   font-size: 8.6px;
@@ -154,18 +159,18 @@ p {
   height: 19px;
 }
 .nav a:hover {
-  background: #1d2b41;
+  background: #093c5c;
   color: white;
 }
 .nav a.active {
-  background: #22374b;
+  background: #104c70;
   color: white;
 }
 .nav a.active:before {
   content: "";
   height: 21px;
   width: 3px;
-  background: var(--mint);
+  background: var(--accent);
   border-radius: 4px;
   position: absolute;
   left: 15px;
@@ -177,8 +182,8 @@ p {
   height: 19px;
   display: grid;
   place-items: center;
-  color: #b9dcd7;
-  background: #2b4a4d;
+  color: #d4efff;
+  background: #164d70;
   border-radius: 6px;
 }
 .side-bottom {
@@ -188,8 +193,8 @@ p {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: #192a3f;
-  border: 1px solid #2a3b50;
+  background: #073654;
+  border: 1px solid #23516f;
   border-radius: 12px;
   padding: 14px 12px;
   margin: 0 0 22px;
@@ -197,10 +202,10 @@ p {
 .pulse-dot {
   height: 8px;
   width: 8px;
-  background: var(--mint);
+  background: var(--cyan);
   border-radius: 100%;
   margin-top: 4px;
-  box-shadow: 0 0 0 4px rgba(33, 184, 163, 0.12);
+  box-shadow: 0 0 0 4px rgba(0, 158, 219, 0.18);
 }
 .demo-note strong,
 .side-user strong {
@@ -219,7 +224,7 @@ p {
   align-items: center;
   gap: 11px;
   padding: 14px 4px 0;
-  border-top: 1px solid #2b374a;
+  border-top: 1px solid #23516f;
 }
 .avatar {
   height: 33px;
@@ -236,8 +241,8 @@ p {
 }
 .avatar-admin,
 .top-avatar {
-  background: #33475b;
-  color: #c8e5e1;
+  background: #174965;
+  color: #d5edfa;
 }
 .side-gear {
   margin-left: auto;
@@ -291,9 +296,9 @@ p {
   background: var(--line);
 }
 .top-demo {
-  background: #e7f7f2;
-  color: #168c75;
-  border: 1px solid #d0eee6;
+  background: #e7f3fa;
+  color: #006ba0;
+  border: 1px solid #bfdced;
   border-radius: 20px;
   padding: 6px 10px;
   font-size: 9px;
@@ -333,7 +338,7 @@ main {
   margin-bottom: 26px;
 }
 .eyebrow {
-  color: var(--mint);
+  color: var(--accent);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: 1.6px;
@@ -376,10 +381,10 @@ main {
 }
 .btn-primary {
   color: #fff;
-  background: #132d43;
+  background: #006ba0;
 }
 .btn-primary:hover {
-  background: #22425b;
+  background: #00537d;
 }
 .btn-light {
   background: white;
@@ -389,9 +394,9 @@ main {
 .btn-light:hover {
   background: #f4f8fb;
 }
-.btn-mint {
-  background: var(--mint);
-  color: #062e2e;
+.btn-accent {
+  background: var(--accent);
+  color: #ffffff;
 }
 .btn-danger {
   background: #fff0ed;
@@ -447,8 +452,8 @@ main {
   border-radius: 10px;
   display: grid;
   place-items: center;
-  background: #eaf5f3;
-  color: #15a18a;
+  background: #e7f3fa;
+  color: #006ba0;
 }
 .kpi-icon svg {
   width: 19px;
@@ -523,7 +528,7 @@ main {
   margin-top: 5px;
 }
 .mini-link {
-  color: #0b9f8a;
+  color: #006ba0;
   font-weight: 750;
   font-size: 11px;
   border: 0;
@@ -643,8 +648,8 @@ main {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: #178f7d;
-  background: #e9f8f4;
+  color: #006ba0;
+  background: #e7f3fa;
 }
 .activity-bullet svg {
   height: 14px;
@@ -700,11 +705,11 @@ main {
   max-width: 44px;
   min-height: 4px;
   border-radius: 7px 7px 0 0;
-  background: #cfece7;
+  background: #c9e6f4;
   position: relative;
 }
 .bar.active {
-  background: #21b8a3;
+  background: #006ba0;
 }
 .bar .tip {
   display: none;
@@ -712,7 +717,7 @@ main {
   bottom: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  background: #132d43;
+  background: #006ba0;
   color: #fff;
   border-radius: 5px;
   padding: 6px;
@@ -833,12 +838,12 @@ main {
 }
 .field-select:focus,
 .field-input:focus {
-  outline: 2px solid #a5e9dd;
+  outline: 2px solid #9acfe8;
 }
 .table-action {
   border: 0;
   background: transparent;
-  color: #138f80;
+  color: #006ba0;
   font-size: 11px;
   font-weight: 750;
   padding: 5px;
@@ -925,7 +930,7 @@ main {
 .vehicle-visual {
   height: 96px;
   border-radius: 11px;
-  background: linear-gradient(125deg, #eff6fa, #f7fafc);
+  background: var(--accent-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -989,7 +994,7 @@ main {
 }
 .progress-fill {
   height: 100%;
-  background: #24b6a2;
+  background: #006ba0;
   border-radius: 10px;
 }
 .agenda-grid {
@@ -1020,10 +1025,10 @@ main {
   color: #96a3b1;
 }
 .agenda-day.today {
-  border-color: #78d5c4;
+  border-color: #009edb;
 }
 .agenda-day.today .agenda-day-head {
-  background: #eaf8f4;
+  background: #e7f3fa;
 }
 .agenda-events {
   display: grid;
@@ -1031,8 +1036,8 @@ main {
   padding: 9px;
 }
 .agenda-event {
-  border-left: 3px solid #24b6a2;
-  background: #f4faf9;
+  border-left: 3px solid #006ba0;
+  background: #f0f7fc;
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -1058,9 +1063,9 @@ main {
 }
 .notice {
   padding: 13px 16px;
-  background: #edf8f5;
-  border: 1px solid #d4ede6;
-  color: #54776e;
+  background: #e7f3fa;
+  border: 1px solid #bfdced;
+  color: #315d78;
   font-size: 11px;
   border-radius: 10px;
   margin-top: 18px;
@@ -1139,8 +1144,8 @@ main {
 }
 .form-group input:focus,
 .form-group select:focus {
-  outline: 2px solid #a5e9dd;
-  border-color: #62bfab;
+  outline: 2px solid #9acfe8;
+  border-color: #006ba0;
 }
 .form-group small {
   font-size: 10px;
@@ -1165,7 +1170,7 @@ main {
 }
 .toast {
   padding: 13px 17px;
-  background: #132e42;
+  background: #002b49;
   color: #fff;
   font-size: 12px;
   border-radius: 10px;
@@ -1178,7 +1183,7 @@ main {
 .toast svg {
   height: 16px;
   width: 16px;
-  color: #50d6be;
+  color: #64d1f5;
 }
 @keyframes fadein {
   from {
@@ -1459,14 +1464,14 @@ main {
   margin-left: auto;
   border: 1px solid #456075;
   border-radius: 7px;
-  color: #c8e5e1;
+  color: #d5edfa;
   background: transparent;
   padding: 5px 9px;
   cursor: pointer;
 }
 .hero-banner {
   padding: 30px 34px;
-  background: linear-gradient(110deg, #111d31, #204455);
+  background: var(--navy);
   color: #fff;
   border-radius: 17px;
   margin-bottom: 22px;
@@ -1485,13 +1490,13 @@ main {
 }
 .hero-banner p {
   font-size: 12px;
-  color: #bbd3d8;
+  color: #d2e4f0;
 }
 .hero-tag {
   font-size: 9px;
   font-weight: 750;
   letter-spacing: 2px;
-  color: #5cddc5;
+  color: #64d1f5;
 }
 .hero-route {
   min-width: 260px;
@@ -1507,13 +1512,13 @@ main {
 }
 .hero-route i {
   font-style: normal;
-  color: #53ccb7;
+  color: #64d1f5;
   font-size: 17px;
 }
 .hero-route small {
   width: 100%;
   text-align: center;
-  color: #9bbac6;
+  color: #c0dae9;
   font-size: 10px;
   letter-spacing: 1px;
 }
@@ -1623,16 +1628,16 @@ main {
 }
 .invoice-choice input,
 .check-all input {
-  accent-color: var(--mint);
+  accent-color: var(--accent);
   width: 17px;
   height: 17px;
 }
 .selection-total {
-  background: #eef9f6;
+  background: #e7f3fa;
   border-radius: 8px;
   padding: 15px;
   font-weight: 750;
-  color: #16816f;
+  color: #00537d;
 }
 .document-sheet {
   padding: 28px;
@@ -1641,7 +1646,7 @@ main {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  border-bottom: 2px solid var(--mint);
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 18px;
   margin-bottom: 25px;
 }

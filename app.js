@@ -102,7 +102,7 @@
     `<div class="empty"><strong>${esc(text)}</strong><span>Probá con otro período o creá un registro nuevo.</span></div>`;
   const table = (headers, rows) =>
     rows.length
-      ? `<div class="table-scroll"><table class="data-table"><thead><tr>${headers.map((h) => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
+      ? `<div class="table-scroll"><table class="data-table ${headers.length >= 7 ? "table-many-columns" : "table-few-columns"}"><thead><tr>${headers.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td data-label="${esc(headers[i] || "")}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
       : empty("No hay registros para esta selección");
   const panel = (title, body, sub = "") =>
     `<section class="panel"><div class="panel-head"><div><h2>${title}</h2>${sub ? `<span class="panel-sub">${sub}</span>` : ""}</div></div>${body}</section>`;

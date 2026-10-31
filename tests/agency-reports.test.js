@@ -61,9 +61,9 @@ test("Grupo Summa: source image contains 11 services", () => {
 test("Report page contains agency selection and integrated print/export controls", () => {
   const { api } = load();
   const page = api.page();
-  assert.match(page, /id=\\"agency\\"/);
-  assert.match(page, /id=\\"print\\"/);
-  assert.match(page, /id=\\"csv\\"/);
+  assert.match(page, /id="agency"/);
+  assert.match(page, /id="print"/);
+  assert.match(page, /id="csv"/);
   assert.match(page, /agency-document/);
 });
 

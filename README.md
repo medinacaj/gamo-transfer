@@ -130,3 +130,12 @@ No se publica ningún nombre de conductor. Los importes históricos **no se suma
 El resumen principal agrupa **Operación y despacho**, **Servicios históricos** y **Facturación y cobros** con espaciado visible entre áreas, títulos tipográficos y paneles de contenido independientes. Los grandes contenedores de fondo coloreado se reemplazaron por espacio en blanco; no hay franjas de color en las tarjetas. La navegación lateral agrupa los 11 módulos en **Principal, Operación, Clientes, Finanzas y Reportes**, sin cambiar sus rutas.
 
 En el resto de la aplicación (reservas, flota, conductores, empresas, reportes, finanzas y formularios), se mantiene un sistema de niveles: **fondo de página → bloque de filtros o encabezado → tarjeta/panel → datos interiores**. La misma jerarquía tiene correspondencia en modo oscuro y en la vista compacta. Estos cambios son de presentación; no modifican datos, rutas ni importes.
+
+
+### Tablas y agenda adaptables — sin desplazamiento horizontal
+
+Las tablas generales mantienen su presentación tabular únicamente cuando el ancho de su propio panel permite mostrarla. Si el contenedor no es suficientemente ancho, cada registro se transforma en una ficha con etiquetas por campo (`data-label`), conservando servicios, pasajeros, recorridos, asignaciones, importes y acciones. Los informes de agencias (10 y 14 columnas) usan fichas adaptables en pantalla; sus totales siguen visibles en el resumen, y el PDF conserva su formato tabular de impresión.
+
+La agenda semanal distribuye los días en 7, 4, 2 o 1 columnas según el ancho de pantalla, sin barra horizontal; la vista diaria siempre utiliza una sola columna. Se eliminan los antiguos mínimos de anchura de las tablas en la hoja de estilo final y se ajustan palabras largas dentro de cada campo.
+
+Pruebas incorporadas: `tests/ui-integration.test.js` y `tests/agency-reports.test.js` validan las etiquetas, mientras `tests/browser.py` incluye comprobación de desbordamiento a 390, 768, 1200 y 1600 píxeles para todos los módulos.

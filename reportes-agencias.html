@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071d3e">
+<meta name="description" content="Gamo Transfer - Vista previa de reportes de servicios y reportes ejecutivos por agencia.">
+<title>Gamo Transfer | Reportes por agencia</title>
+<style>
+:root{--navy:#071e43;--blue:#0c3974;--gold:#c7a453;--line:#dfe8f3;--muted:#60728b;--bg:#f2f6fa;--green:#118751;--pink:#e6084a;--text:#142d4d}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
+button,select{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #59b1ff;outline-offset:2px}
+.top{height:83px;background:linear-gradient(110deg,#061a3c,#123b77 67%,#102850);border-bottom:4px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:9px 28px;color:white}
+.brand{display:flex;align-items:center;gap:20px}.brand img{width:205px;height:auto;max-height:66px;object-fit:contain;border-radius:5px;background:white;padding:3px}.brand i{height:43px;width:1px;background:var(--gold)}.brand small{letter-spacing:.3px;color:#e1e9f6;font-size:14px;font-style:italic}
+.top-right{display:flex;gap:14px;align-items:center}.top-right a{font-weight:650;border:1px solid #60799b;padding:9px 14px;border-radius:9px}.top-right a:hover{background:#204779}
+.workspace{display:flex;min-height:calc(100vh - 83px)}aside{width:226px;flex:0 0 226px;background:#0a2448;color:#c8d8ee;padding:25px 14px}aside h2{font-size:10px;letter-spacing:1.8px;color:#8da9c9;margin:2px 12px 20px}aside a,aside button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:#d2e0f1;padding:12px;border-radius:8px;font-size:13px;text-align:left;font-weight:650}aside a:hover,aside button:hover,aside .active{background:#1b477b;color:white}aside .active{border-left:3px solid var(--gold)}.nav-section{margin-top:20px;padding:10px 12px;border-top:1px solid #244a71;font-size:11px;line-height:1.6;color:#98bad5}
+main{flex:1;min-width:0;padding:22px 26px 35px;max-width:1800px;margin:0 auto}.heading{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:18px}.heading h1{font-size:27px;margin:2px 0 4px;letter-spacing:-.7px}.heading p{color:var(--muted);margin:0;font-size:13px}.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.field{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:750;color:var(--muted)}select{background:white;border:1px solid #cbd9e8;color:#11335e;border-radius:9px;padding:10px 12px;min-width:155px}button.action{border:0;background:#1252a0;color:white;font-weight:750;border-radius:9px;padding:11px 15px;white-space:nowrap}.action.alt{background:#e9f0f8;color:#163f73;border:1px solid #cfdded}.notice{font-size:12px;border-radius:9px;padding:10px 14px;background:#fff7e7;border:1px solid #e8d29a;color:#775d20;margin:0 0 16px}.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:15px}.kpi{border:1px solid var(--line);background:white;border-radius:12px;padding:13px 15px;box-shadow:0 3px 14px #17345a09;min-width:0}.kpi span{display:block;color:#5c708b;font-size:11px;font-weight:650}.kpi strong{display:block;font-size:26px;color:var(--navy);margin-top:7px;white-space:nowrap}.kpi strong.green{color:#0b8955}.kpi.money{background:var(--navy);border-color:var(--navy)}.kpi.money span{color:#c9d7e7}.kpi.money strong{color:#e6c171;font-size:24px}
+.report{background:white;border:1px solid #cad9e7;border-radius:14px;padding:17px;box-shadow:0 6px 30px #0c274112;overflow:hidden}.report-header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:2px solid #d8bb72;padding:0 12px 15px}.report-header img.gamo{width:176px;object-fit:contain}.report-header img.gp{width:108px;height:75px;object-fit:contain}.report-header .partner-text{min-width:112px;text-align:center;font-weight:900;color:#ec0c53;font-size:16px}.report-header h2{text-align:center;margin:0;color:#0a2957;letter-spacing:.2px;font-size:25px}.report-header p{color:#96752d;text-align:center;margin:4px 0 0;font-size:11px;font-weight:750;letter-spacing:.9px}.meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0 12px}.meta div{padding:8px 11px;border:1px solid #9ab9d9;background:#f7fbff;border-radius:8px;min-width:0}.meta span{display:block;font-size:10px;color:#52708b;text-transform:uppercase;font-weight:700}.meta strong{font-size:13px;color:#132e55}.meta div:first-child{background:#fff7df;border-color:#e3cc91}
+.table-scroll{width:100%;overflow:auto}.data{width:100%;border-collapse:collapse;white-space:nowrap;font-size:11.5px;text-align:center}.data th{background:#0c2d60;color:white;padding:10px 8px;font-size:10px;line-height:1.2}.data td{border:1px solid #d8e3ed;padding:8px 8px;color:#30415b}.data tr:nth-child(even) td{background:#f7fafe}.data .agency{background:#e8c574!important;font-weight:750;color:#233047!important}.data .total-cell{background:#119452!important;color:white!important;font-weight:800}.data tfoot td{background:#dfb75f!important;color:#203550!important;font-weight:850;border-color:#b38d3e;font-size:12px}.data tfoot .total-cell{background:#0d784a!important;color:white!important;font-size:13px}.summary{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:12px;margin-top:14px}.panel{border:1px solid #d6e1ed;border-radius:10px;padding:13px;background:#fcfdff}.panel h3{font-size:13px;margin:0 0 12px;color:#1b3b67}.metric-line{display:flex;justify-content:space-between;border-bottom:1px solid #e2e8ef;padding:6px 0;font-size:12px}.metric-line:last-child{border:0}.metric-line b{font-size:13px;color:#123565}.bar-line{display:grid;grid-template-columns:82px 1fr 80px;gap:8px;align-items:center;padding:7px 0;font-size:11px}.bar-rail{height:9px;background:#edf2f7;border-radius:7px;overflow:hidden}.bar{height:100%;background:#0e5db5;border-radius:7px}.bar.gold{background:#d4ae53}.bar.green{background:#12a15d}.bar-line strong{text-align:right}.total-band{background:#092656;color:white;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:7px;margin-top:14px;font-weight:700}.total-band b{font-size:21px;color:#ebc36b}
+.report-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;border-top:1px solid #d7bd77;margin-top:16px;padding:15px 6px 0;color:#173a69;font-weight:700;font-size:10px}.report-footer img{width:138px;max-height:51px;object-fit:contain}.report-footer span{padding:0 12px;border-left:1px solid #c9ab58}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+@media(max-width:1220px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.heading{flex-wrap:wrap}.summary{grid-template-columns:1fr 1fr}.summary .panel:last-child{grid-column:1/-1}}
+@media(max-width:780px){.top{padding:8px 15px;height:auto;min-height:77px}.brand img{width:153px}.brand i,.brand small{display:none}.top-right{font-size:12px}.top-right a{padding:8px}.workspace{display:block}aside{width:auto;padding:8px 12px;display:flex;overflow:auto;gap:4px}aside h2,aside .nav-section{display:none}aside a,aside button{width:auto;white-space:nowrap;padding:10px}main{padding:17px 12px}.heading h1{font-size:24px}.actions{width:100%}.actions .field{flex:1}.actions select{width:100%;min-width:110px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi strong{font-size:23px}.report{padding:12px}.report-header{gap:8px;padding:0 0 10px}.report-header img.gamo{width:96px}.report-header img.gp{width:55px;height:auto}.report-header .partner-text{font-size:11px;min-width:58px}.report-header h2{font-size:15px}.report-header p{font-size:8px}.meta{grid-template-columns:1fr 1fr}.meta div:last-child{grid-column:1/-1}.summary{grid-template-columns:1fr}.summary .panel:last-child{grid-column:auto}.report-footer{flex-wrap:wrap}.report-footer img{width:100px}.report-footer span{padding:0 5px}}
+@media print{body{background:white}aside,.heading,.top-right,.notice,.actions{display:none!important}.top{background:white;border:0;color:black;justify-content:center;padding:0;height:55px}.top .brand{display:none}main{padding:0}.workspace{display:block}.kpis{display:none}.report{border:0;padding:0;box-shadow:none}.table-scroll{overflow:visible}.data{font-size:8px}.data td,.data th{padding:5px 3px}.summary{break-inside:avoid}.report-footer{break-inside:avoid}@page{size:A4 landscape;margin:9mm}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand"><a href="index.html#/inicio" aria-label="Ir al panel general"><img src="gamo-logo.svg" alt="Gamo Transfer"></a><i></i><small>Airport Transfers &amp; Receptive Services</small></div><div class="top-right"><span>Vista de reportes</span><a href="index.html#/inicio">← Panel principal</a></div></header>
+<div class="workspace"><aside><h2>MÓDULO DE REPORTES</h2><a href="index.html#/inicio">▦ &nbsp;Panel general</a><button id="nav-detail" class="active" type="button" data-mode="detallado">▤ &nbsp;Reporte de servicios</button><button id="nav-exec" type="button" data-mode="ejecutivo">◫ &nbsp;Reporte ejecutivo</button><a href="index.html#/reportes">▥ &nbsp;Reportes gerenciales</a><div class="nav-section">Muestra visual de formatos por agencia. Información demostrativa sin sincronización con datos reales.</div></aside>
+<main>
+<div class="heading"><div><h1>Reportes por agencia</h1><p>Consulta de servicios, desglose de tarifas y exportaciones.</p></div><div class="actions"><label class="field">Agencia<select id="agency"><option value="gp">GP Travel</option><option value="summa">Grupo Summa</option></select></label><label class="field">Tipo de reporte<select id="mode"><option value="detallado">Detallado</option><option value="ejecutivo">Ejecutivo</option></select></label><button type="button" class="action alt" id="csv">↓ CSV / Excel</button><button type="button" class="action" id="print">Imprimir / PDF</button></div></div>
+<p class="notice"><strong>Vista previa:</strong> datos de ejemplo basados en los formatos facilitados. No constituye facturación ni registro contable; las cifras deben conciliarse antes de producción.</p>
+<section class="kpis" aria-label="Resumen de servicios"><div class="kpi"><span>Total de servicios</span><strong id="k-count"></strong></div><div class="kpi"><span>Servicios IN</span><strong id="k-in" class="green"></strong></div><div class="kpi"><span>Servicios OUT</span><strong id="k-out"></strong></div><div class="kpi"><span>TRF – TRF</span><strong>0</strong></div><div class="kpi"><span>Otros servicios</span><strong id="k-others"></strong></div><div class="kpi money"><span>Importe del reporte</span><strong id="k-total"></strong></div></section>
+<section class="report" aria-label="Documento de reporte">
+<div class="report-header"><img class="gamo" src="gamo-logo.svg" alt="Gamo Transfer"><div><h2 id="report-title">REPORTE DE SERVICIOS</h2><p>AIRPORT TRANSFERS &amp; RECEPTIVE SERVICES</p></div><div id="partner"></div></div>
+<div class="meta"><div><span>Agencia</span><strong id="meta-agency"></strong></div><div><span>Semana</span><strong id="meta-week"></strong></div><div><span>Fecha de emisión de referencia</span><strong id="meta-issue"></strong></div></div>
+<div class="table-scroll"><table class="data"><thead id="head"></thead><tbody id="body"></tbody><tfoot id="foot"></tfoot></table></div>
+<div class="summary"><div class="panel"><h3>Resumen general</h3><div id="summary-list"></div></div><div class="panel"><h3>Distribución de servicios</h3><div id="summary-services"></div></div><div class="panel"><h3>Composición de importes</h3><div id="summary-amounts"></div><div class="total-band"><span>TOTAL DEL REPORTE</span><b id="band-total"></b></div></div></div>
+<div class="report-footer"><img src="gamo-logo.svg" alt="Gamo Transfer"><span>✓ &nbsp; SERVICIOS REALIZADOS CON CALIDAD Y COMPROMISO</span><span>◇ &nbsp; AGRADECEMOS SU CONFIANZA Y PREFERENCIA</span><span>◎ &nbsp; WWW.GAMO-TRANSFER.COM</span></div>
+</section>
+</main></div>
+<script>
+"use strict";
+const gpSource=[
+["19-10","11:10","AEP","HTL",30000,10000,0,"","TRANSFER","REALIZADO","IN"],
+["19-10","18:00","AEP","HTL",30000,10000,0,"","TRANSFER","REALIZADO","IN"],
+["19-10","19:05","EZE","HTL",60000,9000,0,"","TRANSFER","REALIZADO","IN"],
+["19-10","23:25","EZE","HTL",60000,13500,0,"","TRANSFER","DESVÍO EZE","IN"],
+["20-10","07:30","HTL","AEP",30000,0,0,"ALEX","TRANSFER","REALIZADO","OUT"],
+["20-10","07:50","HTL","AEP",30000,0,8000,"","TRANSFER","REALIZADO","OUT"],
+["20-10","19:30","HTL","EZE",60000,0,0,"","TRANSFER","REALIZADO","OUT"],
+["21-10","22:25","AEP","HTL",30000,10000,0,"","TRANSFER","REALIZADO","IN"],
+["22-10","06:00","HTL","BQB",30000,0,0,"","TRANSFER","REALIZADO","OUT"],
+["22-10","11:15","HTL","AEP",30000,0,0,"ROI","TRANSFER","REALIZADO","OUT"],
+["22-10","10:00","HTL","CITY",100000,0,0,"","CITY 4HRS","REALIZADO","OTRO"],
+["22-10","12:50","HTL","EZE",60000,0,0,"ROI","TRANSFER","REALIZADO","OUT"],
+["22-10","16:30","AEP","HTL",30000,0,8000,"","TRANSFER","REALIZADO","IN"],
+["23-10","06:00","RETIRO","HTL",30000,0,0,"","TRANSFER","REALIZADO","IN"],
+["23-10","11:50","AEP","HTL",30000,0,8000,"ROI","TRANSFER","REALIZADO","IN"],
+["23-10","17:50","AEP","HTL",30000,10000,0,"","TRANSFER","REALIZADO","IN"],
+["24-10","07:30","HTL","EZE",60000,0,0,"","TRANSFER","REALIZADO","OUT"],
+["24-10","11:15","HTL","AEP",30000,0,8000,"","TRANSFER","REALIZADO","OUT"],
+["24-10","17:25","EZE","HTL",60000,9000,0,"","TRANSFER","REALIZADO","IN"],
+["25-10","03:30","HTL","EZE",60000,0,0,"","TRANSFER","REALIZADO","OUT"],
+["25-10","12:30","AEP","HTL",30000,10000,0,"","TRANSFER","REALIZADO","IN"],
+["25-10","13:45","BQB","HTL",30000,0,0,"","TRANSFER","REALIZADO","OTRO"]
+];
+const summaSource=[
+["20-10","08:30","AEP","HTL",29000],["20-10","17:30","AEP","HTL",29000],
+["21-10","09:30","HTL","AEP",29000],["22-10","18:35","AEP","HTL",29000],
+["22-10","22:30","AEP","HTL",29000],["23-10","11:20","AEP","HTL",29000],
+["23-10","13:40","AEP","HTL",29000],["24-10","09:55","HTL","AEP",29000],
+["25-10","06:00","HTL","AEP",29000],["25-10","09:00","HTL","RECO",22000],
+["25-10","16:30","HTL","AEP",29000]
+].map((r)=>[r[0],r[1],r[2],r[3],r[4],0,0,"","TRANSFER","REALIZADO",r[2]==="HTL"?"OUT":"IN"]);
+const samples={gp:{name:"GP TRAVEL",week:"19/10/2026 al 25/10/2026",issued:"30/10/2026",data:gpSource},summa:{name:"GRUPO SUMMA",week:"20/10/2026 al 25/10/2026",issued:"27/10/2026",data:summaSource}};
+const money=(n)=>"$ "+new Intl.NumberFormat("es-AR",{maximumFractionDigits:0}).format(n);
+const $=(q)=>document.querySelector(q);
+const escapeText=(x)=>String(x).replace(/[&<>"']/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function render(){
+const key=$("#agency").value,mode=$("#mode").value,s=samples[key],rows=s.data;
+const sum=(idx)=>rows.reduce((a,r)=>a+r[idx],0),base=sum(4),park=sum(5),guide=sum(6),total=base+park+guide;
+const counts={IN:0,OUT:0,OTRO:0};rows.forEach((r)=>counts[r[10]]++);
+$("#k-count").textContent=rows.length;$("#k-in").textContent=counts.IN;$("#k-out").textContent=counts.OUT;$("#k-others").textContent=counts.OTRO;$("#k-total").textContent=money(total);
+$("#report-title").textContent=mode==="detallado"?"REPORTE DE SERVICIOS":"REPORTE EJECUTIVO DE SERVICIOS";
+$("#partner").innerHTML=key==="gp"?'<img class="gp" src="gp-travel-logo.svg" alt="GP Travel">':'<div class="partner-text">GRUPO<br>SUMMA</div>';
+$("#meta-agency").textContent=s.name;$("#meta-week").textContent=s.week;$("#meta-issue").textContent=s.issued;
+const detailed=mode==="detallado";
+const cols=detailed?["#","AGENCIA","CHOFER","GUÍA","SERVICIO","FECHA","HORA","ORIGEN","DESTINO","VEHÍCULO","OBSERVACIÓN","PARKING","TARIFA BASE","PRECIO TOTAL"]:["#","AGENCIA","SERVICIO","FECHA","HORA","ORIGEN","DESTINO","VEHÍCULO","OBSERVACIÓN","PRECIO TOTAL"];
+$("#head").innerHTML="<tr>"+cols.map((c)=>"<th scope=\"col\">"+c+"</th>").join("")+"</tr>";
+const rowCells=(r,i)=>{const cells=detailed?[i+1,s.name,r[7]||"—",r[6]?money(r[6]):"—",r[8],r[0],r[1],r[2],r[3],"STANDARD",r[9],r[5]?money(r[5]):"—",money(r[4]),money(r[4]+r[5]+r[6])]:[i+1,s.name,r[8],r[0],r[1],r[2],r[3],"STANDARD",r[9],money(r[4]+r[5]+r[6])];return "<tr>"+cells.map((c,j)=>"<td"+(j===1?' class=\"agency\"':j===cells.length-1?' class=\"total-cell\"':"")+">"+escapeText(c)+"</td>").join("")+"</tr>";};
+$("#body").innerHTML=rows.map(rowCells).join("");
+$("#foot").innerHTML=detailed?'<tr><td colspan="3">TOTAL</td><td>'+money(guide)+'</td><td colspan="7"></td><td>'+money(park)+'</td><td>'+money(base)+'</td><td class="total-cell">'+money(total)+'</td></tr>':'<tr><td colspan="9">TOTAL GENERAL</td><td class="total-cell">'+money(total)+'</td></tr>';
+$("#summary-list").innerHTML=[["Total de servicios",rows.length],["Servicios IN",counts.IN],["Servicios OUT",counts.OUT],["Otros servicios",counts.OTRO],["Vehículos","STANDARD"]].map(([a,b])=>'<div class="metric-line"><span>'+a+'</span><b>'+b+'</b></div>').join("");
+$("#summary-services").innerHTML=[["IN",counts.IN,"green"],["OUT",counts.OUT,""],["Otros",counts.OTRO,"gold"]].map(([a,b,c])=>'<div class="bar-line"><span>'+a+'</span><div class="bar-rail"><div class="bar '+c+'" style="width:'+(b/rows.length*100)+'%"></div></div><strong>'+(b/rows.length*100).toFixed(1).replace(".",",")+'%</strong></div>').join("");
+$("#summary-amounts").innerHTML=[["Tarifa base",base,""],["Parking",park,"gold"],["Guías",guide,"green"]].map(([a,b,c])=>'<div class="bar-line"><span>'+a+'</span><div class="bar-rail"><div class="bar '+c+'" style="width:'+(b/total*100)+'%"></div></div><strong>'+money(b)+'</strong></div>').join("");
+$("#band-total").textContent=money(total);
+$("#nav-detail").classList.toggle("active",detailed);$("#nav-exec").classList.toggle("active",!detailed);
+}
+$("#agency").addEventListener("change",render);$("#mode").addEventListener("change",render);
+document.querySelectorAll("[data-mode]").forEach((button)=>button.addEventListener("click",()=>{$("#mode").value=button.dataset.mode;render();}));
+$("#print").addEventListener("click",()=>window.print());
+$("#csv").addEventListener("click",()=>{
+ const s=samples[$("#agency").value],headers=["N","Agencia","Conductor","Guia","Servicio","Fecha","Hora","Origen","Destino","Vehiculo","Observacion","Parking","Tarifa base","Precio total"];
+ const lines=[headers,...s.data.map((r,i)=>[i+1,s.name,r[7],r[6],r[8],r[0]+"/2026",r[1],r[2],r[3],"STANDARD",r[9],r[5],r[4],r[4]+r[5]+r[6]])];
+ const escapeCSV=(v)=>{const val=String(v??"");const safe=/^[=+\-@\t\r]/.test(val)?"'"+val:val;return '"'+safe.replace(/"/g,'""')+'"';};
+ const csv="\ufeff"+lines.map((r)=>r.map(escapeCSV).join(";")).join("\r\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Gamo_Reporte_"+$("#agency").value+"_Demo.csv";a.click();URL.revokeObjectURL(url);
+});
+render();
+</script>
+</body>
+</html>

@@ -97,3 +97,7 @@ Es una demostración local; no tiene autenticación real, permisos, auditoría i
 ## Vista de reportes por agencia (demo)
 
 Se incluye `reportes-agencias.html` con plantillas visuales de reporte detallado y ejecutivo, selector de agencia, resúmenes calculados, impresión/PDF y exportación CSV. Incluye los logotipos optimizados extraídos del archivo aportado: `gamo-logo.svg` y `gp-travel-logo.svg`. Los servicios del módulo son datos de demostración; **no están conectados a la base de reservas ni sustituyen la contabilidad o facturación del operador**. Se mantienen los reportes gerenciales existentes en `#/reportes`.
+
+### Integración del módulo de agencias
+
+Los reportes por agencia ahora son la ruta `#/reportes-agencias` de la aplicación principal. Reutilizan el mismo encabezado, navegación, tipografía, controles, estilos y diseño responsive que el resto del panel. `agency-reports.js` contiene la vista de ejemplo y `reportes-agencias.html` redirige los enlaces anteriores. La impresión PDF usa la vista de documento y mantiene los logotipos. La información sigue siendo demostrativa, sin conexión a facturación.

@@ -124,3 +124,9 @@ No se publica ningún nombre de conductor. Los importes históricos **no se suma
 ### Seguridad antes de operar con datos reales
 
 **Esta actualización no habilita autenticación de producción.** GitHub Pages es un alojamiento estático y el repositorio es público: no se pueden ocultar datos enviados en JavaScript simplemente con una pantalla de login. No agregar pasajeros reales, teléfonos, identificaciones, cobros o secretos a este repositorio ni al demo. Para implementar permisos reales se requiere un backend exclusivo y autorización de acceso a nivel de base de datos; ver [Modelo de seguridad y accesos](docs/seguridad-y-accesos.md).
+
+### Jerarquía visual por sección
+
+El resumen principal agrupa ahora las funciones en contenedores claramente identificados: **Operación y despacho** (azul suave), **Servicios históricos** (dorado tenue) y **Facturación y cobros** (verde petróleo suave). Cada área usa título, espaciado, borde lateral y fondo diferenciados. Dentro de cada contenedor, los paneles siguen siendo superficies claras y las tablas usan encabezados contrastados.
+
+En el resto de la aplicación (reservas, flota, conductores, empresas, reportes, finanzas y formularios), se mantiene un sistema de niveles: **fondo de página → bloque de filtros o encabezado → tarjeta/panel → datos interiores**. La misma jerarquía tiene correspondencia en modo oscuro y en la vista compacta. Estos cambios son de presentación; no modifican datos, rutas ni importes.

@@ -19,6 +19,7 @@ function mount(){
     return nodes.get(selector);
   };
   const document={
+    body:{classList:{toggle(){}}},
     querySelector:node,querySelectorAll(){return[];},
     getElementById:id=>node("#"+id),
     addEventListener(name,fn){docListeners.set(name,fn);}

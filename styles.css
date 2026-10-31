@@ -2451,3 +2451,42 @@ body[data-theme="dark"] .dashboard-zone .dashboard-next-route{background:#213c50
  .dashboard-zone :is(.panel,.kpi,.history-source-item){background:#fff!important;box-shadow:none!important}
  .dashboard-zone .panel-head{background:#f6f8fa!important}
 }
+
+
+/* Corrección definitiva de bordes heredados: sin remates cromáticos.
+   La línea perimetral de 1 px es uniforme en los cuatro lados. */
+body .entity-card,
+body .kpi,
+body .stat-pill,
+body .history-source-item,
+body .dashboard-zone .kpi,
+body .dashboard-zone-history .history-source-item {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ui-panel-outline);
+  box-shadow: var(--ui-elevation);
+}
+body .entity-card:hover,
+body .kpi:hover,
+body .stat-pill:hover,
+body .history-source-item:hover {
+  border-top-width: 1px;
+  border-top-color: var(--ui-panel-outline);
+}
+body[data-theme="dark"] .entity-card,
+body[data-theme="dark"] .kpi,
+body[data-theme="dark"] .stat-pill,
+body[data-theme="dark"] .history-source-item,
+body[data-theme="dark"] .dashboard-zone .kpi,
+body[data-theme="dark"] .dashboard-zone-history .history-source-item {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--ui-panel-outline);
+}
+@media print {
+  body .entity-card, body .kpi, body .stat-pill,
+  body .history-source-item {
+    border: 1px solid #bfcbd6 !important;
+    box-shadow: none !important;
+  }
+}

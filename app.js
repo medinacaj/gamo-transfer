@@ -228,6 +228,7 @@
         )
         .sort((a, b) => a.date.localeCompare(b.date)),
       missing = upcoming.filter((b) => D.dispatchAlerts(state, b).length),
+      nextService = upcoming[0],
       margin = m.incomeARS - m.costARS;
     return (
       title(
@@ -235,7 +236,10 @@
         "Viajes en Argentina. Empresas conectadas con el mundo.",
         btn("Nueva reserva", "booking", "", "accent"),
       ) +
-      `<div class="hero-banner"><div><span class="hero-tag">CONTROL OPERATIVO & FINANCIERO</span><h2>Cada viaje cuenta.<br>Cada cuenta, en orden.</h2><p>Reservas, despacho y cobros internacionales en un mismo lugar.</p><a class="btn btn-light" href="#/facturacion">Preparar una liquidación →</a></div><div class="hero-route"><span>EZE</span><i>·········· ✈ ··········</i><span>CABA</span><small>Movilidad ejecutiva · Argentina</small></div></div>` +
+      `<div class="hero-banner"><div><span class="hero-tag">CONTROL OPERATIVO & FINANCIERO</span><h2>Cada viaje cuenta.<br>Cada cuenta, en orden.</h2><p>Reservas, despacho y cobros internacionales en un mismo lugar.</p><a class="btn btn-light" href="#/facturacion">Preparar una liquidación →</a></div><div class="hero-route" aria-label="Recorridos de servicios">${nextService
+        ? `<small class="hero-route-label">PRÓXIMO SERVICIO</small><div class="hero-route-path"><span title="${esc(nextService.origin)}">${esc(nextService.origin)}</span><i aria-hidden="true">→</i><span title="${esc(nextService.destination)}">${esc(nextService.destination)}</span></div><small>${esc(date(nextService.date.slice(0, 10)))} · ${esc(nextService.date.slice(11, 16))} h</small>`
+        : `<small class="hero-route-label">TRASLADOS PERSONALIZADOS</small><div class="hero-route-fallback">Rutas según cada reserva</div><small>Aeropuertos · hoteles · eventos · ciudad</small>`
+      }</div></div>` +
       `<div class="grid-kpi">${kpi("Servicios de hoy", daily.length, "Hora local de Argentina", "calendar")}${kpi("Alertas de despacho", missing.length, "Servicios próximos con alertas", "clock")}${kpi("Conductores disponibles", state.drivers.filter((d) => d.status === "Disponible").length, "De " + state.drivers.length + " conductores", "users")}${kpi("Vehículos operativos", state.vehicles.filter((v) => v.status === "Operativo").length, "De " + state.vehicles.length + " unidades", "car")}</div>` +
       `<div class="grid-kpi financial-kpis">${kpi("Facturación emitida", totals(m.revenue), "Documentos emitidos · no equivale a cobros")}${kpi("Cuentas por cobrar", totals(m.receivable), "Saldo de documentos emitidos")}${kpi("Cobros recibidos", totals(m.payments), "Importe bruto por moneda de pago")}${kpi("Pendiente de facturar", totals(m.pending), "Solo servicios completados")}</div>` +
       `<div class="dashboard-main">${panel("Próximos servicios", bookingTable(upcoming.slice(0, 5)), "Despacho y seguimiento de reservas")}<div>${panel(

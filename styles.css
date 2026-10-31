@@ -2328,3 +2328,16 @@ body[data-theme="dark"] .top-slash{color:#b5cce0}
   body[data-theme="dark"] :is(.data-table th,.data-table td,.agency-table th,.agency-table td,.agency-document-title h2,.agency-meta span,.agency-meta strong){color:#122d40!important}
   body[data-theme="dark"] :is(.agency-meta>div,.agency-subpanel,.data-table thead){background:white!important}
 }
+
+
+/* Filters for the historical report operate on the currently selected agency. */
+.agency-report-filters{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:0 22px 16px;padding:13px 16px;border:1px solid #ccdbe6;border-radius:10px;background:#f2f7fa}
+.agency-report-filters label{display:flex;flex-direction:column;gap:5px;color:var(--text-secondary);font-size:11px;font-weight:700}
+.agency-report-filters label input{min-width:155px;width:100%}
+.agency-report-filters .agency-filter-count{margin-left:auto;color:var(--text-secondary);font-size:11px;font-weight:750;align-self:center}
+body[data-density="compact"] .agency-report-filters{padding:9px 11px}
+body[data-theme="dark"] .agency-report-filters{background:#203a4d;border-color:var(--border-strong)}
+body[data-theme="dark"] .agency-report-filters label,
+body[data-theme="dark"] .agency-report-filters .agency-filter-count{color:var(--text-secondary)}
+@media(max-width:740px){.agency-report-filters{margin:0 12px 12px;gap:9px;padding:11px}.agency-report-filters label{flex:1;min-width:120px}.agency-report-filters label input{min-width:0}.agency-report-filters .agency-filter-count{width:100%;margin-left:0}}
+@media print{.agency-report-filters{display:none!important}}

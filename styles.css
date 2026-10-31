@@ -2560,3 +2560,187 @@ body[data-density="compact"] .dashboard-zone{padding:0;margin:20px 0 25px}
   background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important
  }
 }
+
+
+/* GAMO RESPONSIVE TABLES v1
+   Columns stay within their parent. Wide rows become labelled detail cards
+   based on the actual panel width (container queries), never horizontal sliders. */
+.table-scroll{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow:visible;
+  container:table-area / inline-size;
+}
+.table-scroll .data-table{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  table-layout:fixed;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  display:var(--data-display,table);
+}
+.table-scroll .data-table thead{display:var(--thead-display,table-header-group)}
+.table-scroll .data-table tbody{display:var(--tbody-display,table-row-group);gap:var(--tbody-gap,0)}
+.table-scroll .data-table tbody tr{
+  display:var(--row-display,table-row);
+  grid-template-columns:var(--row-columns,none);
+  gap:var(--row-gap,0);
+  padding:var(--row-padding,0);
+  background:var(--row-background,transparent);
+  border:var(--row-border,0);
+  border-radius:var(--row-radius,0);
+  min-width:0;
+  break-inside:avoid;
+}
+.table-scroll .data-table th,
+.table-scroll .data-table td{
+  min-width:0;
+  max-width:100%;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  vertical-align:top;
+}
+.table-scroll .data-table th{white-space:normal;line-height:1.35}
+.table-scroll .data-table tbody td{
+  display:var(--cell-display,table-cell);
+  padding:var(--cell-padding,12px 14px);
+  border-top:var(--cell-border,1px solid #e1e9f0);
+  background:transparent;
+}
+.table-scroll .data-table tbody td::before{
+  content:attr(data-label);
+  display:var(--cell-label-display,none);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  line-height:1.35;
+  color:#526579;
+  margin-bottom:5px;
+}
+.table-scroll .data-table :is(.primary-cell,.secondary-cell,.route-cell,.badge,.table-action,.btn){max-width:100%}
+.table-scroll .data-table .route-cell{flex-wrap:wrap}
+.table-scroll .data-table .btn{white-space:normal;max-width:100%;height:auto;min-height:36px;padding:7px 10px}
+.table-scroll .data-table :is(tfoot,thead) td{overflow-wrap:anywhere}
+@media screen{
+  /* Report details contain 10 or 14 fields. Prefer complete on-page cards at all widths. */
+  .table-scroll .agency-table{
+    --data-display:block;
+    --thead-display:none;
+    --tbody-display:grid;
+    --tbody-gap:12px;
+    --row-display:grid;
+    --row-columns:repeat(3,minmax(0,1fr));
+    --row-gap:10px 14px;
+    --row-padding:14px;
+    --row-background:#fff;
+    --row-border:1px solid #cddbe7;
+    --row-radius:10px;
+    --cell-display:block;
+    --cell-label-display:block;
+    --cell-padding:4px 6px;
+    --cell-border:0;
+    font-variant-numeric:tabular-nums;
+  }
+  .table-scroll .agency-table tbody tr{box-shadow:0 2px 8px rgba(12,40,62,.025)}
+  .table-scroll .agency-table tfoot{display:none}
+  .table-scroll .agency-table .total-cell{font-weight:800}
+  .table-scroll .agency-table tbody td[colspan]{
+    grid-column:1/-1;
+    text-align:center;
+    padding:18px;
+  }
+  body[data-theme="dark"] .table-scroll .agency-table{
+    --row-background:#1e3548;
+    --row-border:1px solid #49677e;
+  }
+}
+/* Dense financial/operational tables only become cards when the parent panel
+   cannot comfortably fit all the columns. */
+@container table-area (max-width:1200px){
+  .data-table.table-many-columns{
+    --data-display:block;
+    --thead-display:none;
+    --tbody-display:grid;
+    --tbody-gap:11px;
+    --row-display:grid;
+    --row-columns:repeat(2,minmax(0,1fr));
+    --row-gap:9px 15px;
+    --row-padding:13px;
+    --row-background:#fff;
+    --row-border:1px solid #d0dce7;
+    --row-radius:9px;
+    --cell-display:block;
+    --cell-label-display:block;
+    --cell-padding:5px 7px;
+    --cell-border:0;
+  }
+  .table-scroll .data-table tbody td:last-child .btn{width:auto}
+  body[data-theme="dark"] .table-many-columns{
+    --row-background:#1f384c;
+    --row-border:1px solid #4b687f;
+  }
+}
+@container table-area (max-width:680px){
+  .data-table.table-few-columns{
+    --data-display:block;
+    --thead-display:none;
+    --tbody-display:grid;
+    --tbody-gap:10px;
+    --row-display:grid;
+    --row-columns:repeat(2,minmax(0,1fr));
+    --row-gap:9px 13px;
+    --row-padding:12px;
+    --row-background:#fff;
+    --row-border:1px solid #d0dce7;
+    --row-radius:9px;
+    --cell-display:block;
+    --cell-label-display:block;
+    --cell-padding:5px 7px;
+    --cell-border:0;
+  }
+  body[data-theme="dark"] .table-few-columns{
+    --row-background:#1f384c;
+    --row-border:1px solid #4b687f;
+  }
+}
+@container table-area (max-width:560px){
+  .data-table:is(.table-many-columns,.table-few-columns){
+    --row-columns:1fr;
+    --row-gap:7px;
+    --row-padding:12px;
+  }
+  .table-scroll .agency-table{--row-columns:1fr}
+}
+@container table-area (min-width:561px) and (max-width:950px){
+  .table-scroll .agency-table{--row-columns:repeat(2,minmax(0,1fr))}
+}
+body[data-theme="dark"] .table-scroll .data-table tbody td::before{color:#b9cedf}
+/* Seven-day planning now reflows into normal rows instead of scrolling sideways. */
+.agenda-grid{grid-template-columns:repeat(7,minmax(0,1fr));overflow-x:visible;width:100%;min-width:0}
+.agenda-day{min-width:0}
+.agenda-event{min-width:0;overflow-wrap:anywhere;white-space:normal}
+@media(max-width:1600px){.agenda-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1100px){.agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.agenda-grid{grid-template-columns:1fr}}
+/* Constrain layouts that used to grow beyond the document edge. */
+.dashboard-main,.dashboard-bottom,.finance-grid,.agency-breakdown,.agency-meta,.history-source-grid{min-width:0;max-width:100%}
+:is(.panel,.agency-document,.document-sheet,.modal) .table-scroll{max-width:100%;min-width:0}
+body[data-density="compact"] .table-scroll .data-table tbody td{padding:var(--cell-padding,8px 10px)}
+/* PDF output stays a true table with wrapped cells and no horizontal offset. */
+@media print{
+  .table-scroll{overflow:visible!important;container-type:normal!important}
+  .table-scroll .data-table{
+    display:table!important;width:100%!important;min-width:0!important;max-width:100%!important;
+    table-layout:fixed;overflow-wrap:anywhere
+  }
+  .table-scroll .data-table thead{display:table-header-group!important}
+  .table-scroll .data-table tbody{display:table-row-group!important}
+  .table-scroll .data-table tbody tr{display:table-row!important}
+  .table-scroll .data-table tbody td{display:table-cell!important;background:transparent!important;padding:5px 4px!important}
+  .table-scroll .data-table tbody td::before{display:none!important}
+  .table-scroll .agency-table tfoot{display:table-footer-group!important}
+  .table-scroll .agency-table td{white-space:normal!important;font-size:8px}
+}

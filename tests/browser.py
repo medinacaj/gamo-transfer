@@ -19,6 +19,29 @@ class DemoTest(unittest.TestCase):
   self.page.goto('http://127.0.0.1:8765/gamo-app/')
  def tearDown(self):
   self.assertEqual(self.errors,[]);self.context.close()
+ def test_theme_density_advanced_filters_and_report(self):
+  theme=self.page.locator('[data-ui-preference="theme"]')
+  density=self.page.locator('[data-ui-preference="density"]')
+  theme.click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
+  density.click()
+  expect(self.page.locator('body')).to_have_attribute('data-density','compact')
+  self.page.reload()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
+  expect(self.page.locator('body')).to_have_attribute('data-density','compact')
+  self.navigate('reservas')
+  self.page.locator('#booking-advanced summary').click()
+  self.page.locator('#booking-origin').fill('zzz__unknown__')
+  expect(self.page.locator('#booking-count')).to_contain_text('0 de')
+  self.page.locator('#booking-reset').click()
+  expect(self.page.locator('#booking-origin')).to_have_value('')
+  self.navigate('reportes-agencias')
+  expect(self.page.locator('#k-count')).to_have_text('22')
+  self.page.locator('#report-from').fill('2026-10-25')
+  expect(self.page.locator('#report-filter-count')).to_have_text('3 de 22 servicios')
+  self.page.locator('#report-clear').click()
+  expect(self.page.locator('#k-total')).to_have_text('$ 993.500')
+
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:

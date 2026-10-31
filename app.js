@@ -1633,6 +1633,7 @@
       cobros: receivables,
       finanzas: finances,
       reportes: reports,
+      "reportes-agencias": () => window.GamoAgencyReports.page(),
     };
     if (!screens[page]) page = "inicio";
     $("#content").innerHTML =
@@ -1650,6 +1651,7 @@
       cobros: "Cuentas por cobrar",
       finanzas: "Rentabilidad",
       reportes: "Reportes",
+      "reportes-agencias": "Reportes por agencia",
     }[page];
     document.querySelectorAll("#nav a").forEach((a) => {
       a.classList.toggle("active", a.dataset.page === page);
@@ -1664,6 +1666,8 @@
       .forEach((e) => (e.innerHTML = iconSVG(e.dataset.icon)));
     if (page === "agenda") agendaResults();
     if (page === "reportes") reportResults();
+    document.body.classList.toggle("agency-report-active", page === "reportes-agencias");
+    if (page === "reportes-agencias") window.GamoAgencyReports.mount();
   }
   document.addEventListener("input", (e) => {
     if (e.target.id === "booking-search") filterBookings();

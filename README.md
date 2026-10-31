@@ -81,7 +81,7 @@ El runner levanta su servidor en el puerto 8765 y usa contextos aislados; no mod
 
 URL prevista: **https://medinacaj.github.io/gamo-transfer/**
 
-El workflow `.github/workflows/pages.yml` valida el dominio, prepara únicamente los cuatro archivos públicos y despliega desde `main`. En GitHub, configurar **Settings → Pages → Source → GitHub Actions** si aún no está habilitado. Luego ejecutar el workflow o enviar cambios a `main`. La publicación depende de los permisos y ajustes del repositorio.
+El workflow `.github/workflows/pages.yml` valida el dominio, prepara los archivos estáticos de la aplicación y sus logotipos y despliega desde `main`. En GitHub, configurar **Settings → Pages → Source → GitHub Actions** si aún no está habilitado. Luego ejecutar el workflow o enviar cambios a `main`. La publicación depende de los permisos y ajustes del repositorio.
 
 La preparación local y la existencia del workflow **no prueban que el sitio esté publicado**. Verificar que Actions termine correctamente y abrir la URL pública, comprobando navegación y una reserva. No se confirmó la publicación desde el entorno inicial: la política de red bloqueó la consulta a `medinacaj.github.io` y a la API de GitHub.
 
@@ -109,3 +109,18 @@ La sección `#/reportes-agencias` muestra **registros históricos aportados** y 
 **Conciliación:** la imagen de GP Travel muestra ARS 1.053.500, ARS 60.000 por encima de su Excel. Los servicios 7 y 12 son HTL → AEP por ARS 30.000 en el Excel, frente a HTL → EZE por ARS 60.000 en la imagen. El sistema usa el Excel para esos dos registros, muestra la diferencia al usuario y no la resuelve de forma automática.
 
 No se publica ningún nombre de conductor. Los importes históricos **no se suman** a las métricas ficticias de facturación, reservas, cobros o rentabilidad. No existe sincronización operativa ni base de datos remota y los datos mostrados en GitHub Pages son accesibles al público. Antes de producción, verificar autorizaciones de publicación y conciliaciones con las agencias.
+
+## Actualización de interfaz · fase 2 (octubre de 2026)
+
+- **Centro de operaciones**: la página inicial prioriza servicios del día, alertas, reservas confirmadas, recursos y próximos servicios. El recorrido mostrado proviene de la próxima reserva demo, nunca de una ruta fija.
+- **Datos identificados**: histórico documentado de agencias separado de reservas, cobros y facturas simulados. No se suman monedas distintas sin conversión.
+- **Estados consistentes**: etiquetas visuales para reservas, conductores, vehículos y documentos, conservando texto legible además del color.
+- **Filtros de reservas**: búsqueda general, estado, empresa y filtros avanzados por fecha desde/hasta, origen, destino, conductor y vehículo. Botón para limpiar filtros.
+- **Filtros de histórico**: agencia, formato, rango de fechas y recorrido. La exportación CSV respeta los filtros seleccionados.
+- **Preferencias**: botones de tema claro/oscuro y vista compacta/cómoda en la barra superior. Se conservan localmente en `gamo.ui.preferences.v1` y no modifican reservas o facturas.
+- **Legibilidad**: superficies, bordes y contraste unificados; impresión PDF en fondo claro independientemente del tema.
+- **Verificación**: las pruebas `tests/ui-preferences.test.js`, `tests/ui-integration.test.js` y `tests/agency-reports.test.js` cubren las nuevas funciones. El workflow de Pages ejecuta `node --test tests/*.test.js` y verifica la sintaxis antes de publicar.
+
+### Seguridad antes de operar con datos reales
+
+**Esta actualización no habilita autenticación de producción.** GitHub Pages es un alojamiento estático y el repositorio es público: no se pueden ocultar datos enviados en JavaScript simplemente con una pantalla de login. No agregar pasajeros reales, teléfonos, identificaciones, cobros o secretos a este repositorio ni al demo. Para implementar permisos reales se requiere un backend exclusivo y autorización de acceso a nivel de base de datos; ver [Modelo de seguridad y accesos](docs/seguridad-y-accesos.md).

@@ -2039,3 +2039,17 @@ body {
   .agency-report .agency-document-footer,
   .agency-report .agency-meta span { color: #354b5b; }
 }
+
+
+/* Ruta del encabezado: refleja la próxima reserva, sin presumir un destino fijo. */
+.hero-route{flex-direction:column;gap:9px;min-width:265px;max-width:340px;text-align:center}
+.hero-route .hero-route-label{color:#a9e4f7;font-size:10px;font-weight:800;letter-spacing:1.1px}
+.hero-route .hero-route-path{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-width:0}
+.hero-route .hero-route-path span{min-width:0;max-width:150px;overflow-wrap:anywhere;font-size:22px;line-height:1.2;font-weight:750}
+.hero-route .hero-route-path i{flex:0 0 auto;font-style:normal;color:#a5e6fa;font-size:24px;font-weight:750}
+.hero-route .hero-route-fallback{font-size:20px;font-weight:750;line-height:1.25;max-width:280px}
+.hero-route > small:last-child{color:#d3e6f0;letter-spacing:.2px;line-height:1.4}
+@media(max-width:1100px) and (min-width:641px){
+  .hero-route{min-width:200px;max-width:260px}
+  .hero-route .hero-route-path span{font-size:17px;max-width:115px}
+}

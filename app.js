@@ -78,8 +78,26 @@
   }
   const btn = (label, action, id = "", style = "light") =>
     `<button class="btn btn-${style}" data-action="${action}" data-id="${esc(id)}">${label}</button>`;
+  const statusTone = {
+    "Pendiente": "warning",
+    "Confirmado": "info",
+    "En curso": "progress",
+    "Completado": "success",
+    "Cancelado": "danger",
+    "Preparada": "warning",
+    "Emitida": "info",
+    "Anulada": "danger",
+    "Parcial": "warning",
+    "Pagada": "success",
+    "Vencida": "danger",
+    "Disponible": "success",
+    "Operativo": "success",
+    "No disponible": "danger",
+    "Mantenimiento": "danger",
+    "Sin facturar": "neutral"
+  };
   const badge = (text) =>
-    `<span class="badge ${/Completado|Pagada|Disponible|Operativo/.test(text) ? "success" : /Vencida|Cancelado|Anulada|Mantenimiento|No disponible/.test(text) ? "danger" : /Pendiente|Parcial|Preparada|Sin /.test(text) ? "warning" : "info"}">${esc(text)}</span>`;
+    `<span class="badge ${statusTone[text] || "neutral"}" title="Estado: ${esc(text)}"><span class="status-dot" aria-hidden="true"></span>${esc(text)}</span>`;
   const empty = (text) =>
     `<div class="empty"><strong>${esc(text)}</strong><span>Probá con otro período o creá un registro nuevo.</span></div>`;
   const table = (headers, rows) =>
@@ -307,36 +325,68 @@
     );
   }
   function bookings() {
-    return (
-      title(
-        "Reservas y viajes",
-        "Empresa contratante → pasajeros → servicio. Horarios de Argentina.",
-        btn("Exportar CSV", "export", "reservas") +
-          btn("Nueva reserva", "booking", "", "accent"),
-      ) +
-      `<div class="toolbar"><label class="search-wrap"><span>⌕</span><input id="booking-search" placeholder="Buscar pasajero, empresa o recorrido" aria-label="Buscar reservas"></label><div class="toolbar-controls"><select id="booking-status" class="field-select" aria-label="Estado operativo">${options(D.statuses, "", "Todos los estados")}</select><select id="booking-company" class="field-select" aria-label="Empresa">${options(state.companies, "", "Todas las empresas")}</select><input type="date" id="booking-day" class="field-input" aria-label="Fecha del servicio"></div></div><section class="panel" id="booking-results">${bookingTable([...state.bookings].sort((a, b) => b.date.localeCompare(a.date)))}</section>`
-    );
-  }
+  const statusLegend = ["Pendiente","Confirmado","En curso","Completado","Cancelado"].map(s=>badge(s)).join("");
+  return (
+    title(
+      "Reservas y viajes",
+      "Empresa contratante → pasajeros → servicio. Horarios de Argentina.",
+      btn("Exportar CSV", "export", "reservas") +
+        btn("Nueva reserva", "booking", "", "accent"),
+    ) +
+    `<div class="toolbar booking-toolbar">
+      <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="booking-search" placeholder="Buscar pasajero, empresa o recorrido" aria-label="Buscar reservas"></label>
+      <div class="toolbar-controls">
+        <select id="booking-status" class="field-select" aria-label="Estado operativo">${options(D.statuses, "", "Todos los estados")}</select>
+        <select id="booking-company" class="field-select" aria-label="Empresa">${options(state.companies, "", "Todas las empresas")}</select>
+      </div>
+    </div>
+    <details class="advanced-filters" id="booking-advanced">
+      <summary>Filtros avanzados <span>Fechas, ruta, conductor y vehículo</span></summary>
+      <div class="advanced-filters-grid">
+        <label>Desde <input type="date" id="booking-from" class="field-input"></label>
+        <label>Hasta <input type="date" id="booking-to" class="field-input"></label>
+        <label>Origen <input type="text" id="booking-origin" class="field-input" placeholder="Aeropuerto, hotel o ciudad"></label>
+        <label>Destino <input type="text" id="booking-destination" class="field-input" placeholder="Aeropuerto, hotel o ciudad"></label>
+        <label>Conductor <select id="booking-driver" class="field-select">${options(state.drivers, "", "Todos los conductores")}</select></label>
+        <label>Vehículo <select id="booking-vehicle" class="field-select">${options(state.vehicles, "", "Todos los vehículos")}</select></label>
+      </div>
+    </details>
+    <div class="booking-results-heading">
+      <span id="booking-count" aria-live="polite">${state.bookings.length} servicios</span>
+      <div class="booking-status-legend" aria-label="Estados operativos">${statusLegend}</div>
+      <button class="btn btn-light" id="booking-reset" type="button">Limpiar filtros</button>
+    </div>
+    <section class="panel" id="booking-results">${bookingTable([...state.bookings].sort((a,b)=>b.date.localeCompare(a.date)))}</section>`
+  );
+}
   function filterBookings() {
-    const q = $("#booking-search").value.toLowerCase(),
-      status = $("#booking-status").value,
-      company = $("#booking-company").value,
-      day = $("#booking-day").value;
-    $("#booking-results").innerHTML = bookingTable(
-      state.bookings
-        .filter(
-          (b) =>
-            (!status || b.status === status) &&
-            (!company || b.companyId === company) &&
-            (!day || b.date.startsWith(day)) &&
-            [b.id, b.passengers, cname(b.companyId), b.origin, b.destination]
-              .join(" ")
-              .toLowerCase()
-              .includes(q),
-        )
-        .sort((a, b) => b.date.localeCompare(a.date)),
-    );
-  }
+  const val = id => document.querySelector("#"+id)?.value || "";
+  const q = val("booking-search").trim().toLocaleLowerCase("es"),
+    status=val("booking-status"),
+    company=val("booking-company"),
+    from=val("booking-from"),
+    to=val("booking-to"),
+    origin=val("booking-origin").trim().toLocaleLowerCase("es"),
+    destination=val("booking-destination").trim().toLocaleLowerCase("es"),
+    driver=val("booking-driver"),
+    vehicle=val("booking-vehicle");
+  const rows=state.bookings
+    .filter(b=>
+      (!status || b.status===status) &&
+      (!company || b.companyId===company) &&
+      (!from || b.date.slice(0,10)>=from) &&
+      (!to || b.date.slice(0,10)<=to) &&
+      (!origin || b.origin.toLocaleLowerCase("es").includes(origin)) &&
+      (!destination || b.destination.toLocaleLowerCase("es").includes(destination)) &&
+      (!driver || b.driverId===driver) &&
+      (!vehicle || b.vehicleId===vehicle) &&
+      [b.id,b.passengers,cname(b.companyId),b.origin,b.destination,b.flight,b.status]
+        .join(" ").toLocaleLowerCase("es").includes(q)
+    )
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  $("#booking-results").innerHTML=bookingTable(rows);
+  $("#booking-count").textContent=`${rows.length} de ${state.bookings.length} servicios`;
+}
   function bookingForm(bid) {
     const b = state.bookings.find((x) => x.id === bid) || {
       date: D.today() + "T10:00",
@@ -1694,7 +1744,7 @@
     if (page === "reportes-agencias") window.GamoAgencyReports.mount();
   }
   document.addEventListener("input", (e) => {
-    if (e.target.id === "booking-search") filterBookings();
+    if (["booking-search", "booking-origin", "booking-destination"].includes(e.target.id)) filterBookings();
     if (e.target.id === "entity-search") {
       const q = e.target.value.toLowerCase(),
         list =
@@ -1713,15 +1763,19 @@
     }
   });
   document.addEventListener("change", (e) => {
-    if (
-      ["booking-status", "booking-company", "booking-day"].includes(e.target.id)
-    )
+    if (["booking-status","booking-company","booking-from","booking-to","booking-driver","booking-vehicle"].includes(e.target.id))
       filterBookings();
     if (["agenda-date", "agenda-view"].includes(e.target.id)) agendaResults();
     if (["report-period", "report-group"].includes(e.target.id))
       reportResults();
   });
   document.addEventListener("click", (e) => {
+    if (e.target.closest("#booking-reset")) {
+      const fields=["booking-search","booking-status","booking-company","booking-from","booking-to","booking-origin","booking-destination","booking-driver","booking-vehicle"];
+      fields.forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+      filterBookings();
+      return;
+    }
     const target = e.target.closest("[data-action]");
     if (!target) return;
     const a = target.dataset.action,

@@ -39,6 +39,9 @@ function mount(){
 test("main dashboard prioritizes operations, separates demo and history",()=>{
  const {node}=mount();
  const content=node("#content").innerHTML;
+ const sections=["dashboard-zone-ops","dashboard-zone-history","dashboard-zone-finance"];
+ for(const name of sections)assert.match(content,new RegExp('class="dashboard-zone '+name+'"'));
+ assert.equal((content.match(/class="dashboard-zone /g)||[]).length,3);
  const operations=content.indexOf("Operación y despacho");
  const historical=content.indexOf("Servicios históricos");
  const finances=content.indexOf("Facturación y cobros");
@@ -74,4 +77,13 @@ test("UI preferences buttons are mounted in the global header",()=>{
  assert.match(html,/data-ui-preference="theme"/);
  assert.match(html,/data-ui-preference="density"/);
  assert.match(html,/ui-preferences\.js/);
+});
+test("visual hierarchy uses functional regions and corresponding dark theme styles",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ assert.match(css,/GAMO VISUAL HIERARCHY v4/);
+ for(const cls of ["dashboard-zone-ops","dashboard-zone-history","dashboard-zone-finance"]){
+   assert.ok(css.includes("."+cls),cls);
+   assert.ok(css.includes('body[data-theme="dark"] .'+cls),cls+" dark");
+ }
+ assert.match(css,/\.kpi\{background:#fff;border:/);
 });

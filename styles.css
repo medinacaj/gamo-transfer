@@ -2053,3 +2053,17 @@ body {
   .hero-route{min-width:200px;max-width:260px}
   .hero-route .hero-route-path span{font-size:17px;max-width:115px}
 }
+
+
+/* Primera fase: histórico de agencias sin mezclar con los indicadores demo. */
+.history-source-panel{margin:0 0 20px}
+.history-source-panel .panel-head{gap:15px;flex-wrap:wrap}
+.history-source-panel .panel-head .btn{flex-shrink:0}
+.history-source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:17px 22px}
+.history-source-item{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:15px;display:grid;gap:5px;min-width:0}
+.history-source-name{font-size:11px;font-weight:800;letter-spacing:.4px;color:var(--accent)}
+.history-source-item strong{font-size:17px;color:var(--ink)}
+.history-source-money{font-size:20px;font-weight:750;color:var(--navy);font-variant-numeric:tabular-nums}
+.history-source-item small{font-size:11px;color:#526579}
+.history-source-foot{margin:0;padding:0 22px 17px;color:#42576b;font-size:11px;line-height:1.6}
+@media(max-width:640px){.history-source-grid{grid-template-columns:1fr;padding:12px}.history-source-foot{padding:0 12px 15px}.history-source-panel .panel-head .btn{width:100%}}

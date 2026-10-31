@@ -127,6 +127,6 @@ No se publica ningún nombre de conductor. Los importes históricos **no se suma
 
 ### Jerarquía visual por sección
 
-El resumen principal agrupa **Operación y despacho**, **Servicios históricos** y **Facturación y cobros** con espacios generosos, fondos neutros de intensidad distinta y encabezados tipográficos sobrios. Se eliminaron las barras de colores en bordes laterales y superiores, así como las bandas cromáticas decorativas. Dentro de cada sección, los paneles conservan superficies independientes y tablas de alto contraste.
+El resumen principal agrupa **Operación y despacho**, **Servicios históricos** y **Facturación y cobros** con espaciado visible entre áreas, títulos tipográficos y paneles de contenido independientes. Los grandes contenedores de fondo coloreado se reemplazaron por espacio en blanco; no hay franjas de color en las tarjetas. La navegación lateral agrupa los 11 módulos en **Principal, Operación, Clientes, Finanzas y Reportes**, sin cambiar sus rutas.
 
 En el resto de la aplicación (reservas, flota, conductores, empresas, reportes, finanzas y formularios), se mantiene un sistema de niveles: **fondo de página → bloque de filtros o encabezado → tarjeta/panel → datos interiores**. La misma jerarquía tiene correspondencia en modo oscuro y en la vista compacta. Estos cambios son de presentación; no modifican datos, rutas ni importes.

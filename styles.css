@@ -5,7 +5,7 @@
   --cyan: #009edb;
   --accent-soft: #e7f3fa;
   --ink: #122d40;
-  --muted: #607486;
+  --muted: #42576b;
   --line: #dfe8ef;
   --bg: #f4f7fa;
   --card: #fff;
@@ -1956,4 +1956,86 @@ body {
   body.agency-report-active .agency-breakdown .agency-subpanel:last-child{grid-column:auto}
   body.agency-report-active .agency-document-footer{break-inside:avoid}
   @page{size:A4 landscape;margin:10mm}
+}
+
+
+/* Contrast pass v1: accessible supporting text
+ * Shared typography and corporate colors remain unchanged; contrast on light and dark surfaces is improved.
+ */
+:root {
+  --muted: #42576b;
+}
+
+/* Global supporting information on white and pale gray backgrounds */
+.subheading, .panel-sub, .kpi-label, .kpi-foot,
+.secondary-cell, .activity-time, .bar-label, .legend-row,
+.table-toolbar, .empty, .entity-sub, .meta-row, .stat-pill,
+.fin-line span, .agenda-day-head span, .agenda-event small,
+.agenda-empty, .modal-header p, .form-group small,
+.detail-label, .muted, .customer-type, .footer-note,
+.pill-inline, .form-help, .document-sheet p,
+.currency-total small, .agency-toolbar-note,
+.agency-document-footer, .agency-meta span,
+.agency-subpanel .metric-line, .agency-bar-line,
+.agency-report .toolbar label {
+  color: #526579;
+}
+
+/* Navigation labels must stay light against the navy sidebar */
+.sidebar .nav a { color: #d0deeb; }
+.sidebar .nav a:hover, .sidebar .nav a.active { color: #ffffff; }
+.sidebar .nav-caption { color: #b3c8dc; }
+.sidebar .demo-note small, .sidebar .side-user small,
+.sidebar .brand-copy small { color: #b7c9dc; }
+
+/* Clear headers, table cells, and values */
+.data-table th, .agency-table th {
+  color: #42576b;
+}
+.data-table tbody td, .agency-table tbody td {
+  color: #24384b;
+}
+.data-table .secondary-cell { color: #526579; }
+.agency-table tbody .total-cell { color: #146c54; }
+.agency-table tbody .agency { color: var(--navy); }
+.data-table tfoot td { color: #173a54; }
+.field-select, .field-input, .search-wrap input,
+.form-group input, .form-group select {
+  color: #24384b;
+}
+.search-wrap { color: #526579; }
+.search-wrap input::placeholder,
+.field-input::placeholder,
+.form-group input::placeholder {
+  color: #586b7f;
+  opacity: 1;
+}
+
+/* Secondary navigation, metadata, forms, and footnotes */
+.top-date, .top-breadcrumb, .footer,
+.meta-row, .table-toolbar, .form-group label,
+.agency-meta span, .agency-document-footer {
+  color: #51667a;
+}
+.meta-row strong, .agency-meta strong, .detail-value,
+.agency-subpanel h3, .panel-head h2 {
+  color: #17344b;
+}
+.notice, .agency-notice {
+  color: #31546e;
+}
+.badge.success { color: #146c54; }
+.badge.warning { color: #855b15; }
+.badge.info { color: #2d648f; }
+.badge.neutral { color: #465a70; }
+
+/* A touch more weight for tiny metadata; preserve the existing visual hierarchy */
+.kpi-foot, .panel-sub, .secondary-cell, .footer,
+.agency-document-footer {
+  font-weight: 500;
+}
+.data-table th, .agency-table th { font-weight: 800; }
+@media print {
+  .agency-report .agency-document-footer,
+  .agency-report .agency-meta span { color: #354b5b; }
 }

@@ -85,3 +85,19 @@ test("Public data excludes driver first names from the source file", () => {
   assert.equal(source.includes('"ALEX"'), false);
   assert.equal(source.includes('"ROI"'), false);
 });
+
+
+test("History filters by date and route without changing original data", () => {
+  const {api,document}=load();
+  api.mount();
+  document.querySelector("#report-from").value="2026-10-25";
+  document.querySelector("#report-from").trigger("change");
+  assert.equal(document.querySelector("#report-filter-count").textContent,"3 de 22 servicios");
+  document.querySelector("#report-route").value="zz__unknown__";
+  document.querySelector("#report-route").trigger("input");
+  assert.equal(document.querySelector("#report-filter-count").textContent,"0 de 22 servicios");
+  assert.match(document.querySelector("#body").innerHTML,/No hay servicios/);
+  document.querySelector("#report-clear").trigger("click");
+  assert.equal(document.querySelector("#report-filter-count").textContent,"22 de 22 servicios");
+  assert.equal(document.querySelector("#k-total").textContent,"$ 993.500");
+});

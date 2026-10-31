@@ -98,5 +98,27 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261031-editorial-v5"));
+ assert.ok(html.includes("styles.css?v=20261031-responsive-v6"));
+});
+
+test("tables carry field labels for adaptive card layout",()=>{
+ const {node,location,winListeners}=mount();
+ const overview=node("#content").innerHTML;
+ assert.match(overview,/class="data-table table-many-columns"/);
+ assert.match(overview,/data-label="Servicio · hora argentina"/);
+ location.hash="#/facturacion";
+ winListeners.get("hashchange")();
+ const invoices=node("#content").innerHTML;
+ assert.match(invoices,/data-label="Documento"/);
+});
+test("no table or agenda is forced to scroll sideways",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const adaptive=css.slice(css.indexOf("/* GAMO RESPONSIVE TABLES v1"));
+ assert.match(adaptive,/container:table-area \/ inline-size;/);
+ assert.match(adaptive,/\.table-scroll\{[\s\S]*?overflow:visible/);
+ assert.match(adaptive,/\.table-scroll \.data-table\{[\s\S]*?min-width:0/);
+ assert.match(adaptive,/@container table-area \(max-width:1200px\)/);
+ assert.match(adaptive,/@container table-area \(max-width:560px\)/);
+ assert.match(adaptive,/\.agenda-grid\{grid-template-columns:repeat\(7,minmax\(0,1fr\)\);overflow-x:visible/);
+ assert.match(adaptive,/\.agenda-grid\.single-day\{grid-template-columns:minmax\(0,1fr\)\}/);
 });

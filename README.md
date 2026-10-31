@@ -101,3 +101,11 @@ Se incluye `reportes-agencias.html` con plantillas visuales de reporte detallado
 ### Integración del módulo de agencias
 
 Los reportes por agencia ahora son la ruta `#/reportes-agencias` de la aplicación principal. Reutilizan el mismo encabezado, navegación, tipografía, controles, estilos y diseño responsive que el resto del panel. `agency-reports.js` contiene la vista de ejemplo y `reportes-agencias.html` redirige los enlaces anteriores. La impresión PDF usa la vista de documento y mantiene los logotipos. La información sigue siendo demostrativa, sin conexión a facturación.
+
+## Primera fase · Histórico de agencias (octubre de 2026)
+
+La sección `#/reportes-agencias` muestra **registros históricos aportados** y ya no cifras de ejemplo inventadas para estos documentos. **GP Travel:** se transcribieron las 22 filas del Excel adjunto, con tarifa base ARS 880.000, estacionamiento ARS 81.500, guía ARS 32.000 y total ARS 993.500. **Grupo Summa:** 11 filas transcritas de la imagen, total ARS 312.000; la transcripción debe verificarse contra el original tabular si se obtiene.
+
+**Conciliación:** la imagen de GP Travel muestra ARS 1.053.500, ARS 60.000 por encima de su Excel. Los servicios 7 y 12 son HTL → AEP por ARS 30.000 en el Excel, frente a HTL → EZE por ARS 60.000 en la imagen. El sistema usa el Excel para esos dos registros, muestra la diferencia al usuario y no la resuelve de forma automática.
+
+No se publica ningún nombre de conductor. Los importes históricos **no se suman** a las métricas ficticias de facturación, reservas, cobros o rentabilidad. No existe sincronización operativa ni base de datos remota y los datos mostrados en GitHub Pages son accesibles al público. Antes de producción, verificar autorizaciones de publicación y conciliaciones con las agencias.

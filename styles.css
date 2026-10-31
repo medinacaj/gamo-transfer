@@ -11,6 +11,11 @@
   --card: #fff;
   --shadow: 0 5px 25px rgba(25, 41, 63, 0.035);
   --radius: 15px;
+  --surface-raised: #ffffff;
+  --surface-soft: #eef3f7;
+  --surface-strong: #e8eff5;
+  --border-strong: #bfcedc;
+  --text-secondary: #42576b;
 }
 * {
   box-sizing: border-box;
@@ -2067,3 +2072,86 @@ body {
 .history-source-item small{font-size:11px;color:#526579}
 .history-source-foot{margin:0;padding:0 22px 17px;color:#42576b;font-size:11px;line-height:1.6}
 @media(max-width:640px){.history-source-grid{grid-template-columns:1fr;padding:12px}.history-source-foot{padding:0 12px 15px}.history-source-panel .panel-head .btn{width:100%}}
+
+
+/* Visual system v2: global card hierarchy
+ * Paneles principales blancos; tarjetas internas ligeramente más oscuras.
+ * Conserva la identidad azul y evita sobrecargar los elementos de acción.
+ */
+.panel {
+  background: var(--surface-raised);
+  border-color: #cfdae5;
+  box-shadow: 0 4px 18px rgba(17, 42, 65, 0.045);
+}
+.panel-head {
+  background: #f5f8fb;
+  border-bottom-color: #d5e1ea;
+}
+.kpi,
+.entity-card,
+.stat-pill,
+.history-source-item,
+.agency-subpanel {
+  background: var(--surface-soft);
+  border-color: var(--border-strong);
+}
+.agency-meta > div {
+  background: var(--surface-strong);
+  border-color: var(--border-strong);
+}
+.stat-pill,
+.entity-sub,
+.meta-row,
+.fin-line span,
+.agency-subpanel .metric-line {
+  color: var(--text-secondary);
+}
+.agenda-day {
+  border-color: var(--border-strong);
+}
+.agenda-day-head {
+  background: var(--surface-strong);
+  border-bottom-color: var(--border-strong);
+}
+.data-table thead {
+  background: var(--surface-strong);
+}
+.data-table td {
+  border-top-color: #dbe5ed;
+}
+.table-toolbar {
+  background: #f1f5f9;
+  border-top-color: var(--border-strong);
+}
+.field-select,
+.field-input,
+.form-group input,
+.form-group select,
+.search-wrap {
+  background: #fff;
+  border-color: var(--border-strong);
+}
+.field-select:hover,
+.field-input:hover,
+.form-group input:hover,
+.form-group select:hover {
+  border-color: #839fb7;
+}
+.form-group label,
+.agency-report .toolbar label,
+.toolbar label {
+  color: var(--text-secondary);
+}
+.document-sheet,
+.modal {
+  background: var(--surface-raised);
+}
+@media print {
+  .kpi, .entity-card, .stat-pill,
+  .history-source-item, .agency-subpanel,
+  .agency-meta > div, .agenda-day-head,
+  .panel-head, .data-table thead,
+  .table-toolbar {
+    background: #fff !important;
+  }
+}

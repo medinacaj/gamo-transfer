@@ -2341,3 +2341,19 @@ body[data-theme="dark"] .agency-report-filters label,
 body[data-theme="dark"] .agency-report-filters .agency-filter-count{color:var(--text-secondary)}
 @media(max-width:740px){.agency-report-filters{margin:0 12px 12px;gap:9px;padding:11px}.agency-report-filters label{flex:1;min-width:120px}.agency-report-filters label input{min-width:0}.agency-report-filters .agency-filter-count{width:100%;margin-left:0}}
 @media print{.agency-report-filters{display:none!important}}
+
+
+/* Last-mile accessibility pass */
+.data-table th{font-size:10px}
+.secondary-cell,.panel-sub,.kpi-foot{font-size:11px}
+.advanced-filters summary:focus-visible,
+body[data-theme="dark"] button:focus-visible,
+body[data-theme="dark"] a:focus-visible,
+body[data-theme="dark"] input:focus-visible,
+body[data-theme="dark"] select:focus-visible,
+body[data-theme="dark"] summary:focus-visible{outline:3px solid #85d9ff;outline-offset:2px}
+@media(max-width:640px){
+  .dashboard-environment-note{font-size:12px}
+  .dashboard-route-text strong{font-size:14px}
+  .agency-report .agency-table{min-width:850px}
+}

@@ -104,6 +104,10 @@
             </div>
           </div>
           <div class="top-right">
+            <div class="ui-controls" role="group" aria-label="Preferencias visuales">
+              <button type="button" class="ui-control-btn" data-ui-preference="density" aria-pressed="false">▦ Vista compacta</button>
+              <button type="button" class="ui-control-btn" data-ui-preference="theme" aria-pressed="false">☾ Modo oscuro</button>
+            </div>
             <span class="top-date" id="today-date"></span
             ><span class="top-divider"></span
             ><span class="top-demo">ENTORNO DEMO</span
@@ -122,6 +126,7 @@
     <div id="modal-root"></div>
     <div id="toast-root" class="toast-root" aria-live="polite"></div>
     <script src="domain.js" defer></script>
+    <script src="ui-preferences.js" defer></script>
     <script src="agency-reports.js" defer></script>
     <script src="app.js" defer></script>
   </body>

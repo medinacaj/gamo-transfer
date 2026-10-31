@@ -214,6 +214,25 @@
       bookingRows(bookings),
     );
   }
+  function historicalOverview() {
+    const imported = window.GamoAgencyReports?.overview?.() || [];
+    if (!imported.length) return "";
+    const totalServices = imported.reduce((n, row) => n + row.count, 0);
+    return `<section class="panel history-source-panel" aria-label="Histórico inicial de agencias">
+      <div class="panel-head">
+        <div><h2>Primera fase · Histórico de agencias</h2>
+        <span class="panel-sub">${totalServices} servicios de octubre de 2026 tomados de documentos facilitados.</span></div>
+        <a class="btn btn-light" href="#/reportes-agencias">Consultar reportes →</a>
+      </div>
+      <div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
+        <span class="history-source-name">${esc(row.name)}</span>
+        <strong>${row.count} servicios</strong>
+        <span class="history-source-money">${esc(money(row.total, "ARS"))}</span>
+        <small>${esc(row.source)} · ${esc(row.week)}</small>
+      </div>`).join("")}</div>
+      <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p>
+    </section>`;
+  }
   function dashboard() {
     const m = D.metrics(state),
       today = D.today(),
@@ -242,6 +261,7 @@
       }</div></div>` +
       `<div class="grid-kpi">${kpi("Servicios de hoy", daily.length, "Hora local de Argentina", "calendar")}${kpi("Alertas de despacho", missing.length, "Servicios próximos con alertas", "clock")}${kpi("Conductores disponibles", state.drivers.filter((d) => d.status === "Disponible").length, "De " + state.drivers.length + " conductores", "users")}${kpi("Vehículos operativos", state.vehicles.filter((v) => v.status === "Operativo").length, "De " + state.vehicles.length + " unidades", "car")}</div>` +
       `<div class="grid-kpi financial-kpis">${kpi("Facturación emitida", totals(m.revenue), "Documentos emitidos · no equivale a cobros")}${kpi("Cuentas por cobrar", totals(m.receivable), "Saldo de documentos emitidos")}${kpi("Cobros recibidos", totals(m.payments), "Importe bruto por moneda de pago")}${kpi("Pendiente de facturar", totals(m.pending), "Solo servicios completados")}</div>` +
+      historicalOverview() +
       `<div class="dashboard-main">${panel("Próximos servicios", bookingTable(upcoming.slice(0, 5)), "Despacho y seguimiento de reservas")}<div>${panel(
         "Atención en despacho",
         `<div class="panel-pad">${

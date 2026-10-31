@@ -2744,3 +2744,8 @@ body[data-density="compact"] .table-scroll .data-table tbody td{padding:var(--ce
   .table-scroll .agency-table tfoot{display:table-footer-group!important}
   .table-scroll .agency-table td{white-space:normal!important;font-size:8px}
 }
+
+
+/* Una agenda de un solo día siempre ocupa una columna. */
+.agenda-grid.single-day{grid-template-columns:minmax(0,1fr)}
+.single-day .agenda-events{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}

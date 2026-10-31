@@ -93,3 +93,7 @@ La preparación local y la existencia del workflow **no prueban que el sitio est
 - `tests/`: pruebas de dominio y navegador.
 
 Es una demostración local; no tiene autenticación real, permisos, auditoría inmutable, GPS, cobros bancarios, facturación fiscal ni servicios externos. Para producción, trasladar las reglas a un servidor con PostgreSQL, autenticación, roles, auditoría y validaciones transaccionales. Evaluar con profesionales las integraciones ARCA y de pagos antes de implementarlas.
+
+## Vista de reportes por agencia (demo)
+
+Se incluye `reportes-agencias.html` con plantillas visuales de reporte detallado y ejecutivo, selector de agencia, resúmenes calculados, impresión/PDF y exportación CSV. Incluye los logotipos optimizados extraídos del archivo aportado: `gamo-logo.svg` y `gp-travel-logo.svg`. Los servicios del módulo son datos de demostración; **no están conectados a la base de reservas ni sustituyen la contabilidad o facturación del operador**. Se mantienen los reportes gerenciales existentes en `#/reportes`.

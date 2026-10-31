@@ -20,7 +20,7 @@ class DemoTest(unittest.TestCase):
  def tearDown(self):
   self.assertEqual(self.errors,[]);self.context.close()
  def test_dashboard_and_navigation(self):
-  expect(self.page.locator('h1')).to_have_text('Tu operación, en un vistazo')
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:
    self.page.locator(f'#nav a[data-page="{route}"]').click()
    expect(self.page.locator('h1')).to_be_visible()
@@ -121,7 +121,7 @@ class DemoTest(unittest.TestCase):
   self.page.evaluate("localStorage.setItem('gamo.demo.v1', JSON.stringify({...Gamo.seed(),bookings:[null]}))")
   original=self.page.evaluate("localStorage.getItem('gamo.demo.v1')")
   self.page.reload();expect(self.page.locator('.storage-error')).to_be_visible()
-  expect(self.page.locator('h1')).to_have_text('Tu operación, en un vistazo')
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   self.assertEqual(self.page.evaluate("localStorage.getItem('gamo.demo.v1')"),original)
  def test_html_input_is_text_and_report_export(self):
   self.navigate('clientes');self.page.locator('[data-action=company-new]').click()

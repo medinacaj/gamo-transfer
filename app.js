@@ -252,52 +252,61 @@
     </section>`;
   }
   function dashboard() {
-    const m = D.metrics(state),
-      today = D.today(),
-      daily = state.bookings.filter(
-        (b) => b.date.startsWith(today) && b.status !== "Cancelado",
-      ),
-      upcoming = state.bookings
-        .filter(
-          (b) =>
-            b.date.slice(0, 10) >= today &&
-            !["Completado", "Cancelado"].includes(b.status),
-        )
-        .sort((a, b) => a.date.localeCompare(b.date)),
-      missing = upcoming.filter((b) => D.dispatchAlerts(state, b).length),
-      nextService = upcoming[0],
-      margin = m.incomeARS - m.costARS;
-    return (
-      title(
-        "Tu operación, en un vistazo",
-        "Viajes en Argentina. Empresas conectadas con el mundo.",
-        btn("Nueva reserva", "booking", "", "accent"),
-      ) +
-      `<div class="hero-banner"><div><span class="hero-tag">CONTROL OPERATIVO & FINANCIERO</span><h2>Cada viaje cuenta.<br>Cada cuenta, en orden.</h2><p>Reservas, despacho y cobros internacionales en un mismo lugar.</p><a class="btn btn-light" href="#/facturacion">Preparar una liquidación →</a></div><div class="hero-route" aria-label="Recorridos de servicios">${nextService
-        ? `<small class="hero-route-label">PRÓXIMO SERVICIO</small><div class="hero-route-path"><span title="${esc(nextService.origin)}">${esc(nextService.origin)}</span><i aria-hidden="true">→</i><span title="${esc(nextService.destination)}">${esc(nextService.destination)}</span></div><small>${esc(date(nextService.date.slice(0, 10)))} · ${esc(nextService.date.slice(11, 16))} h</small>`
-        : `<small class="hero-route-label">TRASLADOS PERSONALIZADOS</small><div class="hero-route-fallback">Rutas según cada reserva</div><small>Aeropuertos · hoteles · eventos · ciudad</small>`
-      }</div></div>` +
-      `<div class="grid-kpi">${kpi("Servicios de hoy", daily.length, "Hora local de Argentina", "calendar")}${kpi("Alertas de despacho", missing.length, "Servicios próximos con alertas", "clock")}${kpi("Conductores disponibles", state.drivers.filter((d) => d.status === "Disponible").length, "De " + state.drivers.length + " conductores", "users")}${kpi("Vehículos operativos", state.vehicles.filter((v) => v.status === "Operativo").length, "De " + state.vehicles.length + " unidades", "car")}</div>` +
-      `<div class="grid-kpi financial-kpis">${kpi("Facturación emitida", totals(m.revenue), "Documentos emitidos · no equivale a cobros")}${kpi("Cuentas por cobrar", totals(m.receivable), "Saldo de documentos emitidos")}${kpi("Cobros recibidos", totals(m.payments), "Importe bruto por moneda de pago")}${kpi("Pendiente de facturar", totals(m.pending), "Solo servicios completados")}</div>` +
-      historicalOverview() +
-      `<div class="dashboard-main">${panel("Próximos servicios", bookingTable(upcoming.slice(0, 5)), "Despacho y seguimiento de reservas")}<div>${panel(
-        "Atención en despacho",
-        `<div class="panel-pad">${
-          missing.length
-            ? missing
-                .slice(0, 4)
-                .map(
-                  (b) =>
-                    `<div class="alert-item"><span class="alert-dot"></span><div><strong>${esc(b.id)} · ${b.date.slice(11)} h</strong><p>${esc(b.origin)} → ${esc(b.destination)}<br>${esc(D.dispatchAlerts(state, b).join(" · "))}</p>${btn("Asignar recursos", "booking", b.id)}</div></div>`,
-                )
-                .join("")
-            : empty("Todo asignado")
-        }</div>`,
-      )}<div class="notice">${state.bookings.filter((b) => b.status === "Completado").length} servicios completados · Ingreso estimado: ${esc(money(m.incomeARS))} · Costos: ${esc(money(m.costARS))} · Margen estimado: ${esc(money(margin))}.<br>Conversión con la cotización histórica ficticia de cada viaje.</div></div></div>` +
-      monthlyChart() +
-      notice
-    );
-  }
+  const m=D.metrics(state),
+    today=D.today(),
+    daily=state.bookings.filter(b=>b.date.startsWith(today)&&b.status!=="Cancelado"),
+    upcoming=state.bookings.filter(b=>b.date.slice(0,10)>=today && !["Completado","Cancelado"].includes(b.status))
+      .sort((a,b)=>a.date.localeCompare(b.date)),
+    missing=upcoming.filter(b=>D.dispatchAlerts(state,b).length),
+    nextService=upcoming[0],
+    confirmed=upcoming.filter(b=>b.status==="Confirmado").length,
+    availableDrivers=state.drivers.filter(d=>d.status==="Disponible").length,
+    operationalVehicles=state.vehicles.filter(v=>v.status==="Operativo").length,
+    margin=m.incomeARS-m.costARS;
+  const route=nextService
+    ? `<div class="dashboard-route-text"><span class="route-eyebrow">PRÓXIMO RECORRIDO · DEMO</span>
+      <strong>${esc(nextService.origin)} <span aria-hidden="true">→</span> ${esc(nextService.destination)}</strong>
+      <small>${esc(date(nextService.date.slice(0,10)))} · ${esc(nextService.date.slice(11,16))} h</small></div>`
+    : `<div class="dashboard-route-text"><span class="route-eyebrow">TRASLADOS PERSONALIZADOS</span>
+      <strong>Rutas según cada reserva</strong><small>Origen y destino variables</small></div>`;
+  const alertContent=missing.length
+    ? missing.slice(0,4).map(b=>
+      `<div class="alert-item"><span class="alert-dot"></span>
+      <div><strong>${esc(b.id)} · ${esc(date(b.date.slice(0,10)))} ${esc(b.date.slice(11,16))}</strong>
+      <p>${esc(b.origin)} → ${esc(b.destination)}<br>${esc(D.dispatchAlerts(state,b).join(" · "))}</p>
+      ${btn("Revisar asignación","booking",b.id)}</div></div>`
+    ).join("")
+    : '<div class="dashboard-all-clear">No hay alertas de asignación en los próximos servicios.</div>';
+  return (
+    title("Centro de operaciones","Servicios, asignaciones y actividad comercial en un solo lugar.",btn("Nueva reserva","booking","","accent"))+
+    `<div class="dashboard-environment-note"><strong>ENTORNO DE DEMOSTRACIÓN</strong><span>Los indicadores operativos y financieros siguen utilizando datos ficticios guardados en este navegador.</span><a href="#/reportes-agencias">Consultar histórico documentado →</a></div>`+
+    `<div class="dashboard-section-heading"><div><span class="eyebrow">PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
+    `<div class="grid-kpi ops-kpis">
+      ${kpi("Servicios de hoy",daily.length,"Fecha local de Argentina","calendar")}
+      ${kpi("Alertas de despacho",missing.length,"Reservas próximas por revisar","clock")}
+      ${kpi("Reservas confirmadas",confirmed,"Próximos servicios","invoice")}
+      ${kpi("Recursos disponibles",availableDrivers+" / "+operationalVehicles,"Conductores / vehículos operativos","car")}
+    </div>`+
+    `<div class="dashboard-main dashboard-operations">
+      ${panel("Próximos servicios",bookingTable(upcoming.slice(0,5)),"Reservas activas ordenadas por fecha y hora")}
+      <div class="dashboard-alert-column">
+        ${panel("Atención en despacho",`<div class="panel-pad">${alertContent}</div>`,"Asignaciones y conflictos próximos")}
+        <div class="dashboard-next-route">${route}<a class="btn btn-light" href="#/reservas">Consultar reservas</a></div>
+      </div>
+    </div>`+
+    `<div class="dashboard-section-heading"><div><span class="eyebrow">FUENTES DOCUMENTADAS</span><h2>Servicios históricos</h2></div><a class="mini-link" href="#/reportes-agencias">Ver por agencia →</a></div>`+
+    historicalOverview()+
+    `<div class="dashboard-section-heading"><div><span class="eyebrow">GESTIÓN FINANCIERA · SIMULACIÓN</span><h2>Facturación y cobros</h2><p>Montos por moneda, sin sumar monedas distintas.</p></div><a class="mini-link" href="#/cobros">Ver cuentas por cobrar →</a></div>`+
+    `<div class="grid-kpi financial-kpis">
+      ${kpi("Facturación emitida",totals(m.revenue),"Documentos demo · no equivale a cobros")}
+      ${kpi("Cuentas por cobrar",totals(m.receivable),"Saldo de documentos emitidos")}
+      ${kpi("Cobros recibidos",totals(m.payments),"Importe bruto por moneda")}
+      ${kpi("Pendiente de facturar",totals(m.pending),"Solo servicios completados")}
+    </div>`+
+    monthlyChart()+
+    `<div class="notice">Simulación: ${state.bookings.filter(b=>b.status==="Completado").length} servicios completados · Ingreso estimado ${esc(money(m.incomeARS))} · Costos ${esc(money(m.costARS))} · Margen ${esc(money(margin))}. Las cotizaciones históricas del demo son ficticias.</div>`
+  );
+}
   function monthlyChart() {
     const months = Array.from({ length: 6 }, (_, n) => {
       const now = new Date(D.today() + "T12:00:00Z");

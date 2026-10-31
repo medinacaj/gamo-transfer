@@ -695,7 +695,7 @@
               .map((n) => n[0])
               .join(""),
           )
-    }</span><div><div class="entity-name">${esc(e.name)}</div><div class="entity-sub">${esc(e.tradeName || e.phone || e.category)}</div></div></div><div class="entity-meta">${meta.map(([k, v]) => `<div class="meta-row"><span>${k}</span><strong>${esc(v)}</strong></div>`).join("")}</div><div class="action-foot">${type === "clientes" ? btn("Ver cuenta", "company-detail", e.id) : btn("Servicios y gastos", "resource-detail", action + ":" + e.id)}${btn("Editar ficha", action, e.id)}</div></article>`;
+    }</span><div><div class="entity-name">${esc(e.name)}</div><div class="entity-sub">${esc(e.tradeName || e.phone || e.category)}</div></div></div><div class="entity-meta">${meta.map(([k, v]) => `<div class="meta-row"><span>${k}</span><strong>${k === "Estado" ? badge(v) : esc(v)}</strong></div>`).join("")}</div><div class="action-foot">${type === "clientes" ? btn("Ver cuenta", "company-detail", e.id) : btn("Servicios y gastos", "resource-detail", action + ":" + e.id)}${btn("Editar ficha", action, e.id)}</div></article>`;
   }
   function entityForm(type, eid) {
     const list =

@@ -42,6 +42,30 @@ class DemoTest(unittest.TestCase):
   self.page.locator('#report-clear').click()
   expect(self.page.locator('#k-total')).to_have_text('$ 993.500')
 
+
+ def test_no_horizontal_table_or_agenda_scroll(self):
+  # All detail fields remain accessible; the table/card switches with panel width.
+  base='http://127.0.0.1:8765/gamo-app/#/'
+  for width in [390,768,1200,1600]:
+   self.page.set_viewport_size({'width':width,'height':900})
+   for route in ['inicio','reservas','agenda','clientes','conductores','vehiculos',
+                 'facturacion','cobros','finanzas','reportes','reportes-agencias']:
+    self.page.goto(base+route)
+    expect(self.page.locator('h1')).to_be_visible()
+    checks=self.page.evaluate("""() => ({
+      documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      tables: [...document.querySelectorAll('.table-scroll')].map(x => ({
+        width: x.clientWidth,
+        excess: x.scrollWidth - x.clientWidth
+      })),
+      agenda: [...document.querySelectorAll('.agenda-grid')].map(x => x.scrollWidth - x.clientWidth)
+    })""")
+    self.assertLessEqual(checks['documentOverflow'],2,(width,route,'page',checks))
+    for wrapper in checks['tables']:
+     self.assertLessEqual(wrapper['excess'],2,(width,route,'table',wrapper))
+    for excess in checks['agenda']:
+     self.assertLessEqual(excess,2,(width,route,'agenda',excess))
+
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:

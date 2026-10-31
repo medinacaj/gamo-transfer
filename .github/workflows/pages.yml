@@ -26,11 +26,12 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           node --check app.js
+          node --check agency-reports.js
           node --check domain.js
       - name: Prepare static website
         run: |
           mkdir _site
-          cp index.html styles.css domain.js app.js reportes-agencias.html gamo-logo.svg gp-travel-logo.svg _site/
+          cp index.html styles.css domain.js app.js agency-reports.js reportes-agencias.html gamo-logo.svg gp-travel-logo.svg _site/
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

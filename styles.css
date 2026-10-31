@@ -1041,7 +1041,7 @@ main {
   padding: 9px;
 }
 .agenda-event {
-  border-left: 3px solid #006ba0;
+  border: 1px solid #d1dfe9;
   background: #f0f7fc;
   padding: 10px;
   border-radius: 6px;
@@ -1058,7 +1058,7 @@ main {
   margin-top: 5px;
 }
 .agenda-event.warning {
-  border-left-color: #e5b267;
+  border-color: #e0d2b8;
   background: #fff9ec;
 }
 .agenda-empty {
@@ -1651,7 +1651,7 @@ main {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  border-bottom: 2px solid var(--accent);
+  border-bottom: 1px solid var(--line);
   padding-bottom: 18px;
   margin-bottom: 25px;
 }
@@ -2490,3 +2490,10 @@ body[data-theme="dark"] .dashboard-zone-history .history-source-item {
     box-shadow: none !important;
   }
 }
+
+
+/* Otras franjas decorativas heredadas: estados mediante fondo y texto, no barras. */
+.nav a.active::before { display: none; }
+.agenda-event, .agenda-event.warning { border-width: 1px; }
+body[data-theme="dark"] .agenda-event { border-color: #486780; }
+body[data-theme="dark"] .agenda-event.warning { border-color: #796847; }

@@ -62,7 +62,7 @@ root.GamoAgencyReports={
     $("#summary-services").innerHTML=[["IN",counts.IN,"green"],["OUT",counts.OUT,""],["Otros",counts.OTRO,"gold"]].map(([a,b,c])=>'<div class="agency-bar-line"><span>'+a+'</span><div class="agency-bar-rail"><div class="agency-bar '+c+'" style="width:'+(b/rows.length*100)+'%"></div></div><strong>'+(b/rows.length*100).toFixed(1).replace(".",",")+'%</strong></div>').join("");
     $("#summary-amounts").innerHTML=[["Tarifa base",base,""],["Parking",park,"gold"],["Guías",guide,"green"]].map(([a,b,c])=>'<div class="agency-bar-line"><span>'+a+'</span><div class="agency-bar-rail"><div class="agency-bar '+c+'" style="width:'+(b/total*100)+'%"></div></div><strong>'+money(b)+'</strong></div>').join("");
     $("#band-total").textContent=money(total);
-    $("#nav-detail").classList.toggle("active",detailed);$("#nav-exec").classList.toggle("active",!detailed);
+    // La selección de formato se realiza desde el filtro integrado.
     }
     $("#agency").addEventListener("change",render);$("#mode").addEventListener("change",render);
     document.querySelectorAll("[data-mode]").forEach((button)=>button.addEventListener("click",()=>{$("#mode").value=button.dataset.mode;render();}));

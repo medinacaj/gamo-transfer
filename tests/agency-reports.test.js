@@ -101,3 +101,16 @@ test("History filters by date and route without changing original data", () => {
   assert.equal(document.querySelector("#report-filter-count").textContent,"22 de 22 servicios");
   assert.equal(document.querySelector("#k-total").textContent,"$ 993.500");
 });
+
+
+test("detail and executive reports provide field labels for no-scroll layout",()=>{
+ const {api,document}=load();
+ api.mount();
+ assert.match(api.page(),/table-many-columns/);
+ assert.match(document.querySelector("#body").innerHTML,/data-label="PRECIO TOTAL"/);
+ assert.match(document.querySelector("#body").innerHTML,/data-label="TARIFA BASE"/);
+ document.querySelector("#mode").value="ejecutivo";
+ document.querySelector("#mode").trigger("change");
+ assert.match(document.querySelector("#body").innerHTML,/data-label="DESTINO"/);
+ assert.doesNotMatch(document.querySelector("#body").innerHTML,/data-label="TARIFA BASE"/);
+});

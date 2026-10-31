@@ -1905,7 +1905,7 @@ body {
 .agency-partner .gp{height:65px;max-width:122px;object-fit:contain}
 .agency-partner .partner-text{font-size:15px;text-align:center;font-weight:800;color:var(--accent)}
 .agency-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:16px 22px}
-.agency-meta>div{background:var(--bg);border:1px solid var(--line);padding:11px 13px;border-radius:9px;min-width:0}
+.agency-meta>div{background:#ebf1f5;border:1px solid #c6d3df;padding:11px 13px;border-radius:9px;min-width:0}
 .agency-meta span{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
 .agency-meta strong{font-size:12px;color:var(--ink)}
 .agency-table{font-variant-numeric:tabular-nums;min-width:900px}

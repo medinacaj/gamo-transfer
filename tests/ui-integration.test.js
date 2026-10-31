@@ -87,3 +87,16 @@ test("visual hierarchy uses functional regions and corresponding dark theme styl
  }
  assert.match(css,/\.kpi\{background:#fff;border:/);
 });
+
+test("navigation has functional groups without losing modules",()=>{
+ const groupLabels=["Principal","Operación","Clientes","Finanzas","Reportes"];
+ for(const label of groupLabels) assert.ok(html.includes(">"+label+"</span>"),label);
+ assert.equal((html.match(/data-page="/g)||[]).length,11);
+});
+test("dashboard separation uses whitespace rather than decorative borders",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
+ assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
+ assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
+ assert.ok(html.includes("styles.css?v=20261031-editorial-v5"));
+});

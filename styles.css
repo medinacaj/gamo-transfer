@@ -1874,3 +1874,11 @@ body {
     margin: 16mm;
   }
 }
+
+/* Identidad Gamo Transfer y acceso a reportes de agencias */
+.brand-logo{display:block;width:195px;height:auto;max-height:65px;object-fit:contain;background:white;border-radius:6px;padding:3px}
+.top-brand-link{display:inline-flex;align-items:center;flex-shrink:0}
+.top-brand-logo{display:block;width:123px;height:auto;max-height:43px;object-fit:contain}
+.nav-agency-report{background:rgba(0,158,219,.08);border:1px solid rgba(119,185,227,.18)}
+@media(max-width:900px){.top-brand-logo{width:94px}.topbar{padding-left:14px;padding-right:14px}}
+@media(max-width:550px){.top-brand-logo{width:86px}.top-breadcrumb{display:none}.top-left{gap:8px}.topbar{height:63px}}

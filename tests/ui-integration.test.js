@@ -248,31 +248,35 @@ test("flat card layers preserve shadows and hover on individual cards",()=>{
 });
 
 
-test("Duna editorial palette has readable surfaces in light and dark without nested frames",()=>{
+test("Apple-inspired design has contrasting tiles, functional blue and safe card hierarchy",()=>{
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
- const system=css.slice(css.indexOf("/* GAMO DUNA EDITORIAL v1"));
- assert.ok(system.startsWith("/* GAMO DUNA EDITORIAL v1"));
- for(const token of ["--duna-ink: #1b0624;","--duna-espresso: #160f0c;","--duna-linen: #f7f7f5;","--duna-bone: #edece7;","--duna-mist: #eeeeee;","--canvas: #f1f0ec;"]) {
-  assert.ok(system.includes(token),token);
+ const skin=css.slice(css.indexOf("/* GAMO APPLE-INSPIRED OPERATIONS v1"));
+ assert.ok(skin.startsWith("/* GAMO APPLE-INSPIRED OPERATIONS v1"));
+ for(const token of ["--canvas: #101012;","--card: #1d1d1f;","--apple-action: #0071e3;","--apple-link: #65b7ff;","--apple-tile-contrast: #f5f5f7;"]){
+  assert.ok(skin.includes(token),token);
  }
- assert.match(system,/--canvas: #171316;/);
- assert.match(system,/--duna-outline: #d8d3ce;/);
- assert.match(system,/border-radius: 999px;/);
- assert.match(system,/body \.sidebar \{/);
- assert.match(system,/body \.panel\.panel--collection/);
- assert.match(system,/body\[data-theme="dark"\] \.dashboard-zone \+ \.dashboard-zone/);
- assert.match(system,/@media \(prefers-reduced-motion: reduce\)/);
- assert.match(system,/@media print/);
- assert.ok(css.includes("GAMO SINGLE-LEVEL CARDS v1"));
- assert.ok(css.includes("GAMO CARDS DEPTH v1"));
- assert.match(html,/styles\.css\?v=20261101-duna-v14/);
- assert.match(html,/<meta name="theme-color" content="#1b0624"/);
- const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
- const luminance=h=>{const [r,g,b]=srgb(h);return .2126*r+.7152*g+.0722*b;};
- const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
- assert.ok(contrast("#1b0624","#f1f0ec")>12,"Texto editorial sobre lienzo cálido");
- assert.ok(contrast("#160f0c","#ffffff")>15,"Botón espresso sobre papel");
- assert.ok(contrast("#f6f1ef","#292428")>10,"Texto nocturno sobre tarjetas");
+ assert.match(skin,/--canvas: #ededf0;/);
+ assert.match(skin,/body\[data-theme="dark"\] \.dashboard-zone-finance \.kpi/);
+ assert.match(skin,/body\[data-theme="dark"\] \.dashboard-zone-ops \.kpi:first-child/);
+ assert.match(skin,/body \.panel\.panel--collection/);
+ assert.match(skin,/body \.history-source-flat/);
+ assert.match(skin,/@media\(hover:hover\) and \(pointer:fine\)/);
+ assert.match(skin,/@media\(prefers-reduced-motion:reduce\)/);
+ assert.match(skin,/@media print/);
+ assert.match(html,/styles\.css\?v=20261101-apple-v15/);
+ assert.match(html,/ui-preferences\.js\?v=20261101-apple-v15/);
+ assert.match(html,/<meta name="theme-color" content="#0e0e0e"/);
+ assert.match(html,/<body data-theme="dark" data-density="comfortable">/);
+ const ui=fs.readFileSync(path.join(root,"ui-preferences.js"),"utf8");
+ assert.match(ui,/let state=\{theme:"dark",density:"comfortable"\};/);
+ assert.match(ui,/validTheme\.has\(stored\.theme\)/);
+ const rgb=h=>h.replace("#","").match(/../g).map(n=>parseInt(n,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
+ const lum=h=>{const [r,g,b]=rgb(h);return .2126*r+.7152*g+.0722*b;};
+ const ratio=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+ assert.ok(ratio("#f5f5f7","#1d1d1f")>14);
+ assert.ok(ratio("#f5f5f7","#0071e3")>4.5);
+ assert.ok(ratio("#1d1d1f","#f5f5f7")>14);
+ assert.ok(ratio("#65b7ff","#101012")>8);
 });
 
 test("dashboard areas have clear unnumbered headings and one neutral separator",()=>{
@@ -314,7 +318,7 @@ test("obsolete dashboard card shell is absent; editorial sections own the layout
  assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
 });
 
-test("Duna preserves existing domain and status semantics",()=>{
+test("Apple-inspired skin preserves operational routes and status semantics",()=>{
  const {node,location,winListeners}=mount();
  const dashboard=node("#content").innerHTML;
  assert.equal((dashboard.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
@@ -327,7 +331,7 @@ test("Duna preserves existing domain and status semantics",()=>{
   assert.ok(node("#content").innerHTML.length>100,route);
  }
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
- const system=css.slice(css.indexOf("/* GAMO DUNA EDITORIAL v1"));
+ const system=css.slice(css.indexOf("/* GAMO APPLE-INSPIRED OPERATIONS v1"));
  for(const status of ["success","warning","danger","info","neutral"])assert.ok(system.includes(".badge."+status),status);
  assert.match(system,/\.agenda-day\.today/);
  assert.match(system,/\.agency-table tfoot td/);

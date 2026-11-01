@@ -4,7 +4,7 @@
   const KEY="gamo.ui.preferences.v1";
   const validTheme=new Set(["light","dark"]);
   const validDensity=new Set(["comfortable","compact"]);
-  let state={theme:"light",density:"comfortable"};
+  let state={theme:"dark",density:"comfortable"};
   try{
     const stored=JSON.parse(root.localStorage?.getItem(KEY)||"null");
     if(stored && typeof stored==="object"){

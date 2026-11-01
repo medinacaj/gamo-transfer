@@ -228,3 +228,12 @@ El workflow de Pages ahora ejecuta `scripts/verify_deployment.py` **después** d
 Antes del despliegue se verifica la sintaxis Python y se ejecutan cuatro pruebas aisladas del verificador en `tests/test_deployment.py`: versión válida, commit antiguo, referencia JS obsoleta y respuesta incompleta. Estas pruebas **no sustituyen** el resultado del despliegue real ni una inspección visual.
 
 La suite `Browser QA - Gamo Transfer` guarda una captura de cualquier prueba que falle en `/tmp/gamo-failed-*.png` y la adjunta como artefacto de GitHub Actions. Se ajustó un selector de la prueba de hover para evaluar una tarjeta elevada, no el contenedor deliberadamente plano de la tabla.
+
+
+### Actualización automática del HTML conservado en caché
+
+Se incorporó `version-check.js` con ejecución ligera al abrir la web. El HTML del artefacto publicado incluye ahora una marca `<meta name="gamo-build">` con el SHA exacto del despliegue. El detector consulta `build-info.txt` con `cache: "no-store"` y, si descubre una versión posterior, recarga **una sola vez** con un parámetro único `?gamo-build=...`. Conserva el fragmento de navegación (por ejemplo `#/reservas`) y no borra ni modifica las reservas de `localStorage`. Un fallo de conexión no interrumpe la aplicación; un marcador en `sessionStorage` previene bucles cuando la CDN todavía sirve HTML antiguo.
+
+El workflow versiona automáticamente `version-check.js` junto con el resto de los scripts y CSS, y comprueba la marca del HTML público tras desplegar. Se añadieron `tests/version-check.test.js` (sincronización, ausencia de red, prevención de bucles, mantenimiento de ruta) y se ampliaron las pruebas del verificador Python. El detector se desactiva en entornos de desarrollo sin una marca de commit válida.
+
+El mecanismo **no garantiza que el navegador reciba por primera vez el nuevo detector** mientras siga cargando un HTML de una versión que aún no lo incluía. En ese caso, abrir la URL con un parámetro único de consulta o una ventana privada sigue siendo el procedimiento de recuperación hasta que se actualice la caché del HTML.

@@ -1,5 +1,5 @@
 """Pruebas de navegador con Playwright. GAMO_BROWSER=chromium|firefox|webkit."""
-import csv, os, subprocess, sys, time, unittest
+import csv, json, os, subprocess, sys, time, unittest
 from urllib.request import urlopen
 from urllib.error import URLError
 from pathlib import Path
@@ -231,6 +231,27 @@ class DemoTest(unittest.TestCase):
   self.navigate('clientes')
   expect(self.page.locator('.entity-card').first).to_be_visible()
   self.assertEqual(self.page.locator('.entity-meta').first.evaluate('el => getComputedStyle(el).boxShadow'),'none')
+
+ def test_local_loading_baseline(self):
+  # CI-only reference. These numbers are not real-user Web Vitals.
+  self.page.reload(wait_until='load')
+  metrics=self.page.evaluate("""() => {
+    const nav=performance.getEntriesByType('navigation')[0];
+    const resources=performance.getEntriesByType('resource');
+    return {
+      domContentLoadedMs: Math.round(nav?.domContentLoadedEventEnd || 0),
+      loadEventMs: Math.round(nav?.loadEventEnd || 0),
+      resourceRequests: resources.length,
+      transferredBytes: resources.reduce((n,r)=>n+(r.transferSize || 0),0),
+      viewport: {width:innerWidth,height:innerHeight},
+      type: 'local-ci-baseline-not-real-user-data'
+    };
+  }""")
+  self.assertGreater(metrics['loadEventMs'],0)
+  self.assertGreater(metrics['resourceRequests'],0)
+  Path('/tmp/gamo-loading-baseline.json').write_text(
+   json.dumps(metrics,ensure_ascii=False,indent=2),encoding='utf-8'
+  )
 
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')

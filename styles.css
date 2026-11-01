@@ -2969,3 +2969,167 @@ body[data-theme="dark"] .agency-document .agency-meta > div:hover {
   .panel.panel--collection{border:0!important;box-shadow:none!important}
   .history-source-flat .history-source-grid{padding:0!important}
 }
+
+
+/* GAMO DASHBOARD SEPARATORS + REAL COMPACT v1
+   Divisores editoriales neutrales entre las tres áreas. No hay contenedores
+   externos, bordes laterales de color ni decoraciones detrás de las tarjetas. */
+.dashboard-zone + .dashboard-zone {
+  border-top: 1px solid #afb4b7;
+  padding-top: 30px;
+  margin-top: 34px;
+}
+.dashboard-zone .dashboard-section-heading .eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  color: #354650;
+  margin-bottom: 7px;
+}
+body[data-theme="dark"] .dashboard-zone + .dashboard-zone {
+  border-top-color: #52616b;
+}
+body[data-theme="dark"] .dashboard-zone .dashboard-section-heading .eyebrow {
+  color: #d4e0e9;
+}
+@media (max-width: 720px) {
+  .dashboard-zone + .dashboard-zone {
+    margin-top: 26px;
+    padding-top: 22px;
+  }
+}
+/* Densidad verdaderamente compacta: misma información, menos altura útil.
+   Variables de tabla aquí para vencer los valores de las container queries. */
+body[data-density="compact"] main { padding: 17px 26px 27px; }
+body[data-density="compact"] .page-header {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  gap: 8px;
+}
+body[data-density="compact"] h1 { font-size: 25px; margin-bottom: 3px; line-height: 1.2; }
+body[data-density="compact"] .subheading { font-size: 12px; line-height: 1.35; }
+body[data-density="compact"] .dashboard-environment-note {
+  padding: 8px 12px;
+  gap: 6px 11px;
+  margin-bottom: 10px;
+}
+body[data-density="compact"] .dashboard-zone {
+  margin-top: 12px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+body[data-density="compact"] .dashboard-zone + .dashboard-zone {
+  border-top: 1px solid #afb4b7;
+  padding-top: 17px;
+  margin-top: 17px;
+}
+body[data-theme="dark"][data-density="compact"] .dashboard-zone + .dashboard-zone {
+  border-top-color: #52616b;
+}
+body[data-density="compact"] .dashboard-zone .dashboard-section-heading {
+  margin-bottom: 9px;
+  padding: 0;
+  gap: 7px 12px;
+}
+body[data-density="compact"] .dashboard-zone .dashboard-section-heading h2 {
+  font-size: 18px;
+  letter-spacing: -.35px;
+}
+body[data-density="compact"] .dashboard-zone .dashboard-section-heading .eyebrow {
+  font-size: 10px;
+  margin-bottom: 2px;
+  letter-spacing: .05em;
+}
+body[data-density="compact"] :is(.grid-kpi, .cards-3) { gap: 8px; margin-bottom: 10px; }
+body[data-density="compact"] .kpi { padding: 10px 12px; }
+body[data-density="compact"] .kpi-top { margin-bottom: 4px; gap: 7px; }
+body[data-density="compact"] .kpi-icon { width: 26px; height: 26px; border-radius: 7px; }
+body[data-density="compact"] .kpi-icon svg { width: 16px; height: 16px; }
+body[data-density="compact"] .kpi-value { font-size: 21px; line-height: 1.15; letter-spacing: -.45px; }
+body[data-density="compact"] .kpi-foot { margin-top: 4px; font-size: 10px; line-height: 1.3; }
+body[data-density="compact"] .dashboard-zone .grid-kpi { margin-bottom: 10px; }
+body[data-density="compact"] :is(.dashboard-main, .dashboard-bottom, .dashboard-alert-column) { gap: 9px; }
+body[data-density="compact"] .panel-head,
+body[data-density="compact"] .dashboard-operations .panel-head { padding: 10px 13px; gap: 7px; }
+body[data-density="compact"] .panel--collection .panel-head,
+body[data-density="compact"] .dashboard-zone .panel--collection .panel-head {
+  padding: 0;
+  margin-bottom: 8px;
+}
+body[data-density="compact"] .panel-sub { margin-top: 3px; line-height: 1.25; }
+body[data-density="compact"] .panel-pad { padding: 10px 13px; }
+body[data-density="compact"] .dashboard-next-route { padding: 9px 12px; gap: 8px; }
+body[data-density="compact"] .dashboard-route-text { gap: 3px; }
+body[data-density="compact"] .dashboard-route-text strong { font-size: 14px; }
+body[data-density="compact"] .dashboard-all-clear { padding: 9px 11px; }
+body[data-density="compact"] .chart-area { padding: 9px 13px 17px; }
+body[data-density="compact"] .bar-chart { height: 125px; margin-top: 3px; padding-top: 5px; }
+body[data-density="compact"] .history-source-grid,
+body[data-density="compact"] .history-source-flat .history-source-grid { gap: 8px; padding: 0; }
+body[data-density="compact"] .history-source-item { padding: 10px 12px; gap: 3px; }
+body[data-density="compact"] .history-source-money { font-size: 18px; }
+body[data-density="compact"] .history-source-lead { margin-bottom: 8px; }
+body[data-density="compact"] .history-source-foot { margin-top: 8px; }
+body[data-density="compact"] .notice { padding: 8px 11px; margin-top: 10px; }
+body[data-density="compact"] .toolbar,
+body[data-density="compact"] .agency-toolbar { padding: 8px 10px; gap: 8px; margin-bottom: 9px; }
+body[data-density="compact"] .advanced-filters { margin-bottom: 10px; }
+body[data-density="compact"] .advanced-filters summary { padding: 8px 12px; }
+body[data-density="compact"] .advanced-filters-grid { padding: 10px 12px; gap: 8px; }
+body[data-density="compact"] .search-wrap { height: 35px; }
+body[data-density="compact"] :is(.field-input, .field-select) { height: 35px; }
+body[data-density="compact"] .booking-results-heading { padding: 6px 9px; gap: 7px; margin-bottom: 8px; }
+body[data-density="compact"] :is(.entity-card, .stat-pill) { padding: 11px 13px; }
+body[data-density="compact"] .entity-meta {
+  padding-top: 8px;
+  margin-top: 9px;
+  gap: 7px;
+}
+body[data-density="compact"] .action-foot { margin-top: 9px; gap: 6px; }
+body[data-density="compact"] .table-scroll .data-table {
+  --row-padding: 9px 10px;
+  --row-gap: 6px 10px;
+  --tbody-gap: 7px;
+}
+body[data-density="compact"] .table-scroll .data-table th { padding: 7px 9px; }
+body[data-density="compact"] .table-scroll .data-table tbody td {
+  --cell-padding: 6px 9px;
+}
+body[data-density="compact"] .table-scroll .data-table tbody td::before { margin-bottom: 3px; }
+body[data-density="compact"] .agenda-day { min-height: 220px; }
+body[data-density="compact"] .agenda-day-head { padding: 8px 10px; }
+body[data-density="compact"] .agenda-events { padding: 7px; gap: 6px; }
+body[data-density="compact"] .agenda-event { padding: 7px 9px; }
+body[data-density="compact"] .agenda-event .badge { margin-top: 4px; }
+body[data-density="compact"] .agency-meta { padding: 10px 14px; gap: 8px; }
+body[data-density="compact"] .agency-breakdown { padding: 10px 14px; gap: 10px; }
+body[data-density="compact"] .agency-report-filters { padding: 8px 10px; }
+body[data-density="compact"] .ui-control-btn[data-ui-preference="density"] {
+  border-color: #81949d;
+  background: #e4e8e7;
+  color: #20333e;
+}
+body[data-theme="dark"][data-density="compact"] .ui-control-btn[data-ui-preference="density"] {
+  border-color: #71909f;
+  background: #294553;
+  color: #eef6fa;
+}
+@media(min-width: 901px) {
+  body[data-density="compact"] .topbar { height: 62px; min-height: 62px; }
+}
+@media(max-width: 900px) {
+  body[data-density="compact"] main { padding: 16px 14px 25px; }
+}
+@media(max-width: 640px) {
+  body[data-density="compact"] h1 { font-size: 23px; }
+  body[data-density="compact"] .dashboard-zone .dashboard-section-heading h2 { font-size: 17px; }
+  body[data-density="compact"] .grid-kpi { gap: 8px; }
+  body[data-density="compact"] .kpi { padding: 9px 10px; }
+  body[data-density="compact"] .kpi-value { font-size: 19px; }
+}
+/* Print outputs keep the regular density and do not add separating rules. */
+@media print {
+  .dashboard-zone + .dashboard-zone,
+  body[data-density="compact"] .dashboard-zone + .dashboard-zone { border-top: 0 !important; }
+}

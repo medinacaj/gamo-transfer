@@ -1960,7 +1960,10 @@
     closeModal();
     closeMobileMenu();
     render();
-    $("#content").focus();
+    // Mantener el foco accesible sin que el navegador desplace el encabezado.
+    $("#content").focus({ preventScroll: true });
+    // Cada módulo comienza en la misma posición, con la barra superior visible.
+    window.scrollTo?.(0, 0);
   });
   window.addEventListener("storage", (e) => {
     if (e.key === KEY) {
@@ -1976,5 +1979,10 @@
   $("#year").textContent = new Date().getFullYear();
   $("#menu-btn").setAttribute("aria-controls", "sidebar");
   syncMobileMenu();
+  // Evitar que una restauración anterior deje una sección cargada a media página.
+  if (window.history && "scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
   render();
+  window.scrollTo?.(0, 0);
 })();

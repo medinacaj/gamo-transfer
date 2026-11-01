@@ -333,16 +333,23 @@
     `<div class="dashboard-environment-note"><strong>ENTORNO DE DEMOSTRACIÓN</strong><span>Los indicadores operativos y financieros siguen utilizando datos ficticios guardados en este navegador.</span><a href="#/reportes-agencias">Consultar histórico documentado →</a></div>`+
     `<section class="dashboard-zone dashboard-zone-ops" aria-label="Operación y despacho"><div class="dashboard-section-heading"><div><span class="eyebrow">PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
     `<div class="dashboard-ops-overview"><div class="grid-kpi ops-kpis">
+      ${kpi("Servicios de hoy",daily.length,"Fecha local de Argentina","calendar")}
       ${kpi("Alertas de despacho",missing.length,"Reservas próximas por revisar","clock")}
       ${kpi("Reservas confirmadas",confirmed,"Próximos servicios","invoice")}
       ${kpi("Recursos disponibles",availableDrivers+" / "+operationalVehicles,"Conductores / vehículos operativos","car")}
-    </div><div class="dashboard-next-route">${route}<a class="btn btn-light" href="#/reservas">Ver reservas</a></div></div>`+
-    `<div class="dashboard-main dashboard-operations">
-      ${panel("Próximos servicios",bookingTable(upcoming.slice(0,5)),"Reservas activas ordenadas por fecha y hora")}
-      <div class="dashboard-alert-column">
+    </div></div>`+
+    `<div class="dashboard-main dashboard-operations dashboard-triad">
+      <section class="operations-service-board" aria-label="Próximos servicios">
+        <div class="operations-panel-heading"><div><span class="operations-panel-icon">${iconSVG("calendar")}</span><h3>Próximos servicios</h3><p>Reservas activas ordenadas por fecha y hora</p></div><a href="#/reservas" class="operations-panel-link">Ver todos →</a></div>
+        ${dashboardServiceList(upcoming,selectedId)}
+      </section>
+      <section class="operations-service-detail" id="dashboard-service-detail" aria-label="Detalle del servicio seleccionado">
+        <div class="operations-panel-heading"><div><span class="operations-panel-icon">${iconSVG("invoice")}</span><h3>Servicio seleccionado</h3><p>Datos de la reserva · DEMO</p></div></div>
+        ${dashboardServiceDetail(selectedService)}
+      </section>
+      <aside class="dashboard-alert-column">
         ${panel("Atención en despacho",`<div class="panel-pad">${alertContent}</div>`,"Asignaciones y conflictos próximos")}
-
-      </div>
+      </aside>
     </div>`+
     `</section>`+
     `<section class="dashboard-zone dashboard-zone-history" aria-label="Servicios históricos"><div class="dashboard-section-heading"><div><span class="eyebrow">FUENTES DOCUMENTADAS</span><h2>Servicios históricos</h2></div><a class="mini-link" href="#/reportes-agencias">Ver por agencia →</a></div>`+
@@ -1776,6 +1783,7 @@
       "reportes-agencias": () => window.GamoAgencyReports.page(),
     };
     if (!Object.hasOwn(screens, page) || typeof screens[page] !== "function") page = "inicio";
+    document.body.dataset.page = page;
     $("#content").innerHTML =
       (storageError
         ? `<div class="storage-error" role="alert">${esc(storageError)} ${btn("Descargar copia", "backup")}${btn("Restaurar", "reset")}</div>`
@@ -1847,7 +1855,8 @@
     const a = target.dataset.action,
       i = target.dataset.id;
     try {
-      if (a === "close") closeModal();
+      if (a === "dashboard-select") { dashboardSelectionId=i; render(); document.querySelector('[data-action="dashboard-select"][data-id="'+i+'"]')?.focus(); }
+      else if (a === "close") closeModal();
       else if (a === "booking") bookingForm(i);
       else if (["company", "driver", "vehicle"].includes(a)) entityForm(a, i);
       else if (a.endsWith("-new") && a !== "invoice-new")

@@ -178,3 +178,16 @@ Se restauró la profundidad visual de **indicadores, fichas de clientes/conducto
 El comportamiento se adapta al tema claro/oscuro, no aplica animaciones de movimiento cuando el usuario solicita reducción de movimiento y elimina las sombras al imprimir. Se versionó `styles.css` para evitar caché antigua. Las pruebas de estructura CSS están en `tests/ui-integration.test.js`; la prueba de sombras calculadas al hacer hover en Chromium está en `tests/browser.py`.
 
 **Estado de verificación:** código y estructura CSS comprobados. La comparación visual y la ejecución E2E real todavía requieren resultados del workflow de navegador.
+
+
+## Simplificación de niveles de tarjetas (2026-11-01)
+
+Se eliminó el efecto de **tarjeta dentro de otra tarjeta** sin quitar las sombras o las acciones:
+
+- **Tablas y reservas:** el generador de paneles detecta tablas y usa `panel--collection`, que conserva el título y los controles, pero no dibuja un recuadro ni sombra alrededor de las filas adaptables. La tabla de Reservas también utiliza ese estilo.
+- **Histórico por agencia del resumen:** se retiró el panel exterior y el encabezado duplicado; quedan dos tarjetas independientes (una por agencia) y una nota documental sin marco.
+- **Fichas de entidades:** los metadatos internos son filas simples, no otra tarjeta. En el documento de agencias, los bloques informativos conservan su estructura de columnas sin recuadros adicionales.
+- **Consistencia:** las tarjetas individuales continúan con sombra/hover discreto. No se añadieron franjas decorativas ni colores adicionales.
+- **Validación:** pruebas de estructura y simulación JavaScript; pruebas de estilos calculados en Chromium añadidas al workflow, pero aún pendientes de ejecución confirmada. La versión de recursos `v10` evita servir archivos antiguos desde caché.
+
+Esta actualización no altera reservas, reportes ni montos históricos.

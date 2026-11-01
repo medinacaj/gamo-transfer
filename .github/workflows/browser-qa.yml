@@ -10,6 +10,7 @@ on:
       - "domain.js"
       - "agency-reports.js"
       - "ui-preferences.js"
+      - "version-check.js"
       - "styles.css"
       - "tests/browser.py"
       - ".github/workflows/browser-qa.yml"

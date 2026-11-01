@@ -1,5 +1,5 @@
 """Pruebas funcionales con Chromium instalado. Ejecutar desde la raíz del repo."""
-import os, subprocess, sys, time, unittest
+import csv, os, subprocess, sys, time, unittest
 from urllib.request import urlopen
 from urllib.error import URLError
 from pathlib import Path
@@ -96,6 +96,41 @@ class DemoTest(unittest.TestCase):
   self.assertTrue(self.page.evaluate("document.querySelector('#shell').inert"))
   self.page.get_by_role('button',name='Cerrar',exact=True).click()
   self.assertFalse(self.page.evaluate("document.querySelector('#shell').inert"))
+
+ def test_forms_cancel_and_keyboard_skip_without_side_effects(self):
+  initial=len(self.data()['bookings']) if self.page.evaluate("localStorage.getItem('gamo.demo.v1')") else 28
+  self.page.locator('#skip-to-content').focus()
+  expect(self.page.locator('#skip-to-content')).to_be_visible()
+  self.page.locator('#skip-to-content').click()
+  self.assertEqual(self.page.evaluate('document.activeElement.id'),'content')
+  self.navigate('reservas')
+  self.page.get_by_role('button',name='Nueva reserva',exact=True).click()
+  expect(self.page.locator('[role=dialog]')).to_be_visible()
+  cancel=self.page.get_by_role('button',name='Cancelar',exact=True)
+  self.assertEqual(cancel.get_attribute('type'),'button')
+  cancel.click()
+  expect(self.page.locator('[role=dialog]')).to_have_count(0)
+  stored=self.page.evaluate("localStorage.getItem('gamo.demo.v1')")
+  self.assertTrue(stored is None or len(self.data()['bookings'])==initial)
+
+ def test_reservation_csv_matches_current_filters(self):
+  self.navigate('reservas')
+  self.page.locator('#booking-search').fill('Pasajero demo 1')
+  shown=self.page.locator('#booking-results tbody tr').count()
+  self.assertGreater(shown,0)
+  self.assertLess(shown,28)
+  with self.page.expect_download() as dl:
+   self.page.get_by_role('button',name='Exportar CSV',exact=True).click()
+  with open(dl.value.path(),encoding='utf-8-sig',newline='') as f:
+   rows=list(csv.reader(f,delimiter=';'))
+  self.assertEqual(len(rows),shown+1)
+  self.assertEqual(rows[0][0],'ID')
+  self.page.locator('#booking-search').fill('ZZZ_NO_MATCH_123')
+  with self.page.expect_download() as dl:
+   self.page.get_by_role('button',name='Exportar CSV',exact=True).click()
+  with open(dl.value.path(),encoding='utf-8-sig',newline='') as f:
+   rows=list(csv.reader(f,delimiter=';'))
+  self.assertEqual(len(rows),1)
 
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')

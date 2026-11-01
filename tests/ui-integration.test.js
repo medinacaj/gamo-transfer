@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-ux-v8"));
+ assert.ok(html.includes("styles.css?v=20261101-shadows-v9"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -193,4 +193,21 @@ test("destructive reset has an explicit submit action and safe cancel",()=>{
  assert.match(form,/type="button" class="btn btn-light" data-action="close"/);
  assert.match(form,/type="submit" class="btn btn-danger">Restaurar datos/);
  assert.match(form,/Escribí RESTAURAR para confirmar/);
+});
+
+
+test("cards have a subtle base shadow and a desktop hover elevation",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const block=css.slice(css.indexOf("/* GAMO CARDS DEPTH v1"));
+ assert.ok(block.startsWith("/* GAMO CARDS DEPTH v1"));
+ assert.match(block,/--gamo-card-shadow:/);
+ assert.match(block,/--gamo-card-shadow-hover:/);
+ assert.match(block,/--gamo-panel-shadow:/);
+ assert.match(block,/@media \(hover: hover\) and \(pointer: fine\)/);
+ assert.match(block,/\.entity-card, \.stat-pill, \.history-source-item/);
+ assert.match(block,/\.panel:hover/);
+ assert.match(block,/prefers-reduced-motion: reduce/);
+ assert.match(block,/transform: none !important/);
+ assert.match(block,/@media print/);
+ assert.doesNotMatch(block,/border-(?:top|left):\s*[34]px/);
 });

@@ -290,3 +290,13 @@ test("compact density changes real component dimensions, not just the toolbar bu
  assert.match(styles,/@media print \{[\s\S]*?border-top: 0 !important;/);
  assert.ok((styles.match(/body\[data-density="compact"\]/g)||[]).length>30);
 });
+
+
+test("obsolete dashboard card shell is absent; editorial sections own the layout",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ assert.doesNotMatch(css,/background:var\(--zone-fill\);border:1px solid var\(--zone-line\);border-radius:14px/);
+ assert.doesNotMatch(css,/body\[data-density="compact"\] \.dashboard-zone\{margin:16px 0;padding:14px 15px\}/);
+ assert.match(css,/\/\* Shared dashboard tokens\. The outer section is deliberately not a card;/);
+ assert.match(css,/\.dashboard-zone \+ \.dashboard-zone \{/);
+ assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
+});

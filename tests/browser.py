@@ -59,6 +59,7 @@ class DemoTest(unittest.TestCase):
       operational:style('.dashboard-zone-ops .kpi:nth-child(2)').backgroundColor,
       finance:style('.dashboard-zone-finance .kpi').backgroundColor,
       sidebar:style('.sidebar').backgroundColor,
+      secondary:style('.dashboard-next-route .btn-light').backgroundColor,
       action:style('.page-header .btn-accent').backgroundColor,
       actionRadius:style('.page-header .btn-accent').borderRadius,
       shadow:style('.dashboard-zone-ops .kpi:nth-child(2)').boxShadow,
@@ -70,6 +71,7 @@ class DemoTest(unittest.TestCase):
   self.assertEqual(dark['operational'],'rgb(29, 29, 31)')
   self.assertEqual(dark['finance'],'rgb(245, 245, 247)')
   self.assertEqual(dark['sidebar'],'rgb(5, 5, 6)')
+  self.assertEqual(dark['secondary'],'rgb(41, 41, 46)')
   self.assertEqual(dark['action'],'rgb(0, 113, 227)')
   self.assertEqual(dark['actionRadius'],'9999px')
   self.assertNotEqual(dark['shadow'],'none')
@@ -79,6 +81,7 @@ class DemoTest(unittest.TestCase):
   light=self.page.evaluate(expression)
   self.assertEqual(light['canvas'],'rgb(237, 237, 240)')
   self.assertEqual(light['operational'],'rgb(255, 255, 255)')
+  self.assertEqual(light['secondary'],'rgb(245, 245, 247)')
   self.assertEqual(light['finance'],'rgb(29, 29, 31)')
   self.assertEqual(light['action'],'rgb(0, 113, 227)')
   self.assertEqual(light['collection'],'rgba(0, 0, 0, 0)')

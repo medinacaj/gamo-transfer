@@ -3435,6 +3435,14 @@ body .agency-document-title h2 { color: var(--duna-ink); }
 body .agency-table .total-cell { color: var(--duna-ink); }
 body .agency-partner .partner-text { color: var(--duna-ink); }
 
+/* Cerrar acentos antiguos de componentes funcionales que aún usaban azul. */
+body .agenda-day.today { border-color: #766a7c; }
+body .agenda-day.today .agenda-day-head { background: #edece7; }
+body .activity-bullet span { color: #4b3b48; background: #edece7; }
+body .activity-bullet::after { background: #d8d3ce; }
+body .selection-total { background: #edece7; color: var(--duna-ink); border-radius: 12px; }
+body :is(.invoice-choice input,.check-all input) { accent-color: #4a3644; }
+body .skip-link:focus-visible { outline: 2px solid #6b5367; outline-offset: 3px; }
 /* Los estados mantienen diferencias semánticas discretas, sin azul saturado. */
 body .badge { border-radius: 999px; font-weight: 600; }
 body .badge.info, body .badge.neutral, body .badge.purple, body .badge.progress {
@@ -3596,6 +3604,20 @@ body[data-theme="dark"] .agency-document-title h2,
 body[data-theme="dark"] .agency-partner .partner-text { color: #f6f1ef; }
 body[data-theme="dark"] .skip-link { background: #292428; border-color: #bfaeb7; color: #fff; }
 
+/* Los marcadores y separadores nocturnos heredan tonos cálidos, no azules. */
+body[data-theme="dark"] .dashboard-zone + .dashboard-zone,
+body[data-theme="dark"][data-density="compact"] .dashboard-zone + .dashboard-zone {
+  border-top-color: #6a5e64;
+}
+body[data-theme="dark"] .dashboard-zone .dashboard-section-heading .eyebrow,
+body[data-theme="dark"] .history-source-name { color: #d8c7d2; }
+body[data-theme="dark"] .currency-total small { color: #d3c3cb; }
+body[data-theme="dark"] .agenda-day.today { border-color: #b7a6b0; }
+body[data-theme="dark"] .agenda-day.today .agenda-day-head { background: #423841; }
+body[data-theme="dark"] .activity-bullet span { color: #f4e8ef; background: #493f47; }
+body[data-theme="dark"] .activity-bullet::after { background: #64585f; }
+body[data-theme="dark"] .selection-total { background: #3b3339; color: #f6f1ef; }
+body[data-theme="dark"] :is(.invoice-choice input,.check-all input) { accent-color: #e2d4db; }
 /* Densidad, móviles, documentos impresos y preferencias de movimiento. */
 @media (max-width: 720px) {
   body .dashboard-zone .dashboard-section-heading h2 { font-size: 20px; }

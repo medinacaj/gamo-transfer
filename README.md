@@ -244,3 +244,10 @@ El mecanismo **no garantiza que el navegador reciba por primera vez el nuevo det
 El workflow `Browser QA - Gamo Transfer` mantiene la suite completa de Chromium e incorpora un trabajo paralelo en **Firefox y WebKit** (motor utilizado por Safari) con pruebas de navegación y vista móvil. Se selecciona el navegador mediante `GAMO_BROWSER` y se evitan argumentos de ejecución exclusivos de Chromium en los otros motores. Las capturas producidas ante fallos se adjuntan a GitHub Actions.
 
 **Limitación:** usar WebKit sobre Linux sirve para detectar incompatibilidades del motor, pero no equivale a validar Safari real en macOS/iOS. Los resultados de estos trabajos seguirán pendientes hasta disponer de ejecuciones exitosas en el CI. Estos trabajos no bloquean el despliegue principal.
+
+
+### Línea base de rendimiento en CI
+
+La suite completa de Chromium incorpora `test_local_loading_baseline`. Produce el artefacto `gamo-loading-baseline.json` con los tiempos DOMContentLoaded/load, cantidad de recursos solicitados y bytes transferidos en el servidor HTTP local de pruebas. Se adjunta junto con las capturas visuales en cada ejecución de `Browser QA`.
+
+Estas métricas sirven para comparar versiones en condiciones similares de CI. **No** representan mediciones de usuarios reales, resultados certificados de Core Web Vitals ni garantía de rendimiento en producción. El workflow sigue pendiente de resultado verificado en GitHub Actions.

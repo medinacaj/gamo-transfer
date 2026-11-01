@@ -243,15 +243,15 @@
     const imported = window.GamoAgencyReports?.overview?.() || [];
     if (!imported.length) return "";
     const totalServices = imported.reduce((n, row) => n + row.count, 0);
-    return `<div class="history-source-panel history-source-flat" aria-label="Histórico inicial de agencias">
-      <p class="history-source-lead">${totalServices} servicios documentados · octubre de 2026</p>
-      <div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
+    return `<div class="history-source-panel history-source-flat history-ledger" aria-label="Histórico inicial de agencias">
+      <div class="history-ledger-intro"><span class="history-ledger-eyebrow">SERVICIOS DOCUMENTADOS · OCTUBRE 2026</span><strong class="history-ledger-total">${totalServices}</strong><span class="history-ledger-description">Traslados registrados en fuentes externas, separados de las operaciones de demostración.</span></div>
+      <div class="history-ledger-details"><div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
         <span class="history-source-name">${esc(row.name)}</span>
         <strong>${row.count} servicios</strong>
         <span class="history-source-money">${esc(money(row.total, "ARS"))}</span>
         <small>${esc(row.source)} · ${esc(row.week)}</small>
       </div>`).join("")}</div>
-      <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p>
+      <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p></div>
     </div>`;
   }
   function dashboard() {
@@ -281,20 +281,31 @@
     ).join("")
     : '<div class="dashboard-all-clear">No hay alertas de asignación en los próximos servicios.</div>';
   return (
-    title("Centro de operaciones","Servicios, asignaciones y actividad comercial en un solo lugar.",btn("Nueva reserva","booking","","accent"))+
+    `<header class="operations-intro" aria-label="Centro de operaciones">
+<div class="operations-intro-copy">
+<span class="operations-kicker"><span class="operations-kicker-dot" aria-hidden="true"></span> GAMO TRANSFER · VISTA OPERATIVA</span>
+<h1>Centro de operaciones</h1>
+<p>Despacho, seguimiento de servicios y resultados comerciales en una sola vista.</p>
+<div class="operations-intro-actions">${btn("Nueva reserva","booking","","accent")}<a class="operations-secondary-link" href="#/agenda">Consultar agenda <span aria-hidden="true">↗</span></a></div>
+</div>
+<div class="operations-hero-stat" aria-label="Servicios programados hoy">
+<span class="operations-hero-label">SERVICIOS DE HOY</span>
+<strong class="operations-hero-value">${daily.length}</strong>
+<span class="operations-hero-foot">Fecha local de Argentina</span>
+<div class="operations-hero-meta"><span>${confirmed} confirmados próximos</span><span>${missing.length} alertas por revisar</span></div>
+</div></header>`+
     `<div class="dashboard-environment-note"><strong>ENTORNO DE DEMOSTRACIÓN</strong><span>Los indicadores operativos y financieros siguen utilizando datos ficticios guardados en este navegador.</span><a href="#/reportes-agencias">Consultar histórico documentado →</a></div>`+
     `<section class="dashboard-zone dashboard-zone-ops" aria-label="Operación y despacho"><div class="dashboard-section-heading"><div><span class="eyebrow">PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
-    `<div class="grid-kpi ops-kpis">
-      ${kpi("Servicios de hoy",daily.length,"Fecha local de Argentina","calendar")}
+    `<div class="dashboard-ops-overview"><div class="grid-kpi ops-kpis">
       ${kpi("Alertas de despacho",missing.length,"Reservas próximas por revisar","clock")}
       ${kpi("Reservas confirmadas",confirmed,"Próximos servicios","invoice")}
       ${kpi("Recursos disponibles",availableDrivers+" / "+operationalVehicles,"Conductores / vehículos operativos","car")}
-    </div>`+
+    </div><div class="dashboard-next-route">${route}<a class="btn btn-light" href="#/reservas">Ver reservas</a></div></div>`+
     `<div class="dashboard-main dashboard-operations">
       ${panel("Próximos servicios",bookingTable(upcoming.slice(0,5)),"Reservas activas ordenadas por fecha y hora")}
       <div class="dashboard-alert-column">
         ${panel("Atención en despacho",`<div class="panel-pad">${alertContent}</div>`,"Asignaciones y conflictos próximos")}
-        <div class="dashboard-next-route">${route}<a class="btn btn-light" href="#/reservas">Consultar reservas</a></div>
+
       </div>
     </div>`+
     `</section>`+
@@ -302,14 +313,14 @@
     historicalOverview()+
     `</section>`+
     `<section class="dashboard-zone dashboard-zone-finance" aria-label="Facturación y cobros"><div class="dashboard-section-heading"><div><span class="eyebrow">GESTIÓN FINANCIERA · SIMULACIÓN</span><h2>Facturación y cobros</h2><p>Montos por moneda, sin sumar monedas distintas.</p></div><a class="mini-link" href="#/cobros">Ver cuentas por cobrar →</a></div>`+
-    `<div class="grid-kpi financial-kpis">
+    `<div class="dashboard-finance-layout"><div class="grid-kpi financial-kpis">
       ${kpi("Facturación emitida",totals(m.revenue),"Documentos demo · no equivale a cobros")}
       ${kpi("Cuentas por cobrar",totals(m.receivable),"Saldo de documentos emitidos")}
       ${kpi("Cobros recibidos",totals(m.payments),"Importe bruto por moneda")}
       ${kpi("Pendiente de facturar",totals(m.pending),"Solo servicios completados")}
-    </div>`+
+    </div><div class="dashboard-finance-chart">`+
     monthlyChart()+
-    `<div class="notice">Simulación: ${state.bookings.filter(b=>b.status==="Completado").length} servicios completados · Ingreso estimado ${esc(money(m.incomeARS))} · Costos ${esc(money(m.costARS))} · Margen ${esc(money(margin))}. Las cotizaciones históricas del demo son ficticias.</div></section>`
+    `</div></div><div class="notice">Simulación: ${state.bookings.filter(b=>b.status==="Completado").length} servicios completados · Ingreso estimado ${esc(money(m.incomeARS))} · Costos ${esc(money(m.costARS))} · Margen ${esc(money(margin))}. Las cotizaciones históricas del demo son ficticias.</div></section>`
   );
 }
   function monthlyChart() {

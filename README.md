@@ -191,3 +191,8 @@ Se eliminó el efecto de **tarjeta dentro de otra tarjeta** sin quitar las sombr
 - **Validación:** pruebas de estructura y simulación JavaScript; pruebas de estilos calculados en Chromium añadidas al workflow, pero aún pendientes de ejecución confirmada. La versión de recursos `v10` evita servir archivos antiguos desde caché.
 
 Esta actualización no altera reservas, reportes ni montos históricos.
+
+
+### Contraste de superficies del sistema (2026-11-01)
+
+Se separó el fondo de aplicación del blanco de las tarjetas mediante el token `--canvas`: **#CEDBE6** en modo claro y **#07131E** en modo oscuro. No se añadieron contenedores ni bordes decorativos; las tarjetas existentes conservan su color y sus sombras/hover. El color se controla desde la definición original de cada tema, sin crear otra capa de sobrescrituras CSS. `index.html` utiliza `styles.css?v=20261101-canvas-v11` para evitar caché previa. Las pruebas de regresión verifican las diferencias de superficie y el mantenimiento de los componentes planos. La validación visual del sitio publicado sigue pendiente.

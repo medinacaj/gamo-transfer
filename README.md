@@ -219,3 +219,12 @@ A partir de este cambio, el flujo `.github/workflows/pages.yml` **genera automá
 En cada publicación correcta se genera `build-info.txt` con el SHA íntegro utilizado. Desde la URL pública `https://medinacaj.github.io/gamo-transfer/build-info.txt` es posible contrastar la revisión desplegada con el último commit de `main`. El archivo se crea **solo al desplegar**; que exista el código en GitHub no confirma que ya esté disponible en la web.
 
 Si una versión antigua continúa viéndose, comprobar primero el estado de la acción `Validate and deploy GAMO TRANSFER` y comparar `build-info.txt`. Si el commit coincide, recién entonces comprobar caché de HTML del navegador/CDN o usar una sesión privada. No borrar `localStorage` por defecto: las reservas demo guardadas localmente son independientes de la caché de archivos.
+
+
+### Verificación posterior a cada despliegue
+
+El workflow de Pages ahora ejecuta `scripts/verify_deployment.py` **después** de `actions/deploy-pages`. Valida el contenido público de `build-info.txt`, el SHA completo, el HTML con sus cinco referencias de versión y la descarga efectiva de CSS y JavaScript. Las peticiones incorporan un parámetro exclusivo de comprobación para evitar respuestas intermedias antiguas. Hay reintentos limitados para tolerar la propagación habitual del CDN; si no coincide el commit, el trabajo termina con error explícito.
+
+Antes del despliegue se verifica la sintaxis Python y se ejecutan cuatro pruebas aisladas del verificador en `tests/test_deployment.py`: versión válida, commit antiguo, referencia JS obsoleta y respuesta incompleta. Estas pruebas **no sustituyen** el resultado del despliegue real ni una inspección visual.
+
+La suite `Browser QA - Gamo Transfer` guarda una captura de cualquier prueba que falle en `/tmp/gamo-failed-*.png` y la adjunta como artefacto de GitHub Actions. Se ajustó un selector de la prueba de hover para evaluar una tarjeta elevada, no el contenedor deliberadamente plano de la tabla.

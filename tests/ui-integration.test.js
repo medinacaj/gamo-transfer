@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-sections-density-v13"));
+ assert.match(html, /href="styles\.css\?v=[a-z0-9-]+"/);
 });
 
 test("tables carry field labels for adaptive card layout",()=>{

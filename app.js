@@ -991,6 +991,8 @@
     $("#modal-root").innerHTML =
       `<div class="modal-backdrop"><section class="modal modal-large" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><div class="modal-header"><h2 id="dialog-title">${name}</h2><button class="icon-button" aria-label="Cerrar" data-action="close">✕</button></div>${html}</section></div>`;
     document.body.classList.add("modal-open");
+    const shell = $("#shell");
+    if (shell) shell.inert = true;
     $("#modal-root button")?.focus();
   }
   function invoiceTable(invoices) {
@@ -1725,7 +1727,7 @@
       reportes: reports,
       "reportes-agencias": () => window.GamoAgencyReports.page(),
     };
-    if (!screens[page]) page = "inicio";
+    if (!Object.hasOwn(screens, page) || typeof screens[page] !== "function") page = "inicio";
     $("#content").innerHTML =
       (storageError
         ? `<div class="storage-error" role="alert">${esc(storageError)} ${btn("Descargar copia", "backup")}${btn("Restaurar", "reset")}</div>`

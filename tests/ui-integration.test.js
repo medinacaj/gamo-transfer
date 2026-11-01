@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261031-responsive-v6"));
+ assert.ok(html.includes("styles.css?v=20261101-qa-v7"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -176,4 +176,8 @@ test("reservation CSV uses current filters consistently with the table",()=>{
  assert.match(app,/function filteredBookings\(\)/);
  assert.match(app,/const rows = filteredBookings\(\)/);
  assert.match(app,/page === "reservas" \? filteredBookings\(\) : state.bookings/);
+});
+
+test("application logic uses a versioned script to avoid stale deploy cache",()=>{
+ assert.match(html,/src="app\.js\?v=20261101-qa-v7" defer/);
 });

@@ -386,3 +386,25 @@ test("premium v2 uses actionable selectable services, real amounts and licensed 
  assert.match(premium,/@media\(max-width:570px\)/);
  assert.match(html,/img-src 'self' data: https:\/\/images\.unsplash\.com/);
 });
+
+
+test("selecting a dashboard service updates the detail panel without mutating stored business data",()=>{
+ const {node,docListeners}=mount();
+ const initial=node("#content").innerHTML;
+ const ids=[...initial.matchAll(/data-action="dashboard-select" data-id="([^"]+)"/g)].map(m=>m[1]);
+ assert.ok(ids.length>=2);
+ assert.match(initial,new RegExp('class="operations-detail-id">'+ids[0]));
+ const mockTarget={
+   closest(selector){
+     if(selector==="#booking-reset")return null;
+     if(selector==="[data-action]")return {dataset:{action:"dashboard-select",id:ids[1]}};
+     return null;
+   }
+ };
+ docListeners.get("click")({target:mockTarget});
+ const next=node("#content").innerHTML;
+ assert.match(next,new RegExp('class="operations-detail-id">'+ids[1]));
+ assert.match(next,new RegExp('data-action="dashboard-select" data-id="'+ids[1]+'" aria-pressed="true"'));
+ assert.match(next,/data-action="booking"/);
+ assert.match(next,/class="dashboard-triad"/);
+});

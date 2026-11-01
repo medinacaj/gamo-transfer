@@ -245,22 +245,32 @@ test("flat card layers preserve shadows and hover on individual cards",()=>{
 });
 
 
-test("page canvas differs from cards in both themes without introducing nested frames",()=>{
+test("Duna editorial palette has readable surfaces in light and dark without nested frames",()=>{
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
- assert.match(css,/--canvas: #dadad8;/);
- assert.match(css,/--canvas:#10100f;/);
- assert.match(css,/background: var\(--canvas\)/);
- assert.match(css,/background:var\(--canvas\);color:var\(--ink\);/);
- assert.match(css,/\.dashboard-zone,\s*\.dashboard-zone-ops,\s*\.dashboard-zone-history,\s*\.dashboard-zone-finance\{background:transparent/);
- assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
- assert.match(css,/GAMO CARDS DEPTH v1/);
+ const system=css.slice(css.indexOf("/* GAMO DUNA EDITORIAL v1"));
+ assert.ok(system.startsWith("/* GAMO DUNA EDITORIAL v1"));
+ for(const token of ["--duna-ink: #1b0624;","--duna-espresso: #160f0c;","--duna-linen: #f7f7f5;","--duna-bone: #edece7;","--duna-mist: #eeeeee;","--canvas: #f1f0ec;"]) {
+  assert.ok(system.includes(token),token);
+ }
+ assert.match(system,/--canvas: #171316;/);
+ assert.match(system,/--duna-outline: #d8d3ce;/);
+ assert.match(system,/border-radius: 999px;/);
+ assert.match(system,/body \.sidebar \{/);
+ assert.match(system,/body \.panel\.panel--collection/);
+ assert.match(system,/body\[data-theme="dark"\] \.dashboard-zone \+ \.dashboard-zone/);
+ assert.match(system,/@media \(prefers-reduced-motion: reduce\)/);
+ assert.match(system,/@media print/);
+ assert.ok(css.includes("GAMO SINGLE-LEVEL CARDS v1"));
+ assert.ok(css.includes("GAMO CARDS DEPTH v1"));
+ assert.match(html,/styles\.css\?v=20261101-duna-v14/);
+ assert.match(html,/<meta name="theme-color" content="#1b0624"/);
  const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
  const luminance=h=>{const [r,g,b]=srgb(h);return .2126*r+.7152*g+.0722*b;};
  const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
- assert.ok(contrast("#dadad8","#ffffff")>=1.35);
- assert.ok(contrast("#10100f","#1d3446")>=1.45);
+ assert.ok(contrast("#1b0624","#f1f0ec")>12,"Texto editorial sobre lienzo cálido");
+ assert.ok(contrast("#160f0c","#ffffff")>15,"Botón espresso sobre papel");
+ assert.ok(contrast("#f6f1ef","#292428")>10,"Texto nocturno sobre tarjetas");
 });
-
 
 test("dashboard areas have clear unnumbered headings and one neutral separator",()=>{
  const {node}=mount();
@@ -299,4 +309,24 @@ test("obsolete dashboard card shell is absent; editorial sections own the layout
  assert.match(css,/\/\* Shared dashboard tokens\. The outer section is deliberately not a card;/);
  assert.match(css,/\.dashboard-zone \+ \.dashboard-zone \{/);
  assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
+});
+
+test("Duna preserves existing domain and status semantics",()=>{
+ const {node,location,winListeners}=mount();
+ const dashboard=node("#content").innerHTML;
+ assert.equal((dashboard.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
+ assert.match(dashboard,/Operación y despacho/);
+ assert.match(dashboard,/Servicios históricos/);
+ assert.match(dashboard,/Facturación y cobros/);
+ for(const route of ["reservas","agenda","clientes","conductores","vehiculos","facturacion","cobros","finanzas","reportes","reportes-agencias"]){
+  location.hash="#/"+route;
+  winListeners.get("hashchange")();
+  assert.ok(node("#content").innerHTML.length>100,route);
+ }
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const system=css.slice(css.indexOf("/* GAMO DUNA EDITORIAL v1"));
+ for(const status of ["success","warning","danger","info","neutral"])assert.ok(system.includes(".badge."+status),status);
+ assert.match(system,/\.agenda-day\.today/);
+ assert.match(system,/\.agency-table tfoot td/);
+ assert.match(system,/\.data-table tbody tr:hover/);
 });

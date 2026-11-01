@@ -39,6 +39,25 @@ Esta iteración **modifica la composición del inicio**, no solo la paleta:
 
 No se han alterado rutas, la lógica de facturación, el almacenamiento ni los datos comerciales.
 
+## Diseño Premium V2 — implementación actual (2026-11-01)
+
+**Referencia visual:** maqueta aprobada en el proyecto con una escena de traslado ejecutivo de aeropuerto, cuatro indicadores de distintos colores y una distribución en tres paneles con detalle seleccionado.
+
+**Qué cambió en el código, además de los colores:**
+
+- El inicio tiene un escenario visual de aeropuerto. Se superponen de forma legible el título y las acciones; a la derecha se muestran **solo cifras reales del demo** de reservas programadas para los siete días siguientes, con siete barras generadas dinámicamente.
+- La primera fila contiene cuatro tarjetas visualmente diferenciadas: servicios de hoy, alertas, reservas confirmadas y recursos disponibles.
+- La zona de despacho se transformó en un tablero de **tres columnas**: lista de próximos servicios seleccionables, panel azul con el servicio elegido y alertas operativas. El detalle se actualiza al seleccionar una fila y conserva tarifa, contratante, estado y asignaciones. Los botones siguen abriendo el formulario real.
+- En Reservas sigue existiendo la tabla completa, los filtros y la exportación; no se duplica una tabla de siete columnas en el inicio.
+- Históricos y Finanzas conservan los importes, las monedas diferenciadas y las fuentes del demo; la página secundaria adopta encabezados de gran contraste, fondos oscuros y controles resaltados.
+- La navegación, encabezados y módulos secundarios utilizan superficies grafito/azul, bordes finos, hover y diseño responsive en el mismo lenguaje visual.
+- Se preservan las opciones de tema claro/oscuro y densidad compacta. Las preferencias guardadas no se cambian.
+- Se conservaron los contenedores planos de colecciones y la impresión legible en blanco, evitando tarjetas exteriores redundantes.
+
+**Imagen y dependencias:** la escena combina una fotografía aeroportuaria de **Unsplash** publicada por Aaron Mrvelj (uso sujeto a [Unsplash License](https://unsplash.com/license), fuente: https://unsplash.com/photos/sunset-over-an-airport-with-airplanes-on-the-tarmac-f3hLDXTBFR8) y un vehículo vectorial original almacenado en `assets/executive-van.svg`. La fotografía se sirve desde `images.unsplash.com`, dominio permitido explícitamente en la CSP de imágenes; si está bloqueada por red, el degradado y el SVG local mantienen un encabezado utilizable. La política de referencia `no-referrer` evita enviar la URL de esta aplicación al CDN.
+
+**Verificación:** regresiones de render, funcionalidades y estructura del tema. Los flujos de Chromium y el resultado visual de GitHub Pages requieren ejecución/confirmación independiente. Los datos del dashboard no son estadísticas reales del negocio, sino del demo. Las versiones de `styles.css` y `app.js` se incrementaron a `20261101-premium-v17` para evitar caché anterior.
+
 ## Ejecutar
 
 Desde la raíz del repositorio:

@@ -32,7 +32,17 @@ class DemoTest(unittest.TestCase):
   self.page.on('pageerror',lambda error:self.errors.append(str(error)))
   self.page.goto('http://127.0.0.1:8765/',wait_until='domcontentloaded')
  def tearDown(self):
-  self.assertEqual(self.errors,[]);self.context.close()
+  result=getattr(getattr(self,'_outcome',None),'result',None)
+  failed=bool(self.errors) or bool(result and any(test is self for test,_ in result.failures+result.errors))
+  if failed:
+   try:
+    self.page.screenshot(path=f'/tmp/gamo-failed-{self._testMethodName}.png',full_page=True)
+   except Exception:
+    pass  # El error de la prueba original tiene prioridad.
+  try:
+   self.assertEqual(self.errors,[])
+  finally:
+   self.context.close()
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
   self.navigate('inicio')
   sections=self.page.locator('.dashboard-zone')

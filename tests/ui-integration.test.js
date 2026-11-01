@@ -13,7 +13,7 @@ function mount(savedState=null){
   const node=selector=>{
     if(!nodes.has(selector))nodes.set(selector,{
       id:selector.replace(/^#/,""),value:"",textContent:"",innerHTML:"",
-      classList:{toggle(){},remove(){},add(){}},setAttribute(key,value){this.attrs??={};this.attrs[key]=value;},removeAttribute(){},
+      classList:{toggle(){},remove(){},add(){},contains(){return false;}},setAttribute(key,value){this.attrs??={};this.attrs[key]=value;},removeAttribute(){},
       addEventListener(){},focus(){},append(){}
     });
     return nodes.get(selector);

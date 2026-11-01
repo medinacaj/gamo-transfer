@@ -2,26 +2,28 @@
 
 Demo comercial funcional para un operador argentino cuyos clientes contratan viajes para terceros. La **empresa contratante** recibe el documento y paga; los **pasajeros** reciben el traslado. No requiere backend, instalación de dependencias ni compilación.
 
-## Identidad visual · Adaptación editorial Duna
+## Identidad visual · Apple como referencia (adaptación a operaciones)
 
-La interfaz sigue la referencia editorial **Duna** proporcionada para este proyecto, adaptada a una aplicación de gestión. La marca, los módulos, los documentos y los datos permanecen identificados como **GAMO TRANSFER**. No se copia el logotipo Duna ni se distribuye la tipografía comercial GT America: se utiliza Inter y fuentes de sistema.
+El tema visual se inspira en la referencia de **Apple** compartida para el proyecto, sin replicar marca, imágenes, tipografías o componentes propietarios. La aplicación mantiene la identidad **GAMO TRANSFER**, su sistema de rutas y los reportes existentes. No se añaden imágenes de dispositivos ni portadas de producto que oculten información de despacho.
 
-| Token / rol | Color | Aplicación |
+| Elemento | Valor | Uso |
 |---|---|---|
-| Berenjena tinta | `#1B0624` | Titulares, información principal y navegación |
-| Espresso | `#160F0C` | Botones principales y superficies de acción |
-| Lino | `#F7F7F5` | Encabezados y superficies cálidas secundarias |
-| Lienzo adaptado | `#F1F0EC` | Fondo de la aplicación, ligeramente más contrastado que el lino |
-| Papel | `#FFFFFF` | Tarjetas e informes |
-| Hueso | `#EDECE7` | Iconos, avisos y superficies de apoyo |
-| Ceniza cálida | `#766A7C` | Etiquetas y textos secundarios |
-| Borde fino | `#D8D3CE` | Delimitación discreta de tarjetas y controles |
+| Obsidiana | `#101012` | Lienzo de trabajo inicial en modo oscuro |
+| Barra de navegación | `#050506` | Menú lateral y navegación oscura |
+| Grafito | `#1D1D1F` | Tarjetas y paneles oscuros |
+| Porcelana | `#F5F5F7` | Tarjetas de contraste en indicadores financieros |
+| Azul funcional | `#0071E3` | Acciones principales, enlaces activos y gráficos |
+| Azul de enlaces oscuros | `#65B7FF` | Enlaces y estados interactivos en superficies oscuras |
+| Lienzo claro alternativo | `#EDEDF0` | Fondo neutro del modo claro |
+| Papel blanco | `#FFFFFF` | Tarjetas del modo claro |
 
-**Criterios aplicados:** botones tipo píldora (`999px`), tarjetas con radio `16px`, jerarquía editorial, casi monocromía, sombras muy pequeñas y elevación perceptible solo al pasar el puntero. El Centro de operaciones conserva sus tres bloques con separadores horizontales sin numeración ni marcos exteriores; las tablas adaptables y los metadatos se mantienen sin tarjetas anidadas.
+**Estructura del Centro de operaciones:** tres secciones separadas por espacio y reglas finas (Operación y despacho, Servicios históricos, Facturación y cobros), sin numeración ni cajas envolventes. Se alternan superficies claras/oscuras a nivel de tarjetas individuales para evitar monotonía; el azul no se usa como fondo general. El hover mantiene elevación discreta y borde enfatizado, respetando el modo de movimiento reducido.
 
-**Adaptaciones justificadas al contexto operativo:** el fondo es algo más contrastado que el lino literal de Duna, los estados de éxito/advertencia/error conservan colores discretos por motivos funcionales, y no se añade el paisaje acuarela de su portada porque desplazaría las métricas y las reservas. Se conserva el modo oscuro y la densidad compacta, con control de movimiento reducido e impresión limpia.
+**Preferencias:** tema **oscuro por defecto** para visitantes nuevos, con selector claro/oscuro y densidad compacta/cómoda. Las preferencias ya guardadas del usuario **no se sobreescriben**. La versión CSS se incrementa para evitar estilos antiguos en caché.
 
-La implementación está al final de `styles.css` bajo `GAMO DUNA EDITORIAL v1`. La hoja se sirve con una versión de caché independiente, sin cargar fuentes, scripts, imágenes ni dependencias de terceros. No se modificaron datos históricos ni comportamiento de exportación.
+**Accesibilidad y validación:** controles con indicadores de foco visibles, colores semánticos para éxito/advertencia/error, formularios contrastados, diseño móvil y reglas de impresión en blanco. Hay pruebas de integración estructurales y de contrastes estáticos. La verificación visual real de Chromium y del sitio publicado sigue pendiente de confirmación.
+
+El estilo vigente está en `styles.css` bajo `GAMO APPLE-INSPIRED OPERATIONS v1` (reemplaza por completo al bloque Duna). Se utilizan fuentes del sistema/Inter; no se distribuyen SF Pro ni archivos de fuentes de terceros.
 
 ## Ejecutar
 

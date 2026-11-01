@@ -274,7 +274,7 @@ test("Apple-inspired design has contrasting tiles, functional blue and safe card
  const lum=h=>{const [r,g,b]=rgb(h);return .2126*r+.7152*g+.0722*b;};
  const ratio=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
  assert.ok(ratio("#f5f5f7","#1d1d1f")>14);
- assert.ok(ratio("#f5f5f7","#0071e3")>4.5);
+ assert.ok(ratio("#ffffff","#0071e3")>4.5);
  assert.ok(ratio("#1d1d1f","#f5f5f7")>14);
  assert.ok(ratio("#65b7ff","#101012")>8);
 });

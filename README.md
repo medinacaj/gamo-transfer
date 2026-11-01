@@ -208,3 +208,14 @@ Se separó el fondo de aplicación del blanco de las tarjetas mediante el token 
 - Regresiones: pruebas estáticas en `tests/ui-integration.test.js` y prueba de navegador en `tests/browser.py` que compara **alturas reales** de KPI y gráfico, relleno de tabla, y `borderTopWidth` de separadores en ambos temas.
 
 **Alcance de evidencia:** cambios y sintaxis confirmados; la ejecución de Playwright y el resultado visual publicado no se declaran verificados hasta disponer de un resultado real de CI o navegador.
+
+
+## Publicación y control de caché
+
+GitHub Pages ejecuta las pruebas Node antes de publicar. La prueba de integración que comprobaba un identificador de archivo `app.js?v=20261101-ux-v8` quedó desactualizada frente a nuevas versiones y podía **bloquear la publicación del sitio**, aunque las mejoras ya estuvieran guardadas en GitHub. Se sustituyó por una prueba que valida los archivos existentes y exige una referencia versionada, sin fijar números antiguos.
+
+A partir de este cambio, el flujo `.github/workflows/pages.yml` **genera automáticamente** versiones con los primeros 12 caracteres del SHA de cada commit para `styles.css`, `domain.js`, `ui-preferences.js`, `agency-reports.js` y `app.js`, solo en el artefacto publicado. Ya no depende de que el desarrollador modifique manualmente parámetros `?v=` en el repositorio.
+
+En cada publicación correcta se genera `build-info.txt` con el SHA íntegro utilizado. Desde la URL pública `https://medinacaj.github.io/gamo-transfer/build-info.txt` es posible contrastar la revisión desplegada con el último commit de `main`. El archivo se crea **solo al desplegar**; que exista el código en GitHub no confirma que ya esté disponible en la web.
+
+Si una versión antigua continúa viéndose, comprobar primero el estado de la acción `Validate and deploy GAMO TRANSFER` y comparar `build-info.txt`. Si el commit coincide, recién entonces comprobar caché de HTML del navegador/CDN o usar una sesión privada. No borrar `localStorage` por defecto: las reservas demo guardadas localmente son independientes de la caché de archivos.

@@ -3436,6 +3436,29 @@ body[data-theme="dark"] .agency-bar.gold { background: #2997ff; }
 body[data-theme="dark"] .agency-bar-rail,body[data-theme="dark"] .progress { background: #404046; }
 body[data-theme="dark"] .sidebar .brand-logo { background: #fff; }
 
+/* Higher-specificity overrides for legacy dark rules: remove residual navy fills. */
+body[data-theme="dark"] .page-header { border-bottom-color: #414149; }
+body[data-theme="dark"] .sidebar .nav-group-label,
+body[data-theme="dark"] .sidebar .nav-caption { color: #b5b5be; }
+body[data-theme="dark"] .dashboard-zone .dashboard-section-heading h2 { color: #f5f5f7; }
+body[data-theme="dark"] .dashboard-zone .dashboard-section-heading .eyebrow { color: #65b7ff; }
+body[data-theme="dark"] .btn-light { background: #29292e; color: #f5f5f7; border-color: #6e6e73; }
+body[data-theme="dark"] .btn-light:hover { background: #3a3a41; border-color: #91919a; }
+body[data-theme="dark"] .ui-control-btn { background: #252529; color: #f5f5f7; border-color: #54545e; }
+body[data-theme="dark"] .ui-control-btn:hover { background: #35353c; border-color: #8e8e96; }
+body[data-theme="dark"][data-density="compact"] .ui-control-btn[data-ui-preference="density"] {
+  background: #33333a; color: #fff; border-color: #65b7ff;
+}
+body[data-theme="dark"] .data-table tbody td,
+body[data-theme="dark"] .data-table thead th,
+body[data-theme="dark"] .agency-table .agency,
+body[data-theme="dark"] .agency-table .total-cell { color: #ededf2; }
+body[data-theme="dark"] .currency-total small,
+body[data-theme="dark"] .agency-meta span,
+body[data-theme="dark"] .agency-toolbar-note,
+body[data-theme="dark"] .history-source-item small { color: #bfc0c9; }
+body[data-theme="dark"] .advanced-filters summary:before { background: #36363d; color: #bfddff; }
+body[data-theme="dark"] .agenda-event.warning { background: #4b3926; color: #ffecd0; }
 /* Desktop pointer feedback: premium elevation without nested containers. */
 @media(hover:hover) and (pointer:fine) {
   body :is(.kpi,.entity-card,.stat-pill,.history-source-item,.agenda-day):hover,

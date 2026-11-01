@@ -1,4 +1,4 @@
-"""Pruebas funcionales con Chromium instalado. Ejecutar desde la raíz del repo."""
+"""Pruebas de navegador con Playwright. GAMO_BROWSER=chromium|firefox|webkit."""
 import csv, os, subprocess, sys, time, unittest
 from urllib.request import urlopen
 from urllib.error import URLError

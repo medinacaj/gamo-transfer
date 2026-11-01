@@ -43,7 +43,8 @@
     rawBackup = "",
     page = "inicio",
     lastFocus,
-    formHandler;
+    formHandler,
+    dashboardSelectionId = "";
   try {
     rawBackup = localStorage.getItem(KEY) || "";
     state = rawBackup ? JSON.parse(rawBackup) : D.seed();
@@ -253,6 +254,31 @@
       </div>`).join("")}</div>
       <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p></div>
     </div>`;
+  }
+
+  function dashboardServiceList(bookings,selectedId) {
+    if (!bookings.length) return empty("No hay servicios próximos");
+    return '<ol class="operations-service-list">'+bookings.slice(0,5).map(b=>{
+      const active=b.id===selectedId;
+      return '<li><button type="button" class="operations-service-row'+(active?' is-selected':'')+
+      '" data-action="dashboard-select" data-id="'+esc(b.id)+'" aria-pressed="'+active+'">'+
+      '<span class="operations-service-time"><strong>'+esc(b.date.slice(11,16))+'</strong><small>'+esc(date(b.date.slice(0,10)))+'</small></span>'+
+      '<span class="operations-service-data"><strong>'+esc(b.id)+'</strong><span>'+esc(b.origin)+' → '+esc(b.destination)+'</span><small>'+esc(b.count)+' pasajero(s) · '+esc(cname(b.companyId))+'</small></span>'+
+      badge(b.status)+'<span class="operations-service-arrow" aria-hidden="true">›</span></button></li>';
+    }).join("")+'</ol>';
+  }
+  function dashboardServiceDetail(b) {
+    if(!b) return '<div class="operations-detail-empty">No hay servicios próximos para mostrar.</div>';
+    const doc=D.documentFor(state,b.id);
+    return '<div class="operations-detail-body">'+
+      '<div class="operations-detail-top"><span class="operations-detail-id">'+esc(b.id)+' · '+esc(date(b.date.slice(0,10)))+' '+esc(b.date.slice(11,16))+' h</span>'+badge(b.status)+'</div>'+
+      '<dl class="operations-detail-grid">'+
+      '<div><dt>RECORRIDO</dt><dd>'+esc(b.origin)+'<span>→ '+esc(b.destination)+'</span></dd></div>'+
+      '<div><dt>PASAJERO / CONTRATANTE</dt><dd>'+esc(b.passengers)+'<span>'+esc(cname(b.companyId))+'</span></dd></div>'+
+      '<div><dt>TARIFA / FACTURACIÓN</dt><dd>'+esc(money(b.price,b.currency))+'<span>'+(doc?esc(doc.status):'Sin facturar')+'</span></dd></div>'+
+      '<div><dt>ASIGNACIÓN</dt><dd>'+esc(dname(b.driverId))+'<span>'+esc(vname(b.vehicleId))+'</span></dd></div>'+
+      '</dl><div class="operations-detail-actions">'+btn("Revisar asignación","booking",b.id,"primary")+
+      '<a href="#/reservas" class="operations-detail-link">Ver todas las reservas →</a></div></div>';
   }
   function dashboard() {
   const m=D.metrics(state),

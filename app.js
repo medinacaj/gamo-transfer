@@ -1827,6 +1827,9 @@
       toast(err.message);
     }
   });
+  $("#skip-to-content")?.addEventListener("click", () => {
+    $("#content")?.focus();
+  });
   $("#menu-btn").addEventListener("click", () => {
     const open = $("#sidebar").classList.toggle("open");
     $("#scrim").classList.toggle("visible", open);

@@ -342,6 +342,25 @@ class DemoTest(unittest.TestCase):
   self.navigate('inicio')
   self.page.screenshot(path='/tmp/gamo-desktop.png',full_page=True)
 
+ def test_section_headers_start_at_the_same_vertical_position(self):
+  # Changing modules must not leave the header hidden or retain an old scroll offset.
+  self.navigate('cobros')
+  expect(self.page.locator('h1')).to_have_text('Cuentas por cobrar')
+  cobros_top=self.page.locator('.page-header').evaluate('el => el.getBoundingClientRect().top')
+  self.assertEqual(self.page.evaluate('window.scrollY'),0)
+  self.assertGreater(cobros_top,0)
+  self.page.evaluate('window.scrollTo(0, 400)')
+  self.assertGreater(self.page.evaluate('window.scrollY'),0)
+  self.navigate('facturacion')
+  expect(self.page.locator('h1')).to_have_text('Facturación internacional')
+  facturacion_top=self.page.locator('.page-header').evaluate('el => el.getBoundingClientRect().top')
+  self.assertEqual(self.page.evaluate('window.scrollY'),0)
+  self.assertAlmostEqual(facturacion_top,cobros_top,delta=1)
+  self.assertEqual(self.page.locator('.topbar').evaluate('el => Math.round(el.getBoundingClientRect().top)'),0)
+  expect(self.page.locator('#content')).to_be_focused()
+  self.navigate('cobros')
+  self.assertEqual(self.page.evaluate('window.scrollY'),0)
+
  def navigate(self,route):
   self.page.locator(f'#nav a[data-page="{route}"]').click()
  def save(self):

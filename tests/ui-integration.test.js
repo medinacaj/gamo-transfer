@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-shadows-v9"));
+ assert.ok(html.includes("styles.css?v=20261101-flat-v10"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -210,4 +210,30 @@ test("cards have a subtle base shadow and a desktop hover elevation",()=>{
  assert.match(block,/transform: none !important/);
  assert.match(block,/@media print/);
  assert.doesNotMatch(block,/border-(?:top|left):\s*[34]px/);
+});
+
+
+test("collections do not nest an outer card around their own cards",()=>{
+ const {node,location,winListeners}=mount();
+ const home=node("#content").innerHTML;
+ assert.match(home,/class="history-source-panel history-source-flat"/);
+ assert.doesNotMatch(home,/class="panel history-source-panel"/);
+ assert.match(home,/class="panel panel--collection"/);
+ assert.match(home,/class="history-source-grid"/);
+ assert.match(home,/class="history-source-item"/);
+ location.hash="#/reservas";
+ winListeners.get("hashchange")();
+ assert.match(node("#content").innerHTML,/class="panel panel--collection"/);
+});
+test("flat card layers preserve shadows and hover on individual cards",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const flat=css.slice(css.indexOf("/* GAMO SINGLE-LEVEL CARDS v1"));
+ assert.match(flat,/\.panel\.panel--collection/);
+ assert.match(flat,/box-shadow: none/);
+ assert.match(flat,/\.history-source-panel\.history-source-flat/);
+ assert.match(flat,/\.entity-card \.entity-meta/);
+ assert.match(flat,/\.agency-document \.agency-subpanel/);
+ const elevated=css.slice(css.indexOf("/* GAMO CARDS DEPTH v1"),css.indexOf("/* GAMO SINGLE-LEVEL CARDS v1"));
+ assert.match(elevated,/--gamo-card-shadow-hover:/);
+ assert.match(elevated,/translateY\(-2px\)/);
 });

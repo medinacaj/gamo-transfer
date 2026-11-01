@@ -2388,12 +2388,11 @@ body[data-theme="dark"] summary:focus-visible{outline:3px solid #85d9ff;outline-
 .data-table tbody tr:nth-child(even){background:#fafcff}
 .data-table tbody tr:hover{background:#edf6fd}
 .table-toolbar{background:#f0f5f9}
-/* Section containers in the dashboard */
+/* Shared dashboard tokens. The outer section is deliberately not a card;
+   actual spacing and separators are defined in JERARQUÍA EDITORIAL v5. */
 .dashboard-zone{
  --zone-fill:#f3f6f9;--zone-line:#d2dce5;--zone-header:#edf2f6;
- background:var(--zone-fill);border:1px solid var(--zone-line);border-radius:14px;
- margin:30px 0;padding:22px 24px 24px;min-width:0;
- box-shadow:0 4px 15px rgba(13,46,73,.025)
+ min-width:0
 }
 .dashboard-zone-ops{--zone-fill:#eef4f8;--zone-line:#d2dfe8;--zone-header:#f1f5f8}
 .dashboard-zone-history{--zone-fill:#f6f7f9;--zone-line:#d9dfe5;--zone-header:#f5f7f9}
@@ -2412,10 +2411,8 @@ body[data-theme="dark"] summary:focus-visible{outline:3px solid #85d9ff;outline-
 .dashboard-zone-finance>.panel{margin-top:16px}
 .dashboard-zone>.notice{margin-top:16px}
 .dashboard-zone .mini-link{font-weight:800}
-body[data-density="compact"] .dashboard-zone{margin:16px 0;padding:14px 15px}
 body[data-density="compact"] .dashboard-zone .dashboard-section-heading{margin-bottom:10px;padding-bottom:9px}
 @media(max-width:720px){
- .dashboard-zone{margin:17px 0;padding:13px 12px 16px;border-radius:12px}
  .dashboard-zone .dashboard-section-heading{gap:9px;margin-bottom:13px}
  .dashboard-zone .dashboard-section-heading h2{font-size:17px}
  .dashboard-zone .kpi{padding:13px}

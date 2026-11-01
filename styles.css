@@ -3618,6 +3618,33 @@ body[data-theme="dark"] .activity-bullet span { color: #f4e8ef; background: #493
 body[data-theme="dark"] .activity-bullet::after { background: #64585f; }
 body[data-theme="dark"] .selection-total { background: #3b3339; color: #f6f1ef; }
 body[data-theme="dark"] :is(.invoice-choice input,.check-all input) { accent-color: #e2d4db; }
+/* Separación editorial más amplia sólo en vista cómoda. */
+body .dashboard-zone + .dashboard-zone {
+  margin-top: 44px;
+  padding-top: 39px;
+}
+body[data-density="compact"] .dashboard-zone + .dashboard-zone {
+  margin-top: 17px;
+  padding-top: 17px;
+}
+@media(max-width:720px){
+  body .dashboard-zone + .dashboard-zone { margin-top: 28px; padding-top: 25px; }
+  body[data-density="compact"] .dashboard-zone + .dashboard-zone { margin-top: 17px; padding-top: 17px; }
+}
+/* En oscuro, la regla base posterior no debe cancelar el hover/focus. */
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="dark"] :is(.kpi,.entity-card,.stat-pill,.history-source-item,.agenda-day):hover,
+  body[data-theme="dark"] .dashboard-zone :is(.kpi,.history-source-item):hover {
+    box-shadow: var(--gamo-card-shadow-hover);
+    transform: translateY(-2px);
+  }
+  body[data-theme="dark"] .panel:hover,
+  body[data-theme="dark"] .dashboard-zone .panel:hover { box-shadow: var(--gamo-panel-shadow-hover); }
+}
+body[data-theme="dark"] :is(.entity-card,.agenda-day,.history-source-item):focus-within,
+body[data-theme="dark"] .dashboard-zone .history-source-item:focus-within {
+  box-shadow: var(--gamo-card-shadow-hover);
+}
 /* Densidad, móviles, documentos impresos y preferencias de movimiento. */
 @media (max-width: 720px) {
   body .dashboard-zone .dashboard-section-heading h2 { font-size: 20px; }

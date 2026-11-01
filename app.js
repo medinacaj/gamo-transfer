@@ -370,7 +370,7 @@
       <div class="booking-status-legend" aria-label="Estados operativos">${statusLegend}</div>
       <button class="btn btn-light" id="booking-reset" type="button">Limpiar filtros</button>
     </div>
-    <section class="panel" id="booking-results">${bookingTable([...state.bookings].sort((a,b)=>b.date.localeCompare(a.date)))}</section>`
+    <section class="panel panel--collection" id="booking-results">${bookingTable([...state.bookings].sort((a,b)=>b.date.localeCompare(a.date)))}</section>`
   );
 }
   function filteredBookings() {

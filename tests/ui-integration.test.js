@@ -152,3 +152,28 @@ test("persisted HTML payload is escaped before rendering customer names",()=>{
  assert.ok(content.includes("&lt;img src=x onerror=alert(1)&gt;"));
  assert.ok(!content.includes('<img src=x onerror=alert(1)>'));
 });
+
+
+test("action buttons in modal forms are never implicit submit controls",()=>{
+ const {node,docListeners}=mount();
+ const target={dataset:{action:"booking",id:""}};
+ docListeners.get("click")({target:{closest(selector){
+   return selector==="#booking-reset"?null:selector==="[data-action]"?target:null;
+ }}});
+ const html=node("#modal-root").innerHTML;
+ assert.match(html,/type="button" class="btn btn-light" data-action="close"/);
+ assert.match(html,/type="submit" class="btn btn-primary">Guardar/);
+});
+test("skip navigation focuses the main region without altering the route",()=>{
+ assert.match(html,/id="skip-to-content"/);
+ assert.match(html,/id="content" tabindex="-1"/);
+ const app=fs.readFileSync(path.join(root,"app.js"),"utf8");
+ assert.match(app,/\$\("#skip-to-content"\)\?\.addEventListener\("click"/);
+ assert.match(app,/\$\("#content"\)\?\.focus\(\)/);
+});
+test("reservation CSV uses current filters consistently with the table",()=>{
+ const app=fs.readFileSync(path.join(root,"app.js"),"utf8");
+ assert.match(app,/function filteredBookings\(\)/);
+ assert.match(app,/const rows = filteredBookings\(\)/);
+ assert.match(app,/page === "reservas" \? filteredBookings\(\) : state.bookings/);
+});

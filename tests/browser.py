@@ -48,74 +48,79 @@ class DemoTest(unittest.TestCase):
    self.assertEqual(self.errors,[])
   finally:
    self.context.close()
- def test_apple_operational_palette_computed_in_both_themes(self):
-  # Browser CSS computed styles rather than presence of token strings.
+ def test_premium_v2_palette_and_real_dashboard_controls(self):
+  # Computed CSS; no invented business values or unlicensed interface assets.
   expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
-  expression="""() => {
-    const style = selector => getComputedStyle(document.querySelector(selector));
+  expect(self.page.locator('.operations-intro')).to_be_visible()
+  state=self.page.evaluate("""() => {
+    const style=s=>getComputedStyle(document.querySelector(s));
     return {
       canvas:style('body').backgroundColor,
-      operational:style('.dashboard-zone-ops .kpi:nth-child(2)').backgroundColor,
-      finance:style('.dashboard-zone-finance .kpi').backgroundColor,
-      sidebar:style('.sidebar').backgroundColor,
-      secondary:style('.dashboard-next-route .btn-light').backgroundColor,
-      action:style('.operations-intro-actions .btn-accent').backgroundColor,
-      actionRadius:style('.operations-intro-actions .btn-accent').borderRadius,
-      shadow:style('.dashboard-zone-ops .kpi:nth-child(2)').boxShadow,
-      collection:style('.dashboard-main .panel--collection').backgroundColor
+      heroImage:style('.operations-intro').backgroundImage,
+      vehicle:style('.operations-photo').backgroundImage,
+      board:style('.operations-service-board').backgroundImage,
+      highlighted:style('.operations-service-detail').backgroundImage,
+      action:style('.operations-intro-actions .btn-accent').backgroundImage,
+      plainList:style('.history-source-flat').backgroundColor,
+      rows:document.querySelectorAll('.operations-service-row').length,
+      kpis:document.querySelectorAll('.dashboard-ops-overview .kpi').length,
+      chart:document.querySelectorAll('.operations-week-col').length
     };
-  }"""
-  dark=self.page.evaluate(expression)
-  self.assertEqual(dark['canvas'],'rgb(16, 16, 18)')
-  self.assertEqual(dark['operational'],'rgb(29, 29, 31)')
-  self.assertEqual(dark['finance'],'rgb(245, 245, 247)')
-  self.assertEqual(dark['sidebar'],'rgb(5, 5, 6)')
-  self.assertEqual(dark['secondary'],'rgb(41, 41, 46)')
-  self.assertEqual(dark['action'],'rgb(0, 113, 227)')
-  self.assertEqual(dark['actionRadius'],'9999px')
-  self.assertNotEqual(dark['shadow'],'none')
-  self.assertEqual(dark['collection'],'rgba(0, 0, 0, 0)')
+  }""")
+  self.assertEqual(state['canvas'],'rgb(6, 13, 23)')
+  self.assertIn('images.unsplash.com',state['heroImage'])
+  self.assertIn('executive-van.svg',state['vehicle'])
+  self.assertIn('gradient',state['board'])
+  self.assertIn('gradient',state['highlighted'])
+  self.assertIn('gradient',state['action'])
+  self.assertEqual(state['plainList'],'rgba(0, 0, 0, 0)')
+  self.assertEqual(state['rows'],5)
+  self.assertEqual(state['kpis'],4)
+  self.assertEqual(state['chart'],7)
   self.page.locator('[data-ui-preference="theme"]').click()
   expect(self.page.locator('body')).to_have_attribute('data-theme','light')
-  light=self.page.evaluate(expression)
-  self.assertEqual(light['canvas'],'rgb(237, 237, 240)')
-  self.assertEqual(light['operational'],'rgb(255, 255, 255)')
-  self.assertEqual(light['secondary'],'rgb(245, 245, 247)')
-  self.assertEqual(light['finance'],'rgb(29, 29, 31)')
-  self.assertEqual(light['action'],'rgb(0, 113, 227)')
-  self.assertEqual(light['collection'],'rgba(0, 0, 0, 0)')
+  self.assertEqual(self.page.evaluate('getComputedStyle(document.body).backgroundColor'),'rgb(238, 240, 243)')
+  expect(self.page.locator('.operations-intro')).to_be_visible()
 
  def test_operations_dashboard_has_distinct_composition(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   expect(self.page.locator('.operations-intro')).to_be_visible()
   expect(self.page.locator('.operations-hero-stat')).to_be_visible()
-  self.assertEqual(self.page.locator('.dashboard-ops-overview .kpi').count(),3)
-  self.assertEqual(self.page.locator('.dashboard-ops-overview .dashboard-next-route').count(),1)
+  self.assertEqual(self.page.locator('.dashboard-ops-overview .kpi').count(),4)
+  self.assertEqual(self.page.locator('.operations-service-row').count(),5)
+  expect(self.page.locator('#dashboard-service-detail')).to_be_visible()
+  # Selection must update the blue details, not just a CSS class.
+  rows=self.page.locator('.operations-service-row')
+  second=rows.nth(1)
+  second_id=second.get_attribute('data-id')
+  second.click()
+  expect(self.page.locator('[data-action="dashboard-select"][data-id="'+second_id+'"]')).to_have_attribute('aria-pressed','true')
+  expect(self.page.locator('.operations-detail-id')).to_contain_text(second_id)
   expect(self.page.locator('.history-ledger-intro')).to_be_visible()
   self.assertEqual(self.page.locator('.history-source-item').count(),2)
   self.assertEqual(self.page.locator('.dashboard-finance-layout .kpi').count(),4)
   self.assertEqual(self.page.locator('.dashboard-finance-chart .bar-chart').count(),1)
-  # A layout redesign must materially affect geometry, not merely color.
   desktop=self.page.evaluate("""() => ({
-    intro:getComputedStyle(document.querySelector('.operations-intro')).display,
-    overview:getComputedStyle(document.querySelector('.dashboard-ops-overview')).display,
-    history:getComputedStyle(document.querySelector('.history-ledger')).gridTemplateColumns,
+    hero:getComputedStyle(document.querySelector('.operations-intro')).display,
+    signals:getComputedStyle(document.querySelector('.ops-kpis')).gridTemplateColumns,
+    triad:getComputedStyle(document.querySelector('.dashboard-triad')).gridTemplateColumns,
     finance:getComputedStyle(document.querySelector('.dashboard-finance-layout')).gridTemplateColumns
   })""")
-  self.assertEqual(desktop['intro'],'grid')
-  self.assertEqual(desktop['overview'],'grid')
-  self.assertEqual(len(desktop['history'].split(' ')),2)
+  self.assertEqual(desktop['hero'],'grid')
+  self.assertEqual(len(desktop['signals'].split(' ')),4)
+  self.assertGreaterEqual(len(desktop['triad'].split(' ')),2)
   self.assertEqual(len(desktop['finance'].split(' ')),2)
   self.page.set_viewport_size({'width':390,'height':844})
-  self.page.wait_for_timeout(50)
   mobile=self.page.evaluate("""() => ({
-    intro:getComputedStyle(document.querySelector('.operations-intro')).gridTemplateColumns,
-    overview:getComputedStyle(document.querySelector('.dashboard-ops-overview')).gridTemplateColumns,
+    hero:getComputedStyle(document.querySelector('.operations-intro')).gridTemplateColumns,
+    triad:getComputedStyle(document.querySelector('.dashboard-triad')).gridTemplateColumns,
+    kpiColumns:getComputedStyle(document.querySelector('.ops-kpis')).gridTemplateColumns,
     overflow:document.documentElement.scrollWidth-innerWidth
   })""")
-  self.assertEqual(len(mobile['intro'].split(' ')),1)
-  self.assertEqual(len(mobile['overview'].split(' ')),1)
+  self.assertEqual(len(mobile['hero'].split(' ')),1)
+  self.assertEqual(len(mobile['triad'].split(' ')),1)
+  self.assertEqual(len(mobile['kpiColumns'].split(' ')),2)
   self.assertLessEqual(mobile['overflow'],0)
 
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
@@ -148,6 +153,8 @@ class DemoTest(unittest.TestCase):
   comfortable_padding=td.evaluate('el => parseFloat(getComputedStyle(el).paddingTop)')
   self.assertLess(compact_padding,comfortable_padding,(compact_padding,comfortable_padding))
   self.navigate('inicio')
+  self.page.locator('[data-ui-preference="theme"]').click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','light')
   self.page.locator('[data-ui-preference="theme"]').click()
   expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
   self.assertEqual(self.page.locator('.dashboard-zone-history').evaluate('el => getComputedStyle(el).borderTopWidth'),'1px')
@@ -285,7 +292,7 @@ class DemoTest(unittest.TestCase):
    actual=self.page.locator('body').get_attribute('data-theme') or 'light'
    if actual!=theme: self.page.locator('[data-ui-preference="theme"]').click()
    expect(self.page.locator('body')).to_have_attribute('data-theme',theme)
-   for outer in ['.history-source-flat','.dashboard-main .panel--collection']:
+   for outer in ['.history-source-flat']:
     frame=self.page.locator(outer).first
     expect(frame).to_be_visible()
     state=frame.evaluate("""el => ({

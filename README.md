@@ -200,7 +200,7 @@ Se separó el fondo de aplicación del blanco de las tarjetas mediante el token 
 
 ## Centro de operaciones y vista compacta efectiva (2026-11-01)
 
-- Las tres áreas del resumen conservan una composición plana (sin contenedores exteriores decorativos) y títulos numerados **01 Operación y despacho**, **02 Servicios históricos** y **03 Facturación y cobros**. Entre áreas se muestra un **separador horizontal neutro de un píxel**, con espacio adicional; sin barras verticales ni acentos de color.
+- Las tres áreas del resumen conservan una composición plana (sin contenedores exteriores decorativos) y encabezados **sin numeración**: **Operación y despacho**, **Servicios históricos** y **Facturación y cobros**. Entre áreas se muestra un **separador horizontal neutro de un píxel**, con espacio adicional; sin barras verticales ni acentos de color.
 - El modo **Vista compacta** ahora reduce realmente márgenes y espacios, tamaño/altura de KPIs, relleno de tarjetas, encabezados, filtros, agenda y gráfico de facturación. Se conservan todos los datos y acciones.
 - Se corrigió la precedencia de los valores adaptativos de tablas: el modo compacto tiene relleno reducido tanto en tabla ancha como en fichas de datos por ancho de contenedor. La versión cómoda conserva más aire y continúa siendo el valor inicial.
 - El botón sigue permitiendo alternar y almacenar la elección; en compacto utiliza una apariencia activa distinguible. Se respeta modo oscuro, dispositivos móviles, navegación por teclado e impresión.

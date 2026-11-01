@@ -77,7 +77,7 @@
     setTimeout(() => t.remove(), 5000);
   }
   const btn = (label, action, id = "", style = "light") =>
-    `<button class="btn btn-${style}" data-action="${action}" data-id="${esc(id)}">${label}</button>`;
+    `<button type="button" class="btn btn-${style}" data-action="${action}" data-id="${esc(id)}">${label}</button>`;
   const statusTone = {
     "Pendiente": "warning",
     "Confirmado": "info",

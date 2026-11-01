@@ -11,7 +11,7 @@ from urllib.parse import quote, urljoin
 from urllib.request import Request, urlopen
 
 ASSETS = ("styles.css", "domain.js", "ui-preferences.js",
-          "agency-reports.js", "app.js")
+          "agency-reports.js", "version-check.js", "app.js")
 ATTEMPTS = 12
 
 
@@ -39,6 +39,9 @@ def verify(base, sha, attempt):
             f"esperado {sha}, encontrado {build.strip()[:100]}"
         )
     html, _ = fetch(base, "index.html", revision, attempt)
+    marker = f'<meta name="gamo-build" content="{sha}" />'
+    if marker not in html:
+        raise ValueError("El HTML publicado no contiene el commit correcto")
     for asset in ASSETS:
         expected = f'{asset}?v={revision}'
         if not re.search(rf'(?<=["\x27]){re.escape(expected)}(?=["\x27])', html):

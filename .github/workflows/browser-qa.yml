@@ -1,0 +1,44 @@
+name: Browser QA - Gamo Transfer
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "app.js"
+      - "domain.js"
+      - "agency-reports.js"
+      - "ui-preferences.js"
+      - "styles.css"
+      - "tests/browser.py"
+      - ".github/workflows/browser-qa.yml"
+permissions:
+  contents: read
+concurrency:
+  group: browser-qa-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  chromium-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install --disable-pip-version-check "playwright==1.55.0"
+          python -m playwright install --with-deps chromium
+      - name: Run responsive and operational browser tests
+        run: python -m unittest discover -s tests -p browser.py -v
+      - name: Upload browser screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamo-browser-screenshots
+          path: |
+            /tmp/gamo-desktop.png
+            /tmp/gamo-mobile.png
+          if-no-files-found: ignore

@@ -170,3 +170,11 @@ Requiere Python compatible, Node.js y navegador Playwright descargado. Las medic
 - **Verificación directa de funciones:** con DOM simulado, una búsqueda produjo **11 de 28 reservas**, y el CSV produjo **11 filas**, mientras una búsqueda sin resultados produjo **0 filas**; cancelar restauró el estado no inerte del fondo. Estas verificaciones no sustituyen un ensayo real en navegador.
 
 El despliegue en GitHub Pages, los indicadores Core Web Vitals y la conformidad WCAG 2.2 AA completa continúan pendientes de validación independiente.
+
+## Sombras y elevación de tarjetas (2026-11-01)
+
+Se restauró la profundidad visual de **indicadores, fichas de clientes/conductores/vehículos, tarjetas de histórico, agenda y paneles** sin introducir franjas de color ni bordes superiores gruesos. En equipos con ratón/trackpad, el cursor genera una sombra de elevación más perceptible y un desplazamiento sutil de 2 px en tarjetas pequeñas; los paneles grandes solo cambian su sombra. Los elementos con controles visibles también responden al foco de teclado.
+
+El comportamiento se adapta al tema claro/oscuro, no aplica animaciones de movimiento cuando el usuario solicita reducción de movimiento y elimina las sombras al imprimir. Se versionó `styles.css` para evitar caché antigua. Las pruebas de estructura CSS están en `tests/ui-integration.test.js`; la prueba de sombras calculadas al hacer hover en Chromium está en `tests/browser.py`.
+
+**Estado de verificación:** código y estructura CSS comprobados. La comparación visual y la ejecución E2E real todavía requieren resultados del workflow de navegador.

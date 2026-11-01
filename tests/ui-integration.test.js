@@ -225,7 +225,7 @@ test("cards have a subtle base shadow and a desktop hover elevation",()=>{
 test("collections do not nest an outer card around their own cards",()=>{
  const {node,location,winListeners}=mount();
  const home=node("#content").innerHTML;
- assert.match(home,/class="history-source-panel history-source-flat"/);
+ assert.match(home,/class="history-source-panel history-source-flat history-ledger"/);
  assert.doesNotMatch(home,/class="panel history-source-panel"/);
  assert.match(home,/class="panel panel--collection"/);
  assert.match(home,/class="history-source-grid"/);
@@ -336,4 +336,32 @@ test("Apple-inspired skin preserves operational routes and status semantics",()=
  assert.match(system,/\.agenda-day\.today/);
  assert.match(system,/\.agency-table tfoot td/);
  assert.match(system,/\.data-table tbody tr:hover/);
+});
+
+
+test("operational home uses distinct Apple-style composition rather than the old flat row",()=>{
+ const {node}=mount();
+ const page=node("#content").innerHTML;
+ for(const name of ["operations-intro","operations-intro-copy","operations-hero-stat","dashboard-ops-overview","history-ledger-intro","history-ledger-details","dashboard-finance-layout","dashboard-finance-chart"]){
+  assert.match(page,new RegExp('class="[^"]*'+name));
+ }
+ assert.match(page,/<h1>Centro de operaciones<\/h1>/);
+ assert.match(page,/class="operations-hero-value"/);
+ assert.ok(page.indexOf('class="operations-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-ops"'));
+ assert.ok(page.indexOf('class="history-ledger-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-finance"'));
+ assert.equal((page.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
+ const ops=page.slice(page.indexOf('class="dashboard-ops-overview"'),page.indexOf('class="dashboard-main dashboard-operations"'));
+ assert.equal((ops.match(/class="kpi"/g)||[]).length,3);
+ assert.match(ops,/dashboard-next-route/);
+ const finance=page.slice(page.indexOf('class="dashboard-finance-layout"'));
+ assert.equal((finance.match(/class="kpi"/g)||[]).length,4);
+ assert.match(finance,/class="dashboard-finance-chart"/);
+ assert.match(page,/GP Travel: diferencia de \$60\.000/);
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const layout=css.slice(css.indexOf("/* GAMO OPERATIONS COMPOSITION v1"));
+ assert.match(layout,/\.operations-intro \{/);
+ assert.match(layout,/\.dashboard-ops-overview \{/);
+ assert.match(layout,/\.history-source-flat\.history-ledger/);
+ assert.match(layout,/\.dashboard-finance-layout \{/);
+ assert.match(layout,/@media\(max-width:650px\)/);
 });

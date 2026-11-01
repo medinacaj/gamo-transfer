@@ -181,3 +181,16 @@ test("reservation CSV uses current filters consistently with the table",()=>{
 test("application logic uses a versioned script to avoid stale deploy cache",()=>{
  assert.match(html,/src="app\.js\?v=20261101-qa-v7" defer/);
 });
+
+
+test("destructive reset has an explicit submit action and safe cancel",()=>{
+ const {node,docListeners}=mount();
+ const target={dataset:{action:"reset",id:""}};
+ docListeners.get("click")({target:{closest(selector){
+   return selector==="#booking-reset"?null:selector==="[data-action]"?target:null;
+ }}});
+ const form=node("#modal-root").innerHTML;
+ assert.match(form,/type="button" class="btn btn-light" data-action="close"/);
+ assert.match(form,/type="submit" class="btn btn-danger">Restaurar datos/);
+ assert.match(form,/Escribí RESTAURAR para confirmar/);
+});

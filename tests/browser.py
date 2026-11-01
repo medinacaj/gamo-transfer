@@ -169,7 +169,7 @@ class DemoTest(unittest.TestCase):
    if actual!=theme:
     self.page.locator('[data-ui-preference="theme"]').click()
    expect(self.page.locator('body')).to_have_attribute('data-theme',theme)
-   for selector in ['.kpi','.panel','.history-source-item']:
+   for selector in ['.kpi','.dashboard-alert-column .panel','.history-source-item']:
     card=self.page.locator(selector).first
     expect(card).to_be_visible()
     self.page.mouse.move(0,0)

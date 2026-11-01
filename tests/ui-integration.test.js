@@ -19,7 +19,7 @@ function mount(savedState=null){
     return nodes.get(selector);
   };
   const document={
-    body:{classList:{toggle(){},remove(){},add(){}}},
+    body:{dataset:{},classList:{toggle(){},remove(){},add(){}}},
     querySelector:node,querySelectorAll(){return[];},
     getElementById:id=>node("#"+id),
     addEventListener(name,fn){docListeners.set(name,fn);}

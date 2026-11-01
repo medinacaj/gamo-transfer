@@ -23,27 +23,27 @@ function setup(saved){
 }
 test("default choices apply to the whole app",()=>{
  const {window,document}=setup();
- assert.equal(window.GamoUI.read().theme,"light");
+ assert.equal(window.GamoUI.read().theme,"dark");
  assert.equal(window.GamoUI.read().density,"comfortable");
- assert.equal(document.body.dataset.theme,"light");
+ assert.equal(document.body.dataset.theme,"dark");
 });
 test("theme and density persist, without exposing operational data",()=>{
  const {window,document,db}=setup();
- assert.equal(window.GamoUI.setTheme("dark"),true);
+ assert.equal(window.GamoUI.setTheme("light"),true);
  assert.equal(window.GamoUI.setDensity("compact"),true);
- assert.equal(document.body.dataset.theme,"dark");
+ assert.equal(document.body.dataset.theme,"light");
  assert.equal(document.body.dataset.density,"compact");
- assert.equal(JSON.parse(db.get("gamo.ui.preferences.v1")).theme,"dark");
+ assert.equal(JSON.parse(db.get("gamo.ui.preferences.v1")).theme,"light");
  assert.equal(window.GamoUI.setDensity("invalid"),false);
 });
 test("invalid values in browser storage are ignored",()=>{
  const {window}=setup({theme:"unsafe",density:"unsupported"});
- assert.equal(window.GamoUI.read().theme,"light");
+ assert.equal(window.GamoUI.read().theme,"dark");
  assert.equal(window.GamoUI.read().density,"comfortable");
 });
 test("preferences can be toggled from accessible buttons",()=>{
  const {window,listeners}=setup();
  const button={dataset:{uiPreference:"theme"}};
  listeners.get("click")({target:{closest(){return button;}}});
- assert.equal(window.GamoUI.read().theme,"dark");
+ assert.equal(window.GamoUI.read().theme,"light");
 });

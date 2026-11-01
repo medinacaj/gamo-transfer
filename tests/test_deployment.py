@@ -19,13 +19,13 @@ def valid_html():
     )
 
 
-def response(build=f"commit={SHA}\n", html=None, size=250):
+def response(build=f"commit={SHA}\n", html=None, size=250, broken_asset=None):
     def fake_fetch(base, path, revision, attempt):
         if path == "build-info.txt":
             return build, 200
         if path == "index.html":
             return valid_html() if html is None else html, 200
-        return "x" * size, 200
+        return "x" * (5 if broken_asset and path.startswith(broken_asset) else size), 200
     return fake_fetch
 
 
@@ -48,6 +48,11 @@ class DeploymentVerificationTests(unittest.TestCase):
     def test_missing_asset_is_rejected(self):
         with patch.object(VERIFY, "fetch", side_effect=response(size=5)):
             with self.assertRaisesRegex(ValueError, "incompleto"):
+                VERIFY.verify(BASE, SHA, 1)
+
+    def test_missing_vehicle_svg_is_rejected(self):
+        with patch.object(VERIFY, "fetch", side_effect=response(broken_asset="assets/executive-van.svg")):
+            with self.assertRaisesRegex(ValueError, "executive-van.svg"):
                 VERIFY.verify(BASE, SHA, 1)
 
     def test_incorrect_html_build_marker_is_rejected(self):

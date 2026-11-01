@@ -33,6 +33,34 @@ class DemoTest(unittest.TestCase):
   self.page.goto('http://127.0.0.1:8765/',wait_until='domcontentloaded')
  def tearDown(self):
   self.assertEqual(self.errors,[]);self.context.close()
+ def test_section_dividers_and_compact_mode_reduces_actual_height(self):
+  self.navigate('inicio')
+  sections=self.page.locator('.dashboard-zone')
+  self.assertEqual(sections.count(),3)
+  for section in [sections.nth(1),sections.nth(2)]:
+   expect(section).to_be_visible()
+   self.assertEqual(section.evaluate('el => getComputedStyle(el).borderTopWidth'),'1px')
+  comfortable_kpi=self.page.locator('.dashboard-zone-ops .kpi').first.bounding_box()['height']
+  comfortable_chart=self.page.locator('.bar-chart').evaluate('el => parseFloat(getComputedStyle(el).height)')
+  compact_btn=self.page.locator('[data-ui-preference="density"]')
+  compact_btn.click()
+  expect(self.page.locator('body')).to_have_attribute('data-density','compact')
+  compact_kpi=self.page.locator('.dashboard-zone-ops .kpi').first.bounding_box()['height']
+  compact_chart=self.page.locator('.bar-chart').evaluate('el => parseFloat(getComputedStyle(el).height)')
+  self.assertLess(compact_kpi,comfortable_kpi-12,(comfortable_kpi,compact_kpi))
+  self.assertLess(compact_chart,comfortable_chart-35,(comfortable_chart,compact_chart))
+  self.navigate('reservas')
+  td=self.page.locator('#booking-results tbody td').first
+  compact_padding=td.evaluate('el => parseFloat(getComputedStyle(el).paddingTop)')
+  compact_btn.click()
+  expect(self.page.locator('body')).to_have_attribute('data-density','comfortable')
+  comfortable_padding=td.evaluate('el => parseFloat(getComputedStyle(el).paddingTop)')
+  self.assertLess(compact_padding,comfortable_padding,(compact_padding,comfortable_padding))
+  self.navigate('inicio')
+  self.page.locator('[data-ui-preference="theme"]').click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
+  self.assertEqual(self.page.locator('.dashboard-zone-history').evaluate('el => getComputedStyle(el).borderTopWidth'),'1px')
+
  def test_theme_density_advanced_filters_and_report(self):
   theme=self.page.locator('[data-ui-preference="theme"]')
   density=self.page.locator('[data-ui-preference="density"]')

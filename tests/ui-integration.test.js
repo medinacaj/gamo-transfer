@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-neutral-v12"));
+ assert.ok(html.includes("styles.css?v=20261101-sections-density-v13"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -253,4 +253,33 @@ test("page canvas differs from cards in both themes without introducing nested f
  const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
  assert.ok(contrast("#dadad8","#ffffff")>=1.35);
  assert.ok(contrast("#10100f","#1d3446")>=1.45);
+});
+
+
+test("dashboard areas have clear numbered headings and one neutral separator",()=>{
+ const {node}=mount();
+ const content=node("#content").innerHTML;
+ assert.equal((content.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
+ for(const label of ["01 · PRIORIDAD OPERATIVA","02 · FUENTES DOCUMENTADAS","03 · GESTIÓN FINANCIERA"]){
+  assert.ok(content.includes(label),label);
+ }
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const styles=css.slice(css.indexOf("/* GAMO DASHBOARD SEPARATORS + REAL COMPACT v1"));
+ assert.match(styles,/\.dashboard-zone \+ \.dashboard-zone \{[\s\S]*?border-top: 1px solid #afb4b7;/);
+ assert.match(styles,/body\[data-theme="dark"\] \.dashboard-zone \+ \.dashboard-zone \{[\s\S]*?border-top: 1px solid #52616b;/);
+ assert.doesNotMatch(styles,/border-left:\s*[34]px|border-top:\s*[34]px/);
+});
+test("compact density changes real component dimensions, not just the toolbar button",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const styles=css.slice(css.indexOf("/* GAMO DASHBOARD SEPARATORS + REAL COMPACT v1"));
+ assert.match(styles,/body\[data-density="compact"\] \.kpi \{ padding: 10px 12px; \}/);
+ assert.match(styles,/body\[data-density="compact"\] \.bar-chart \{ height: 125px;/);
+ assert.match(styles,/body\[data-density="compact"\] \.history-source-item \{ padding: 10px 12px;/);
+ assert.match(styles,/body\[data-density="compact"\] \.agenda-day \{ min-height: 220px;/);
+ assert.match(styles,/body\[data-density="compact"\] \.entity-meta \{/);
+ assert.match(styles,/body\[data-density="compact"\] \.table-scroll \.data-table tbody td \{[\s\S]*?--cell-padding: 7px 9px;/);
+ assert.match(styles,/@container table-area \(max-width: 1200px\) \{[\s\S]*?--cell-padding: 3px 6px;/);
+ assert.match(styles,/@media\(max-width: 900px\) \{[\s\S]*?main \{ padding: 16px 14px 25px;/);
+ assert.match(styles,/@media print \{[\s\S]*?border-top: 0 !important;/);
+ assert.ok((styles.match(/body\[data-density="compact"\]/g)||[]).length>30);
 });

@@ -13,6 +13,11 @@ on:
       - "version-check.js"
       - "styles.css"
       - "tests/browser.py"
+      - "tests/*.test.js"
+      - "tests/test_deployment.py"
+      - "scripts/verify_deployment.py"
+      - "assets/**"
+      - ".github/workflows/pages.yml"
       - ".github/workflows/browser-qa.yml"
 permissions:
   contents: read
@@ -20,6 +25,25 @@ concurrency:
   group: browser-qa-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  unit-and-static:
+    name: Node tests and deployment verifier
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Operational, finance and interface unit tests
+        run: node --test tests/*.test.js
+      - name: JS syntax and deployment verifier tests
+        run: |
+          node --check app.js
+          node --check domain.js
+          node --check ui-preferences.js
+          node --check agency-reports.js
+          node --check version-check.js
+          python3 -m unittest discover -s tests -p test_deployment.py -v
   chromium-smoke:
     runs-on: ubuntu-24.04
     timeout-minutes: 18

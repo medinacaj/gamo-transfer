@@ -3094,7 +3094,12 @@ body[data-density="compact"] .table-scroll .data-table {
 }
 body[data-density="compact"] .table-scroll .data-table th { padding: 7px 9px; }
 body[data-density="compact"] .table-scroll .data-table tbody td {
-  --cell-padding: 6px 9px;
+  --cell-padding: 7px 9px;
+}
+@container table-area (max-width: 1200px) {
+  body[data-density="compact"] .table-scroll .data-table tbody td {
+    --cell-padding: 3px 6px;
+  }
 }
 body[data-density="compact"] .table-scroll .data-table tbody td::before { margin-bottom: 3px; }
 body[data-density="compact"] .agenda-day { min-height: 220px; }

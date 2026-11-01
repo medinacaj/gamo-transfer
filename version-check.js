@@ -12,6 +12,8 @@
     .then(body => {
       const remote = /^commit=([a-f0-9]{40})\s*$/m.exec(body)?.[1];
       if (!remote || remote === own) return;
+      // Nunca descartar cambios que el usuario esté editando en un modal.
+      if (doc.querySelector('#modal-root [role="dialog"]')) return;
       const url = new URL(root.location.href);
       const revision = remote.slice(0, 12);
       if (url.searchParams.get("gamo-build") === revision) return;

@@ -39,6 +39,6 @@ jobs:
         with:
           name: gamo-browser-screenshots
           path: |
-            /tmp/gamo-desktop.png
-            /tmp/gamo-mobile.png
+            /tmp/gamo-*.png
+            /tmp/gamo-documento.pdf
           if-no-files-found: ignore

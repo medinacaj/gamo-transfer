@@ -185,7 +185,26 @@
   }
   document.addEventListener("keydown", (e) => {
     const m = $("#modal-root [role=dialog]");
-    if (!m) return;
+    if (!m) {
+      const sidebar = $("#sidebar");
+      if (!isMobileNavigation() || !sidebar.classList.contains("open")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeMobileMenu(true);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const links = [...sidebar.querySelectorAll('a[href],button:not([disabled])')]
+        .filter((el) => el.getClientRects().length > 0);
+      const first = links[0], last = links.at(-1);
+      if (!first || !last) return;
+      if (e.shiftKey && (document.activeElement === first || !sidebar.contains(document.activeElement))) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !sidebar.contains(document.activeElement))) {
+        e.preventDefault(); first.focus();
+      }
+      return;
+    }
     if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
     if (e.key === "Tab") {
       const all = [
@@ -1788,7 +1807,7 @@
       (storageError
         ? `<div class="storage-error" role="alert">${esc(storageError)} ${btn("Descargar copia", "backup")}${btn("Restaurar", "reset")}</div>`
         : "") + screens[page]();
-    $("#section-name").textContent = {
+    const sectionName = {
       inicio: "Resumen",
       reservas: "Reservas",
       agenda: "Despacho",
@@ -1801,6 +1820,9 @@
       reportes: "Reportes",
       "reportes-agencias": "Reportes por agencia",
     }[page];
+    $("#section-name").textContent = sectionName;
+    document.title = `${sectionName} | GAMO TRANSFER`;
+    $("#content").setAttribute("aria-label", `${sectionName} — GAMO TRANSFER`);
     document.querySelectorAll("#nav a").forEach((a) => {
       a.classList.toggle("active", a.dataset.page === page);
       if (a.dataset.page === page) a.setAttribute("aria-current", "page");
@@ -1887,21 +1909,56 @@
   $("#skip-to-content")?.addEventListener("click", () => {
     $("#content")?.focus();
   });
-  $("#menu-btn").addEventListener("click", () => {
-    const open = $("#sidebar").classList.toggle("open");
+  function isMobileNavigation() {
+    return Boolean(window.matchMedia?.("(max-width: 900px)").matches);
+  }
+  function syncMobileMenu() {
+    const sidebar = $("#sidebar");
+    const mobile = isMobileNavigation();
+    if (!mobile) sidebar.classList.remove("open");
+    const open = mobile && sidebar.classList.contains("open");
+    sidebar.inert = mobile && !open;
+    $(".workspace").inert = open;
     $("#scrim").classList.toggle("visible", open);
-    $("#menu-btn").setAttribute("aria-expanded", open);
-  });
-  $("#scrim").addEventListener("click", () => {
+    document.body.classList.toggle("mobile-nav-open", open);
+    $("#menu-btn").setAttribute("aria-expanded", String(open));
+    $("#menu-btn").setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    if (open) {
+      sidebar.setAttribute("role", "dialog");
+      sidebar.setAttribute("aria-modal", "true");
+    } else {
+      sidebar.removeAttribute("role");
+      sidebar.removeAttribute("aria-modal");
+    }
+  }
+  function closeMobileMenu(restoreFocus = false) {
+    const wasOpen = $("#sidebar").classList.contains("open");
     $("#sidebar").classList.remove("open");
-    $("#scrim").classList.remove("visible");
-    $("#menu-btn").setAttribute("aria-expanded", "false");
+    syncMobileMenu();
+    if (restoreFocus && wasOpen) $("#menu-btn").focus();
+  }
+  $("#menu-btn").addEventListener("click", () => {
+    if (!isMobileNavigation()) return;
+    const opening = !$("#sidebar").classList.contains("open");
+    $("#sidebar").classList.toggle("open", opening);
+    syncMobileMenu();
+    if (opening) $("#menu-close-btn").focus();
+    else $("#menu-btn").focus();
   });
+  $("#menu-close-btn").addEventListener("click", () => closeMobileMenu(true));
+  $("#scrim").addEventListener("click", () => closeMobileMenu(true));
+  $("#nav").addEventListener("click", (e) => {
+    const link = e.target.closest("a[data-page]");
+    if (isMobileNavigation() && link?.getAttribute("href") === location.hash) {
+      // Volver a seleccionar la sección activa también debe cerrar el menú.
+      closeMobileMenu();
+      $("#content").focus();
+    }
+  });
+  window.addEventListener("resize", syncMobileMenu);
   window.addEventListener("hashchange", () => {
     closeModal();
-    $("#sidebar").classList.remove("open");
-    $("#scrim").classList.remove("visible");
-    $("#menu-btn").setAttribute("aria-expanded", "false");
+    closeMobileMenu();
     render();
     $("#content").focus();
   });
@@ -1918,6 +1975,6 @@
   }).format(new Date());
   $("#year").textContent = new Date().getFullYear();
   $("#menu-btn").setAttribute("aria-controls", "sidebar");
-  $("#menu-btn").setAttribute("aria-expanded", "false");
+  syncMobileMenu();
   render();
 })();

@@ -4317,3 +4317,30 @@ body[data-density="compact"] .operations-hero-stat {min-height:200px;}
   body:not([data-density="compact"]) .dashboard-finance-chart .bar-chart {min-height:180px;height:185px;}
   body[data-density="compact"] .dashboard-finance-chart .bar-chart {min-height:125px;height:125px;}
 }
+
+/* Navegación móvil accesible: el menú cerrado no debe recibir foco. */
+.sidebar .mobile-nav-close { display:none !important; }
+@media (max-width:900px) {
+  body.mobile-nav-open { overflow:hidden; }
+  body.mobile-nav-open .sidebar { overflow-y:auto; overscroll-behavior:contain; }
+  body .sidebar .mobile-nav-close {
+    display:grid !important;
+    place-items:center;
+    position:absolute;
+    top:17px;
+    right:12px;
+    width:36px;
+    height:36px;
+    border:1px solid rgba(161,199,237,.44);
+    border-radius:11px;
+    background:#183757;
+    color:#fff;
+    cursor:pointer;
+    z-index:2;
+  }
+  body .sidebar .mobile-nav-close:hover { background:#21548a; }
+  body .sidebar .mobile-nav-close:focus-visible {
+    outline:3px solid #9de1ff;
+    outline-offset:3px;
+  }
+}

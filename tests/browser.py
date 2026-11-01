@@ -60,8 +60,8 @@ class DemoTest(unittest.TestCase):
       finance:style('.dashboard-zone-finance .kpi').backgroundColor,
       sidebar:style('.sidebar').backgroundColor,
       secondary:style('.dashboard-next-route .btn-light').backgroundColor,
-      action:style('.page-header .btn-accent').backgroundColor,
-      actionRadius:style('.page-header .btn-accent').borderRadius,
+      action:style('.operations-intro-actions .btn-accent').backgroundColor,
+      actionRadius:style('.operations-intro-actions .btn-accent').borderRadius,
       shadow:style('.dashboard-zone-ops .kpi:nth-child(2)').boxShadow,
       collection:style('.dashboard-main .panel--collection').backgroundColor
     };
@@ -85,6 +85,38 @@ class DemoTest(unittest.TestCase):
   self.assertEqual(light['finance'],'rgb(29, 29, 31)')
   self.assertEqual(light['action'],'rgb(0, 113, 227)')
   self.assertEqual(light['collection'],'rgba(0, 0, 0, 0)')
+
+ def test_operations_dashboard_has_distinct_composition(self):
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
+  expect(self.page.locator('.operations-intro')).to_be_visible()
+  expect(self.page.locator('.operations-hero-stat')).to_be_visible()
+  self.assertEqual(self.page.locator('.dashboard-ops-overview .kpi').count(),3)
+  self.assertEqual(self.page.locator('.dashboard-ops-overview .dashboard-next-route').count(),1)
+  expect(self.page.locator('.history-ledger-intro')).to_be_visible()
+  self.assertEqual(self.page.locator('.history-source-item').count(),2)
+  self.assertEqual(self.page.locator('.dashboard-finance-layout .kpi').count(),4)
+  self.assertEqual(self.page.locator('.dashboard-finance-chart .bar-chart').count(),1)
+  # A layout redesign must materially affect geometry, not merely color.
+  desktop=self.page.evaluate("""() => ({
+    intro:getComputedStyle(document.querySelector('.operations-intro')).display,
+    overview:getComputedStyle(document.querySelector('.dashboard-ops-overview')).display,
+    history:getComputedStyle(document.querySelector('.history-ledger')).gridTemplateColumns,
+    finance:getComputedStyle(document.querySelector('.dashboard-finance-layout')).gridTemplateColumns
+  })""")
+  self.assertEqual(desktop['intro'],'grid')
+  self.assertEqual(desktop['overview'],'grid')
+  self.assertEqual(len(desktop['history'].split(' ')),2)
+  self.assertEqual(len(desktop['finance'].split(' ')),2)
+  self.page.set_viewport_size({'width':390,'height':844})
+  self.page.wait_for_timeout(50)
+  mobile=self.page.evaluate("""() => ({
+    intro:getComputedStyle(document.querySelector('.operations-intro')).gridTemplateColumns,
+    overview:getComputedStyle(document.querySelector('.dashboard-ops-overview')).gridTemplateColumns,
+    overflow:document.documentElement.scrollWidth-innerWidth
+  })""")
+  self.assertEqual(len(mobile['intro'].split(' ')),1)
+  self.assertEqual(len(mobile['overview'].split(' ')),1)
+  self.assertLessEqual(mobile['overflow'],0)
 
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
   # Esperar al resultado estable del render y al cómputo de CSS.

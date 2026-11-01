@@ -2749,3 +2749,18 @@ body[data-density="compact"] .table-scroll .data-table tbody td{padding:var(--ce
 /* Una agenda de un solo día siempre ocupa una columna. */
 .agenda-grid.single-day{grid-template-columns:minmax(0,1fr)}
 .single-day .agenda-events{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+
+
+/* Atajo de teclado accesible. Visible únicamente cuando recibe foco. */
+.skip-link{
+  position:fixed;inset:12px auto auto 12px;z-index:10000;
+  transform:translateY(-160%);
+  background:#fff;color:#12324a;
+  border:2px solid #006b9b;border-radius:8px;
+  box-shadow:0 2px 12px rgba(12,42,65,.15);
+  padding:10px 15px;font:inherit;font-size:13px;font-weight:750;
+  opacity:0;pointer-events:none;
+}
+.skip-link:focus-visible{transform:translateY(0);opacity:1;pointer-events:auto;outline:3px solid #2ba4d1;outline-offset:2px}
+body[data-theme="dark"] .skip-link{background:#1e394e;color:#eff7ff;border-color:#98d8f2}
+@media(prefers-reduced-motion:reduce){.skip-link{transition:none}}

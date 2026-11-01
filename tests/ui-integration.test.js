@@ -29,7 +29,10 @@ function mount(savedState=null){
     Gamo:D,
     GamoAgencyReports:{overview:()=>[
       {key:"gp",name:"GP TRAVEL",count:22,total:993500,source:"Excel",week:"octubre 2026"}
-    ]},
+    ],
+    page:()=>'<section class="agency-report"><h1>Reportes por agencia</h1><p>Histórico documental de agencias con detalle de servicios, totales y filtros.</p></section>',
+    mount(){}
+    },
     addEventListener(name,fn){winListeners.set(name,fn);}
   };
   const localStorage={getItem(key){return key==="gamo.demo.v1" && savedState ? JSON.stringify(savedState) : null;},setItem(){}};

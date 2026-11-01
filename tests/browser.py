@@ -48,6 +48,38 @@ class DemoTest(unittest.TestCase):
    self.assertEqual(self.errors,[])
   finally:
    self.context.close()
+ def test_duna_editorial_colors_are_computed(self):
+  # Contrastar estilos reales, sin depender solo de la presencia de tokens CSS.
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
+  expression="""() => {
+    const style = selector => getComputedStyle(document.querySelector(selector));
+    return {
+      canvas: style('body').backgroundColor,
+      card: style('.dashboard-zone .kpi').backgroundColor,
+      sidebar: style('.sidebar').backgroundColor,
+      button: style('.page-header .btn-accent').backgroundColor,
+      buttonRadius: style('.page-header .btn-accent').borderRadius,
+      cardShadow: style('.dashboard-zone .kpi').boxShadow,
+      nestedPanel: style('.dashboard-main .panel--collection').backgroundColor
+    };
+  }"""
+  light=self.page.evaluate(expression)
+  self.assertEqual(light['canvas'],'rgb(241, 240, 236)')
+  self.assertEqual(light['card'],'rgb(255, 255, 255)')
+  self.assertEqual(light['sidebar'],'rgb(255, 255, 255)')
+  self.assertEqual(light['button'],'rgb(22, 15, 12)')
+  self.assertEqual(light['buttonRadius'],'999px')
+  self.assertNotEqual(light['cardShadow'],'none')
+  self.assertEqual(light['nestedPanel'],'rgba(0, 0, 0, 0)')
+  self.page.locator('[data-ui-preference="theme"]').click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
+  dark=self.page.evaluate(expression)
+  self.assertEqual(dark['canvas'],'rgb(23, 19, 22)')
+  self.assertEqual(dark['card'],'rgb(41, 36, 40)')
+  self.assertEqual(dark['button'],'rgb(245, 238, 234)')
+  self.assertNotEqual(dark['cardShadow'],'none')
+  self.assertEqual(dark['nestedPanel'],'rgba(0, 0, 0, 0)')
+
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
   # Esperar al resultado estable del render y al cómputo de CSS.
   # Un cambio de hash puede sustituir temporalmente los nodos de la vista.

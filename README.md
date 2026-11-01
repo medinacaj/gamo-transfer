@@ -159,3 +159,14 @@ python -m unittest discover -s tests -p browser.py -v
 ```
 
 Requiere Python compatible, Node.js y navegador Playwright descargado. Las mediciones reales LCP/INP/CLS, el chequeo de accesibilidad WCAG 2.2 AA y las pruebas Firefox/Safari siguen pendientes. No incluir datos reales de pasajeros ni secretos en esta demo pública.
+
+## Mejoras funcionales y accesibilidad — ciclo 2026-11-01 (II)
+
+- **Botones seguros en formularios:** el generador reutilizable de acciones crea `<button type="button">`. Esto impide que **Cancelar**, **Descargar copia** y otros botones secundarios actúen accidentalmente como `submit`. El único botón de confirmación sigue siendo `Guardar`.
+- **CSV coherente con filtros:** `Exportar CSV` en Reservas ahora utiliza el mismo conjunto de registros filtrados mostrado por la tabla. Sin filtros activos exporta todas las reservas; con una búsqueda sin resultados genera solo el encabezado.
+- **Acceso por teclado:** un control `Saltar al contenido principal` permite enfocar el contenido sin alterar el hash que controla la navegación.
+- **Compatibilidad de actualización:** `index.html` referencia versiones nuevas de CSS y del archivo de aplicación para reducir problemas por recursos antiguos en caché.
+- **Pruebas de regresión:** `tests/browser.py` verifica cancelación sin efectos, salto al contenido y correspondencia de filas del CSV. `tests/ui-integration.test.js` comprueba estructura del modal, control de foco, y reutilización de filtros.
+- **Verificación directa de funciones:** con DOM simulado, una búsqueda produjo **11 de 28 reservas**, y el CSV produjo **11 filas**, mientras una búsqueda sin resultados produjo **0 filas**; cancelar restauró el estado no inerte del fondo. Estas verificaciones no sustituyen un ensayo real en navegador.
+
+El despliegue en GitHub Pages, los indicadores Core Web Vitals y la conformidad WCAG 2.2 AA completa continúan pendientes de validación independiente.

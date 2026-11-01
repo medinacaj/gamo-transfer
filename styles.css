@@ -2988,7 +2988,7 @@ body[data-theme="dark"] .agency-document .agency-meta > div:hover {
   margin-bottom: 7px;
 }
 body[data-theme="dark"] .dashboard-zone + .dashboard-zone {
-  border-top-color: #52616b;
+  border-top: 1px solid #52616b;
 }
 body[data-theme="dark"] .dashboard-zone .dashboard-section-heading .eyebrow {
   color: #d4e0e9;

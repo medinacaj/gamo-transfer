@@ -157,6 +157,32 @@ class DemoTest(unittest.TestCase):
   active=card.evaluate('(el) => getComputedStyle(el).boxShadow')
   self.assertNotEqual(idle,active,('dark','entity card','no hover effect'))
 
+ def test_collections_are_unboxed_but_individual_cards_remain_elevated(self):
+  # No card inside a larger card in dashboard, reservations and client details.
+  for theme in ['light','dark']:
+   actual=self.page.locator('body').get_attribute('data-theme') or 'light'
+   if actual!=theme: self.page.locator('[data-ui-preference="theme"]').click()
+   expect(self.page.locator('body')).to_have_attribute('data-theme',theme)
+   for outer in ['.history-source-flat','.dashboard-main .panel--collection']:
+    frame=self.page.locator(outer).first
+    expect(frame).to_be_visible()
+    state=frame.evaluate("""el => ({
+      shadow:getComputedStyle(el).boxShadow,
+      border:getComputedStyle(el).borderTopWidth,
+      background:getComputedStyle(el).backgroundColor
+    })""")
+    self.assertEqual(state['shadow'],'none',(theme,outer,'shadow'))
+    self.assertEqual(state['border'],'0px',(theme,outer,'border'))
+    self.assertEqual(state['background'],'rgba(0, 0, 0, 0)',(theme,outer,'background'))
+   for card in ['.history-source-item','.kpi']:
+    self.assertNotEqual(self.page.locator(card).first.evaluate('el => getComputedStyle(el).boxShadow'),'none',(theme,card))
+  self.navigate('reservas')
+  expect(self.page.locator('#booking-results.panel--collection')).to_be_visible()
+  self.assertEqual(self.page.locator('#booking-results').evaluate('el => getComputedStyle(el).boxShadow'),'none')
+  self.navigate('clientes')
+  expect(self.page.locator('.entity-card').first).to_be_visible()
+  self.assertEqual(self.page.locator('.entity-meta').first.evaluate('el => getComputedStyle(el).boxShadow'),'none')
+
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:

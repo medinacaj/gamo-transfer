@@ -28,6 +28,7 @@ jobs:
           node --check app.js
           node --check agency-reports.js
           node --check ui-preferences.js
+          node --check version-check.js
           node --check domain.js
 
       - name: Check deploy-verification and browser-test syntax

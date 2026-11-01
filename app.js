@@ -105,7 +105,7 @@
       ? `<div class="table-scroll"><table class="data-table ${headers.length >= 7 ? "table-many-columns" : "table-few-columns"}"><thead><tr>${headers.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td data-label="${esc(headers[i] || "")}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
       : empty("No hay registros para esta selección");
   const panel = (title, body, sub = "") =>
-    `<section class="panel"><div class="panel-head"><div><h2>${title}</h2>${sub ? `<span class="panel-sub">${sub}</span>` : ""}</div></div>${body}</section>`;
+    `<section class="panel${body.includes('class="table-scroll"') ? " panel--collection" : ""}"><div class="panel-head"><div><h2>${title}</h2>${sub ? `<span class="panel-sub">${sub}</span>` : ""}</div></div>${body}</section>`;
   const kpi = (label, value, foot, icon = "chart") =>
     `<article class="kpi"><div class="kpi-top"><span class="kpi-label">${label}</span><span class="kpi-icon">${iconSVG(icon)}</span></div><div class="kpi-value">${value}</div><div class="kpi-foot">${foot}</div></article>`;
   const totals = (rows) =>
@@ -243,12 +243,8 @@
     const imported = window.GamoAgencyReports?.overview?.() || [];
     if (!imported.length) return "";
     const totalServices = imported.reduce((n, row) => n + row.count, 0);
-    return `<section class="panel history-source-panel" aria-label="Histórico inicial de agencias">
-      <div class="panel-head">
-        <div><h2>Primera fase · Histórico de agencias</h2>
-        <span class="panel-sub">${totalServices} servicios de octubre de 2026 tomados de documentos facilitados.</span></div>
-        <a class="btn btn-light" href="#/reportes-agencias">Consultar reportes →</a>
-      </div>
+    return `<div class="history-source-panel history-source-flat" aria-label="Histórico inicial de agencias">
+      <p class="history-source-lead">${totalServices} servicios documentados · octubre de 2026</p>
       <div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
         <span class="history-source-name">${esc(row.name)}</span>
         <strong>${row.count} servicios</strong>
@@ -256,7 +252,7 @@
         <small>${esc(row.source)} · ${esc(row.week)}</small>
       </div>`).join("")}</div>
       <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p>
-    </section>`;
+    </div>`;
   }
   function dashboard() {
   const m=D.metrics(state),

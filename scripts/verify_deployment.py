@@ -47,7 +47,7 @@ def verify(base, sha, attempt):
         if not re.search(rf'(?<=["\x27]){re.escape(expected)}(?=["\x27])', html):
             raise ValueError(f"El HTML publicado no referencia {expected}")
     # Fetching the assets verifies they can be retrieved by the actual URLs.
-    for asset in ("styles.css", "app.js"):
+    for asset in ("styles.css", "app.js", "assets/executive-van.svg"):
         body, _ = fetch(base, f"{asset}?v={revision}", revision, attempt)
         if len(body) < 200:
             raise ValueError(f"El archivo {asset} parece incompleto")

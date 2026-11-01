@@ -8,12 +8,12 @@ const source=fs.readFileSync(path.join(__dirname,"..","version-check.js"),"utf8"
 const OLD="a".repeat(40);
 const NEW="b".repeat(40);
 
-async function boot({current=OLD,remote=NEW,href="https://example.test/gamo-transfer/#/reservas",saved=null,networkError=false}={}){
+async function boot({current=OLD,remote=NEW,href="https://example.test/gamo-transfer/#/reservas",saved=null,networkError=false,modalOpen=false}={}){
  let replaced=null,requests=0;
  const storage=new Map(saved?[["gamo.build-refresh.v1",saved]]:[]);
  const document={
    baseURI:"https://example.test/gamo-transfer/",
-   querySelector:()=>({content:current})
+   querySelector:selector=>selector==='meta[name="gamo-build"]' ? {content:current} : (modalOpen ? {} : null)
  };
  const location={href,replace(next){replaced=next;}};
  const window={
@@ -53,6 +53,12 @@ test("a refresh attempt never loops while the old HTML remains cached",async()=>
 });
 test("offline refresh checks never break the interface",async()=>{
  const result=await boot({networkError:true});
+ assert.equal(result.requests,1);
+ assert.equal(result.replaced,null);
+});
+
+test("an open edit modal is not interrupted by a late version check",async()=>{
+ const result=await boot({modalOpen:true});
  assert.equal(result.requests,1);
  assert.equal(result.replaced,null);
 });

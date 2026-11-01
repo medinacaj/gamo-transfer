@@ -168,24 +168,29 @@
     $("#modal-root").innerHTML =
       `<div class="modal-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="dialog-title" class="modal"><div class="modal-header"><div><h2 id="dialog-title">${name}</h2><p>${subtitle}</p></div><button class="icon-button" data-action="close" aria-label="Cerrar">✕</button></div><form id="modal-form" class="modal-form"><div class="form-grid">${body}</div><p id="form-error" role="alert" class="form-error"></p><div class="form-actions">${btn("Cancelar", "close")}<button type="submit" class="btn btn-primary">Guardar</button></div></form></section></div>`;
     document.body.classList.add("modal-open");
+    const shell = $("#shell");
+    if (shell) shell.inert = true;
     $("#modal-root input, #modal-root select, #modal-root button")?.focus();
   }
   function closeModal() {
     $("#modal-root").innerHTML = "";
     document.body.classList.remove("modal-open");
+    const shell = $("#shell");
+    if (shell) shell.inert = false;
     formHandler = null;
     if (lastFocus?.isConnected) lastFocus.focus();
   }
   document.addEventListener("keydown", (e) => {
     const m = $("#modal-root [role=dialog]");
     if (!m) return;
-    if (e.key === "Escape") closeModal();
+    if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
     if (e.key === "Tab") {
       const all = [
           ...m.querySelectorAll("button,input,select,a,textarea"),
         ].filter((x) => !x.disabled && x.offsetParent !== null),
         first = all[0],
         last = all.at(-1);
+      if (!first || !last) return;
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();

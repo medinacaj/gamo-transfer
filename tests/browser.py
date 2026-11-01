@@ -110,6 +110,7 @@ class DemoTest(unittest.TestCase):
   self.assertEqual(cancel.get_attribute('type'),'button')
   cancel.click()
   expect(self.page.locator('[role=dialog]')).to_have_count(0)
+  expect(self.page.get_by_role('button',name='Nueva reserva',exact=True)).to_be_focused()
   stored=self.page.evaluate("localStorage.getItem('gamo.demo.v1')")
   self.assertTrue(stored is None or len(self.data()['bookings'])==initial)
 

@@ -106,6 +106,8 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
 
 test("tables carry field labels for adaptive card layout",()=>{
  const {node,location,winListeners}=mount();
+ location.hash="#/reservas";
+ winListeners.get("hashchange")();
  const overview=node("#content").innerHTML;
  assert.match(overview,/class="data-table table-many-columns"/);
  assert.match(overview,/data-label="Servicio · hora argentina"/);
@@ -346,7 +348,7 @@ test("operational home uses distinct Apple-style composition rather than the old
  for(const name of ["operations-intro","operations-intro-copy","operations-hero-stat","dashboard-ops-overview","history-ledger-intro","history-ledger-details","dashboard-finance-layout","dashboard-finance-chart"]){
   assert.match(page,new RegExp('class="[^"]*'+name));
  }
- assert.match(page,/<h1>Centro de operaciones<\/h1>/);
+ assert.match(page,/<h1>Centro de <br>operaciones<\/h1>/);
  assert.match(page,/class="operations-hero-value"/);
  assert.ok(page.indexOf('class="operations-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-ops"'));
  assert.ok(page.indexOf('class="history-ledger-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-finance"'));

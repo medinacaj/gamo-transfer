@@ -406,5 +406,5 @@ test("selecting a dashboard service updates the detail panel without mutating st
  assert.match(next,new RegExp('class="operations-detail-id">'+ids[1]));
  assert.match(next,new RegExp('data-action="dashboard-select" data-id="'+ids[1]+'" aria-pressed="true"'));
  assert.match(next,/data-action="booking"/);
- assert.match(next,/class="dashboard-triad"/);
+ assert.match(next,/class="dashboard-main dashboard-operations dashboard-triad"/);
 });

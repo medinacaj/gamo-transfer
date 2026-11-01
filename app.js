@@ -162,11 +162,13 @@
     body,
     handler,
     subtitle = "Todos los datos son ficticios para demostración",
+    submitLabel = "Guardar",
+    submitStyle = "primary",
   ) {
     lastFocus = document.activeElement;
     formHandler = handler;
     $("#modal-root").innerHTML =
-      `<div class="modal-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="dialog-title" class="modal"><div class="modal-header"><div><h2 id="dialog-title">${name}</h2><p>${subtitle}</p></div><button class="icon-button" data-action="close" aria-label="Cerrar">✕</button></div><form id="modal-form" class="modal-form"><div class="form-grid">${body}</div><p id="form-error" role="alert" class="form-error"></p><div class="form-actions">${btn("Cancelar", "close")}<button type="submit" class="btn btn-primary">Guardar</button></div></form></section></div>`;
+      `<div class="modal-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="dialog-title" class="modal"><div class="modal-header"><div><h2 id="dialog-title">${name}</h2><p>${subtitle}</p></div><button class="icon-button" data-action="close" aria-label="Cerrar">✕</button></div><form id="modal-form" class="modal-form"><div class="form-grid">${body}</div><p id="form-error" role="alert" class="form-error"></p><div class="form-actions">${btn("Cancelar", "close")}<button type="submit" class="btn btn-${submitStyle === "danger" ? "danger" : "primary"}">${esc(submitLabel)}</button></div></form></section></div>`;
     document.body.classList.add("modal-open");
     const shell = $("#shell");
     if (shell) shell.inert = true;
@@ -1710,6 +1712,9 @@
         state = next;
         storageError = "";
       },
+      undefined,
+      "Restaurar datos",
+      "danger",
     );
   }
   function render() {

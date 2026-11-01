@@ -1947,6 +1947,14 @@
   });
   $("#menu-close-btn").addEventListener("click", () => closeMobileMenu(true));
   $("#scrim").addEventListener("click", () => closeMobileMenu(true));
+  $("#nav").addEventListener("click", (e) => {
+    const link = e.target.closest("a[data-page]");
+    if (isMobileNavigation() && link?.getAttribute("href") === location.hash) {
+      // Volver a seleccionar la sección activa también debe cerrar el menú.
+      closeMobileMenu();
+      $("#content").focus();
+    }
+  });
   window.addEventListener("resize", syncMobileMenu);
   window.addEventListener("hashchange", () => {
     closeModal();

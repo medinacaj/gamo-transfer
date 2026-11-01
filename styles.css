@@ -2856,3 +2856,115 @@ body .dashboard-zone .panel:focus-within {
     transform: none !important;
   }
 }
+
+
+/* GAMO SINGLE-LEVEL CARDS v1
+   A card stands on its own: remove nested framed containers, not the
+   shadow/hover behavior of individual information cards. */
+
+/* A data collection is a section with a heading, not a card surrounding
+   another collection of cards at small container sizes. */
+body .panel.panel--collection,
+body .dashboard-zone .panel.panel--collection,
+body[data-theme="dark"] .panel.panel--collection,
+body[data-theme="dark"] .dashboard-zone .panel.panel--collection {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+body .panel.panel--collection:is(:hover,:focus-within),
+body .dashboard-zone .panel.panel--collection:is(:hover,:focus-within),
+body[data-theme="dark"] .panel.panel--collection:is(:hover,:focus-within),
+body[data-theme="dark"] .dashboard-zone .panel.panel--collection:is(:hover,:focus-within) {
+  box-shadow: none;
+}
+body .panel.panel--collection .panel-head,
+body .dashboard-zone .panel.panel--collection .panel-head,
+body[data-theme="dark"] .panel.panel--collection .panel-head,
+body[data-theme="dark"] .dashboard-zone .panel.panel--collection .panel-head {
+  background: transparent;
+  border: 0;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.panel--collection .panel-sub{margin-top:4px}
+.panel--collection .table-scroll{background:transparent;border:0;box-shadow:none}
+.panel--collection .data-table{background:transparent;border:0}
+
+/* The historical report has a single visual level: the two agency cards.
+   The source description is plain supporting text, outside any frame. */
+body .history-source-panel.history-source-flat,
+body .dashboard-zone .history-source-panel.history-source-flat {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+.history-source-flat .history-source-lead{
+  margin: 0 0 12px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.history-source-flat .history-source-grid{padding:0;gap:16px}
+.history-source-flat .history-source-foot{
+  margin:13px 0 0;
+  padding:0;
+  line-height:1.6;
+  color:var(--text-secondary);
+}
+@media(max-width:640px){
+  .history-source-flat .history-source-grid{padding:0}
+  .history-source-flat .history-source-foot{padding:0}
+}
+
+/* Company/driver/vehicle detail rows are not a second card. */
+body .entity-card .entity-meta,
+body[data-theme="dark"] .entity-card .entity-meta {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 14px 0 0;
+  box-shadow: none;
+}
+body[data-theme="dark"] .entity-card .entity-meta{border-top-color:#435a70}
+
+/* Report details retain readable columns, without small cards inside a
+   larger document sheet. Individual metrics have typographic hierarchy. */
+body .agency-document .agency-meta > div,
+body[data-theme="dark"] .agency-document .agency-meta > div,
+body .agency-document .agency-subpanel,
+body[data-theme="dark"] .agency-document .agency-subpanel {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  transform: none;
+}
+body .agency-document .agency-meta > div,
+body[data-theme="dark"] .agency-document .agency-meta > div {
+  padding: 4px 0;
+  border-radius: 0;
+}
+body .agency-document .agency-subpanel,
+body[data-theme="dark"] .agency-document .agency-subpanel {
+  padding: 0;
+  border-radius: 0;
+}
+body .agency-document .agency-subpanel:is(:hover,:focus-within),
+body .agency-document .agency-meta > div:hover,
+body[data-theme="dark"] .agency-document .agency-subpanel:is(:hover,:focus-within),
+body[data-theme="dark"] .agency-document .agency-meta > div:hover {
+  box-shadow: none;
+  transform: none;
+}
+.agency-document .agency-breakdown{column-gap:24px;row-gap:22px}
+/* Individual actionable cards keep their existing elevation and hover.
+   The collection wrapper never elevates, including during keyboard focus. */
+@media print{
+  .panel.panel--collection{border:0!important;box-shadow:none!important}
+  .history-source-flat .history-source-grid{padding:0!important}
+}

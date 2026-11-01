@@ -4081,7 +4081,8 @@ body .dashboard-ops-overview .ops-kpis .kpi-icon { background:rgba(255,255,255,.
 body .dashboard-ops-overview .ops-kpis .kpi:nth-child(2) .kpi-icon { color:#ffd27b;background:rgba(255,173,49,.12); }
 body .dashboard-ops-overview .ops-kpis .kpi:nth-child(3) .kpi-icon { color:#75f0b1;background:rgba(27,185,110,.13); }
 @media(hover:hover) and (pointer:fine) {
-  body .dashboard-ops-overview .ops-kpis .kpi:hover {
+  body .dashboard-ops-overview .ops-kpis .kpi:hover,
+  body[data-theme="dark"] .dashboard-ops-overview .ops-kpis .kpi:hover {
     transform:translateY(-3px);
     border-color:rgba(151,213,255,.80);
     box-shadow:0 18px 30px rgba(0,0,0,.27);

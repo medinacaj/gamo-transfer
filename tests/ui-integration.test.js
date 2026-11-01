@@ -223,7 +223,7 @@ test("collections do not nest an outer card around their own cards",()=>{
  assert.match(home,/class="history-source-item"/);
  location.hash="#/reservas";
  winListeners.get("hashchange")();
- assert.match(node("#content").innerHTML,/class="panel panel--collection"/);
+ assert.match(node("#content").innerHTML,/class="panel panel--collection" id="booking-results"/);
 });
 test("flat card layers preserve shadows and hover on individual cards",()=>{
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");

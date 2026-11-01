@@ -196,3 +196,15 @@ Esta actualización no altera reservas, reportes ni montos históricos.
 ### Contraste de superficies del sistema (2026-11-01)
 
 Se separó el fondo de aplicación del blanco de las tarjetas mediante el token `--canvas`: **#DADAD8** en modo claro y **#10100F** en modo oscuro. No se añadieron contenedores ni bordes decorativos; las tarjetas existentes conservan su color y sus sombras/hover. El color se controla desde la definición original de cada tema, sin crear otra capa de sobrescrituras CSS. `index.html` utiliza `styles.css?v=20261101-neutral-v12` para evitar caché previa. Las pruebas de regresión verifican las diferencias de superficie y el mantenimiento de los componentes planos. La validación visual del sitio publicado sigue pendiente.
+
+
+## Centro de operaciones y vista compacta efectiva (2026-11-01)
+
+- Las tres áreas del resumen conservan una composición plana (sin contenedores exteriores decorativos) y títulos numerados **01 Operación y despacho**, **02 Servicios históricos** y **03 Facturación y cobros**. Entre áreas se muestra un **separador horizontal neutro de un píxel**, con espacio adicional; sin barras verticales ni acentos de color.
+- El modo **Vista compacta** ahora reduce realmente márgenes y espacios, tamaño/altura de KPIs, relleno de tarjetas, encabezados, filtros, agenda y gráfico de facturación. Se conservan todos los datos y acciones.
+- Se corrigió la precedencia de los valores adaptativos de tablas: el modo compacto tiene relleno reducido tanto en tabla ancha como en fichas de datos por ancho de contenedor. La versión cómoda conserva más aire y continúa siendo el valor inicial.
+- El botón sigue permitiendo alternar y almacenar la elección; en compacto utiliza una apariencia activa distinguible. Se respeta modo oscuro, dispositivos móviles, navegación por teclado e impresión.
+- Versión de estilos: `styles.css?v=20261101-sections-density-v13` para evitar persistencia de recursos antiguos.
+- Regresiones: pruebas estáticas en `tests/ui-integration.test.js` y prueba de navegador en `tests/browser.py` que compara **alturas reales** de KPI y gráfico, relleno de tabla, y `borderTopWidth` de separadores en ambos temas.
+
+**Alcance de evidencia:** cambios y sintaxis confirmados; la ejecución de Playwright y el resultado visual publicado no se declaran verificados hasta disponer de un resultado real de CI o navegador.

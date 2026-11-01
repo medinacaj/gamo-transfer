@@ -122,3 +122,22 @@ test("no table or agenda is forced to scroll sideways",()=>{
  assert.match(adaptive,/\.agenda-grid\{grid-template-columns:repeat\(7,minmax\(0,1fr\)\);overflow-x:visible/);
  assert.match(adaptive,/\.agenda-grid\.single-day\{grid-template-columns:minmax\(0,1fr\)\}/);
 });
+
+
+test("invalid prototype-like hash paths fail closed to the home page",()=>{
+ const {node,location,winListeners}=mount();
+ for(const invalid of ["constructor","toString","__proto__"]){
+   location.hash="#/"+invalid;
+   winListeners.get("hashchange")();
+   assert.match(node("#content").innerHTML,/Centro de operaciones/);
+ }
+});
+test("demo admin is marked noindex and reserves logo space",()=>{
+ assert.match(html,/name="robots" content="noindex, nofollow, noarchive"/);
+ assert.equal((html.match(/width="170" height="56"/g)||[]).length,2);
+});
+test("both modal types use inert background and restore it on close",()=>{
+ const app=fs.readFileSync(path.join(root,"app.js"),"utf8");
+ assert.equal((app.match(/if \(shell\) shell\.inert = true/g)||[]).length,2);
+ assert.equal((app.match(/if \(shell\) shell\.inert = false/g)||[]).length,1);
+});

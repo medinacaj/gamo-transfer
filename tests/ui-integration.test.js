@@ -227,7 +227,7 @@ test("collections do not nest an outer card around their own cards",()=>{
  const home=node("#content").innerHTML;
  assert.match(home,/class="history-source-panel history-source-flat history-ledger"/);
  assert.doesNotMatch(home,/class="panel history-source-panel"/);
- assert.match(home,/class="panel panel--collection"/);
+ assert.match(home,/class="operations-service-board"/);
  assert.match(home,/class="history-source-grid"/);
  assert.match(home,/class="history-source-item"/);
  location.hash="#/reservas";
@@ -263,8 +263,8 @@ test("Apple-inspired design has contrasting tiles, functional blue and safe card
  assert.match(skin,/@media\(hover:hover\) and \(pointer:fine\)/);
  assert.match(skin,/@media\(prefers-reduced-motion:reduce\)/);
  assert.match(skin,/@media print/);
- assert.match(html,/styles\.css\?v=20261101-layout-v16/);
- assert.match(html,/app\.js\?v=20261101-layout-v16/);
+ assert.match(html,/styles\.css\?v=20261101-premium-v17/);
+ assert.match(html,/app\.js\?v=20261101-premium-v17/);
  assert.match(html,/ui-preferences\.js\?v=20261101-apple-v15/);
  assert.match(html,/<meta name="theme-color" content="#0e0e0e"/);
  assert.match(html,/<body data-theme="dark" data-density="comfortable">/);
@@ -352,8 +352,8 @@ test("operational home uses distinct Apple-style composition rather than the old
  assert.ok(page.indexOf('class="history-ledger-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-finance"'));
  assert.equal((page.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
  const ops=page.slice(page.indexOf('class="dashboard-ops-overview"'),page.indexOf('class="dashboard-main dashboard-operations"'));
- assert.equal((ops.match(/class="kpi"/g)||[]).length,3);
- assert.match(ops,/dashboard-next-route/);
+ assert.equal((ops.match(/class="kpi"/g)||[]).length,4);
+ assert.match(page,/class="operations-service-list"/);
  const finance=page.slice(page.indexOf('class="dashboard-finance-layout"'));
  assert.equal((finance.match(/class="kpi"/g)||[]).length,4);
  assert.match(finance,/class="dashboard-finance-chart"/);
@@ -365,4 +365,22 @@ test("operational home uses distinct Apple-style composition rather than the old
  assert.match(layout,/\.history-source-flat\.history-ledger/);
  assert.match(layout,/\.dashboard-finance-layout \{/);
  assert.match(layout,/@media\(max-width:650px\)/);
+});
+
+
+test("premium v2 uses actionable selectable services, real amounts and licensed visual stage",()=>{
+ const {node}=mount(), page=node("#content").innerHTML;
+ for(const name of ["operations-photo","operations-week-bars","operations-service-list","operations-service-detail","operations-detail-grid","operations-detail-actions","dashboard-triad"]) assert.match(page,new RegExp(name));
+ assert.equal((page.match(/class="operations-service-row/g)||[]).length,5);
+ assert.match(page,/data-action="dashboard-select"/);
+ assert.match(page,/data-action="booking"/);
+ assert.match(page,/data-id="R-/);
+ assert.doesNotMatch(page,/142 servicios|128 servicios/);
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ const premium=css.slice(css.indexOf("/* GAMO PREMIUM STAGE V2"));
+ assert.match(premium,/executive-van\.svg/);
+ assert.match(premium,/images\.unsplash\.com/);
+ assert.match(premium,/\.dashboard-main\.dashboard-triad/);
+ assert.match(premium,/@media\(max-width:570px\)/);
+ assert.match(html,/img-src 'self' data: https:\/\/images\.unsplash\.com/);
 });

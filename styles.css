@@ -4290,3 +4290,15 @@ body .dashboard-zone + .dashboard-zone {border-top-color:rgba(97,151,216,.31);}
   body .operations-service-time strong,body .operations-service-data>span,body .operations-service-data strong,
   body .operations-detail-grid dd,body .operations-detail-id {color:#111!important;}
 }
+
+
+/* Density correction for new chart geometry (compact must reduce real height). */
+body:not([data-density="compact"]) .dashboard-finance-chart .bar-chart {min-height:205px;height:225px;}
+body[data-density="compact"] .dashboard-finance-chart .bar-chart {min-height:125px;height:125px;}
+body[data-density="compact"] .dashboard-ops-overview .ops-kpis .kpi {min-height:124px;padding:12px 14px;}
+body[data-density="compact"] .operations-intro {min-height:280px;}
+body[data-density="compact"] .operations-hero-stat {min-height:200px;}
+@media(max-width:570px) {
+  body:not([data-density="compact"]) .dashboard-finance-chart .bar-chart {min-height:180px;height:185px;}
+  body[data-density="compact"] .dashboard-finance-chart .bar-chart {min-height:125px;height:125px;}
+}

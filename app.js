@@ -283,7 +283,7 @@
   return (
     title("Centro de operaciones","Servicios, asignaciones y actividad comercial en un solo lugar.",btn("Nueva reserva","booking","","accent"))+
     `<div class="dashboard-environment-note"><strong>ENTORNO DE DEMOSTRACIÓN</strong><span>Los indicadores operativos y financieros siguen utilizando datos ficticios guardados en este navegador.</span><a href="#/reportes-agencias">Consultar histórico documentado →</a></div>`+
-    `<section class="dashboard-zone dashboard-zone-ops" aria-label="Operación y despacho"><div class="dashboard-section-heading"><div><span class="eyebrow">01 · PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
+    `<section class="dashboard-zone dashboard-zone-ops" aria-label="Operación y despacho"><div class="dashboard-section-heading"><div><span class="eyebrow">PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
     `<div class="grid-kpi ops-kpis">
       ${kpi("Servicios de hoy",daily.length,"Fecha local de Argentina","calendar")}
       ${kpi("Alertas de despacho",missing.length,"Reservas próximas por revisar","clock")}
@@ -298,10 +298,10 @@
       </div>
     </div>`+
     `</section>`+
-    `<section class="dashboard-zone dashboard-zone-history" aria-label="Servicios históricos"><div class="dashboard-section-heading"><div><span class="eyebrow">02 · FUENTES DOCUMENTADAS</span><h2>Servicios históricos</h2></div><a class="mini-link" href="#/reportes-agencias">Ver por agencia →</a></div>`+
+    `<section class="dashboard-zone dashboard-zone-history" aria-label="Servicios históricos"><div class="dashboard-section-heading"><div><span class="eyebrow">FUENTES DOCUMENTADAS</span><h2>Servicios históricos</h2></div><a class="mini-link" href="#/reportes-agencias">Ver por agencia →</a></div>`+
     historicalOverview()+
     `</section>`+
-    `<section class="dashboard-zone dashboard-zone-finance" aria-label="Facturación y cobros"><div class="dashboard-section-heading"><div><span class="eyebrow">03 · GESTIÓN FINANCIERA · SIMULACIÓN</span><h2>Facturación y cobros</h2><p>Montos por moneda, sin sumar monedas distintas.</p></div><a class="mini-link" href="#/cobros">Ver cuentas por cobrar →</a></div>`+
+    `<section class="dashboard-zone dashboard-zone-finance" aria-label="Facturación y cobros"><div class="dashboard-section-heading"><div><span class="eyebrow">GESTIÓN FINANCIERA · SIMULACIÓN</span><h2>Facturación y cobros</h2><p>Montos por moneda, sin sumar monedas distintas.</p></div><a class="mini-link" href="#/cobros">Ver cuentas por cobrar →</a></div>`+
     `<div class="grid-kpi financial-kpis">
       ${kpi("Facturación emitida",totals(m.revenue),"Documentos demo · no equivale a cobros")}
       ${kpi("Cuentas por cobrar",totals(m.receivable),"Saldo de documentos emitidos")}

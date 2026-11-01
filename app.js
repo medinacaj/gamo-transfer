@@ -1855,7 +1855,7 @@
     const a = target.dataset.action,
       i = target.dataset.id;
     try {
-      if (a === "dashboard-select") { dashboardSelectionId=i; render(); document.querySelector('[data-action="dashboard-select"][data-id="'+i+'"]')?.focus(); }
+      if (a === "dashboard-select") { dashboardSelectionId=i; render(); Array.from(document.querySelectorAll('[data-action="dashboard-select"]')).find(el=>el.dataset.id===i)?.focus(); }
       else if (a === "close") closeModal();
       else if (a === "booking") bookingForm(i);
       else if (["company", "driver", "vehicle"].includes(a)) entityForm(a, i);

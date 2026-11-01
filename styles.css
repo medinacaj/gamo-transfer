@@ -2973,9 +2973,8 @@ body[data-theme="dark"] .agency-document .agency-meta > div:hover {
 /* GAMO CANVAS CONTRAST v1
    Superficie de aplicación separada de las tarjetas. Sin marcos anidados,
    franjas decorativas, brillos ni cambios al diseño de las tarjetas. */
-:root { --app-card-canvas: #d6e1eb; }
 body { background-color: var(--canvas); }
-body[data-theme="dark"] { --app-card-canvas: #091622; background-color: var(--canvas); }
+body[data-theme="dark"] { background-color: var(--canvas); }
 /* Workspace remains transparent, allowing the canvas to reach all modules. */
 .workspace, #content { background-color: transparent; }
 @media print {

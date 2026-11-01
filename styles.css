@@ -2815,6 +2815,21 @@ body .dashboard-zone .panel {
     box-shadow: var(--gamo-panel-shadow-hover);
   }
 }
+/* En el dashboard oscuro, las reglas específicas previas no deben anular las sombras. */
+body[data-theme="dark"] .dashboard-zone :is(.kpi, .history-source-item) {
+  box-shadow: var(--gamo-card-shadow);
+}
+body[data-theme="dark"] .dashboard-zone .panel {
+  box-shadow: var(--gamo-panel-shadow);
+}
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="dark"] .dashboard-zone :is(.kpi, .history-source-item):hover {
+    box-shadow: var(--gamo-card-shadow-hover);
+  }
+  body[data-theme="dark"] .dashboard-zone .panel:hover {
+    box-shadow: var(--gamo-panel-shadow-hover);
+  }
+}
 /* Las tarjetas que contienen controles también responden al teclado. */
 body :is(.entity-card, .agenda-day, .agency-subpanel,
          .history-source-item):focus-within,
@@ -2830,7 +2845,7 @@ body .dashboard-zone .panel:focus-within {
            .agency-meta > div, .agency-subpanel, .agenda-day, .panel),
   body .dashboard-zone :is(.kpi, .history-source-item, .panel) {
     transition: none;
-    transform: none;
+    transform: none !important;
   }
 }
 @media print {

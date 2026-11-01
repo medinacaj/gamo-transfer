@@ -44,12 +44,18 @@ class DemoTest(unittest.TestCase):
   finally:
    self.context.close()
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
-  self.navigate('inicio')
+  # Esperar al resultado estable del render y al cómputo de CSS.
+  # Un cambio de hash puede sustituir temporalmente los nodos de la vista.
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
+  self.page.wait_for_function("""() => {
+    const sections = [...document.querySelectorAll('.dashboard-zone')];
+    return sections.length === 3 && sections.slice(1).every(
+      el => el.isConnected && getComputedStyle(el).borderTopWidth === '1px'
+    );
+  }""", timeout=7000)
   sections=self.page.locator('.dashboard-zone')
-  self.assertEqual(sections.count(),3)
   for section in [sections.nth(1),sections.nth(2)]:
    expect(section).to_be_visible()
-   self.assertEqual(section.evaluate('el => getComputedStyle(el).borderTopWidth'),'1px')
   comfortable_kpi=self.page.locator('.dashboard-zone-ops .kpi').first.bounding_box()['height']
   comfortable_chart=self.page.locator('.bar-chart').evaluate('el => parseFloat(getComputedStyle(el).height)')
   compact_btn=self.page.locator('[data-ui-preference="density"]')

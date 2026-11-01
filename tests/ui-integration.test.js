@@ -178,8 +178,14 @@ test("reservation CSV uses current filters consistently with the table",()=>{
  assert.match(app,/page === "reservas" \? filteredBookings\(\) : state.bookings/);
 });
 
-test("application logic uses a versioned script to avoid stale deploy cache",()=>{
- assert.match(html,/src="app\.js\?v=20261101-ux-v8" defer/);
+test("application logic and stylesheets are versioned and files exist",()=>{
+ const js=html.match(/<script src="(app\.js\?v=[a-z0-9-]+)" defer><\/script>/);
+ const css=html.match(/<link rel="stylesheet" href="(styles\.css\?v=[a-z0-9-]+)"\s*\/>/);
+ assert.ok(js,"JavaScript principal con versión de caché");
+ assert.ok(css,"CSS con versión de caché");
+ for(const asset of [js[1],css[1]]) {
+   assert.ok(fs.existsSync(path.join(root,asset.split("?")[0])),asset);
+ }
 });
 
 

@@ -139,3 +139,23 @@ Las tablas generales mantienen su presentación tabular únicamente cuando el an
 La agenda semanal distribuye los días en 7, 4, 2 o 1 columnas según el ancho de pantalla, sin barra horizontal; la vista diaria siempre utiliza una sola columna. Se eliminan los antiguos mínimos de anchura de las tablas en la hoja de estilo final y se ajustan palabras largas dentro de cada campo.
 
 Pruebas incorporadas: `tests/ui-integration.test.js` y `tests/agency-reports.test.js` validan las etiquetas, mientras `tests/browser.py` incluye comprobación de desbordamiento a 390, 768, 1200 y 1600 píxeles para todos los módulos.
+
+
+## Auditoría y pruebas de regresión (2026-11-01)
+
+- Informe de hallazgos, prioridades P0–P3, evidencia y decisiones de aplicabilidad: [Auditoría integral](docs/auditoria-integral-2026-11-01.md).
+- El panel es administrativo y **no se debe indexar**: `index.html` y `reportes-agencias.html` contienen `noindex`. Esto **no constituye control de acceso**; los reportes que forman parte del JavaScript público siguen siendo accesibles.
+- Se resolvieron casos de URL inválida que aprovechaban propiedades heredadas (`constructor`, `__proto__`) y se aplicó `inert` en ambos tipos de modal.
+- La suite `tests/browser.py` ahora sirve la raíz real del repositorio y utiliza el Chromium instalado por Playwright, sin rutas locales fijas.
+- `.github/workflows/browser-qa.yml` ejecuta la suite de Chromium por separado del despliegue de GitHub Pages. Su presencia **no implica que sus pruebas ya hayan pasado**.
+
+Para ejecutar pruebas localmente, desde la raíz del repositorio:
+
+```bash
+node --test tests/*.test.js
+python -m pip install "playwright==1.55.0"
+python -m playwright install chromium
+python -m unittest discover -s tests -p browser.py -v
+```
+
+Requiere Python compatible, Node.js y navegador Playwright descargado. Las mediciones reales LCP/INP/CLS, el chequeo de accesibilidad WCAG 2.2 AA y las pruebas Firefox/Safari siguen pendientes. No incluir datos reales de pasajeros ni secretos en esta demo pública.

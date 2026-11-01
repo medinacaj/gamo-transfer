@@ -42,6 +42,7 @@ jobs:
           path: |
             /tmp/gamo-*.png
             /tmp/gamo-documento.pdf
+            /tmp/gamo-loading-baseline.json
           if-no-files-found: ignore
 
   cross-browser-smoke:

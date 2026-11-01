@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-flat-v10"));
+ assert.ok(html.includes("styles.css?v=20261101-canvas-v11"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -236,4 +236,21 @@ test("flat card layers preserve shadows and hover on individual cards",()=>{
  const elevated=css.slice(css.indexOf("/* GAMO CARDS DEPTH v1"),css.indexOf("/* GAMO SINGLE-LEVEL CARDS v1"));
  assert.match(elevated,/--gamo-card-shadow-hover:/);
  assert.match(elevated,/translateY\(-2px\)/);
+});
+
+
+test("page canvas differs from cards in both themes without introducing nested frames",()=>{
+ const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
+ assert.match(css,/--canvas: #d6e1eb;/);
+ assert.match(css,/--canvas:#091622;/);
+ assert.match(css,/background: var\(--canvas\)/);
+ assert.match(css,/body\[data-theme="dark"\] \{ background-color: var\(--canvas\); \}/);
+ assert.match(css,/\.workspace, #content \{ background-color: transparent; \}/);
+ assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
+ assert.match(css,/GAMO CARDS DEPTH v1/);
+ const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
+ const luminance=h=>{const [r,g,b]=srgb(h);return .2126*r+.7152*g+.0722*b;};
+ const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+ assert.ok(contrast("#d6e1eb","#ffffff")>=1.35);
+ assert.ok(contrast("#091622","#1d3446")>=1.45);
 });

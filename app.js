@@ -291,7 +291,16 @@
     confirmed=upcoming.filter(b=>b.status==="Confirmado").length,
     availableDrivers=state.drivers.filter(d=>d.status==="Disponible").length,
     operationalVehicles=state.vehicles.filter(v=>v.status==="Operativo").length,
-    margin=m.incomeARS-m.costARS;
+    margin=m.incomeARS-m.costARS,
+    selectedService=upcoming.find(b=>b.id===dashboardSelectionId)||upcoming[0],
+    selectedId=selectedService?.id||"",
+    weekCounts=Array.from({length:7},(_,n)=>{
+      const d=new Date(today+"T12:00:00Z");
+      d.setUTCDate(d.getUTCDate()+n);
+      return {key:d.toISOString().slice(0,10),count:upcoming.filter(b=>b.date.startsWith(d.toISOString().slice(0,10))).length};
+    }),
+    weekTotal=weekCounts.reduce((sum,d)=>sum+d.count,0),
+    weekMax=Math.max(1,...weekCounts.map(d=>d.count));
   const route=nextService
     ? `<div class="dashboard-route-text"><span class="route-eyebrow">PRÓXIMO RECORRIDO · DEMO</span>
       <strong>${esc(nextService.origin)} <span aria-hidden="true">→</span> ${esc(nextService.destination)}</strong>
@@ -308,18 +317,19 @@
     : '<div class="dashboard-all-clear">No hay alertas de asignación en los próximos servicios.</div>';
   return (
     `<header class="operations-intro" aria-label="Centro de operaciones">
-<div class="operations-intro-copy">
-<span class="operations-kicker"><span class="operations-kicker-dot" aria-hidden="true"></span> GAMO TRANSFER · VISTA OPERATIVA</span>
-<h1>Centro de operaciones</h1>
-<p>Despacho, seguimiento de servicios y resultados comerciales en una sola vista.</p>
-<div class="operations-intro-actions">${btn("Nueva reserva","booking","","accent")}<a class="operations-secondary-link" href="#/agenda">Consultar agenda <span aria-hidden="true">↗</span></a></div>
-</div>
-<div class="operations-hero-stat" aria-label="Servicios programados hoy">
-<span class="operations-hero-label">SERVICIOS DE HOY</span>
-<strong class="operations-hero-value">${daily.length}</strong>
-<span class="operations-hero-foot">Fecha local de Argentina</span>
-<div class="operations-hero-meta"><span>${confirmed} confirmados próximos</span><span>${missing.length} alertas por revisar</span></div>
-</div></header>`+
+      <div class="operations-photo" aria-hidden="true"></div>
+      <div class="operations-intro-copy">
+        <span class="operations-kicker"><span class="operations-kicker-dot" aria-hidden="true"></span> TRANSPORTE EJECUTIVO · GAMO TRANSFER</span>
+        <h1>Centro de<br>operaciones</h1>
+        <p>Despacho, seguimiento de servicios y resultados comerciales en una sola vista.</p>
+        <div class="operations-intro-actions">${btn("Nueva reserva","booking","","accent")}<a class="operations-secondary-link" href="#/agenda">Consultar agenda completa →</a></div>
+      </div>
+      <div class="operations-hero-stat" aria-label="Próximos siete días">
+        <span class="operations-hero-label">SERVICIOS · PRÓXIMOS 7 DÍAS</span>
+        <strong class="operations-hero-value">${weekTotal}</strong>
+        <span class="operations-hero-foot">Reservas próximas sin cancelar ni completar</span>
+        <div class="operations-week-bars" aria-label="Distribución de servicios por día">${weekCounts.map((d,i)=>`<span class="operations-week-col" title="${esc(d.key)}: ${d.count} servicio(s)"><i style="height:${Math.max(8,Math.round(d.count/weekMax*100))}%"></i><small>${["Hoy","+1","+2","+3","+4","+5","+6"][i]}</small></span>`).join("")}</div>
+      </div></header>`+
     `<div class="dashboard-environment-note"><strong>ENTORNO DE DEMOSTRACIÓN</strong><span>Los indicadores operativos y financieros siguen utilizando datos ficticios guardados en este navegador.</span><a href="#/reportes-agencias">Consultar histórico documentado →</a></div>`+
     `<section class="dashboard-zone dashboard-zone-ops" aria-label="Operación y despacho"><div class="dashboard-section-heading"><div><span class="eyebrow">PRIORIDAD OPERATIVA</span><h2>Operación y despacho</h2></div><a class="mini-link" href="#/agenda">Ver agenda completa →</a></div>`+
     `<div class="dashboard-ops-overview"><div class="grid-kpi ops-kpis">

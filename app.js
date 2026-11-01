@@ -320,7 +320,7 @@
       <div class="operations-photo" aria-hidden="true"></div>
       <div class="operations-intro-copy">
         <span class="operations-kicker"><span class="operations-kicker-dot" aria-hidden="true"></span> TRANSPORTE EJECUTIVO · GAMO TRANSFER</span>
-        <h1>Centro de<br>operaciones</h1>
+        <h1>Centro de <br>operaciones</h1>
         <p>Despacho, seguimiento de servicios y resultados comerciales en una sola vista.</p>
         <div class="operations-intro-actions">${btn("Nueva reserva","booking","","accent")}<a class="operations-secondary-link" href="#/agenda">Consultar agenda completa →</a></div>
       </div>

@@ -353,7 +353,7 @@ test("operational home uses distinct Apple-style composition rather than the old
  assert.ok(page.indexOf('class="operations-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-ops"'));
  assert.ok(page.indexOf('class="history-ledger-intro"')<page.indexOf('class="dashboard-zone dashboard-zone-finance"'));
  assert.equal((page.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
- const ops=page.slice(page.indexOf('class="dashboard-ops-overview"'),page.indexOf('class="dashboard-main dashboard-operations"'));
+ const ops=page.slice(page.indexOf('class="dashboard-ops-overview"'),page.indexOf('class="dashboard-main dashboard-operations dashboard-triad"'));
  assert.equal((ops.match(/class="kpi"/g)||[]).length,4);
  assert.match(page,/class="operations-service-list"/);
  const finance=page.slice(page.indexOf('class="dashboard-finance-layout"'));

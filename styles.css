@@ -2764,3 +2764,80 @@ body[data-density="compact"] .table-scroll .data-table tbody td{padding:var(--ce
 .skip-link:focus-visible{transform:translateY(0);opacity:1;pointer-events:auto;outline:3px solid #2ba4d1;outline-offset:2px}
 body[data-theme="dark"] .skip-link{background:#1e394e;color:#eff7ff;border-color:#98d8f2}
 @media(prefers-reduced-motion:reduce){.skip-link{transition:none}}
+
+
+/* GAMO CARDS DEPTH v1
+   Profundidad sobria: sin bordes decorativos, franjas ni brillos artificiales.
+   Reglas al final para prevalecer sobre las capas de estilos anteriores. */
+body {
+  --gamo-card-shadow: 0 2px 5px rgba(14, 39, 59, .07),
+                      0 6px 16px rgba(14, 39, 59, .055);
+  --gamo-card-shadow-hover: 0 5px 12px rgba(14, 39, 59, .11),
+                            0 14px 28px rgba(14, 39, 59, .085);
+  --gamo-panel-shadow: 0 3px 10px rgba(14, 39, 59, .065),
+                       0 9px 23px rgba(14, 39, 59, .04);
+  --gamo-panel-shadow-hover: 0 5px 15px rgba(14, 39, 59, .09),
+                             0 12px 28px rgba(14, 39, 59, .065);
+}
+body[data-theme="dark"] {
+  --gamo-card-shadow: 0 3px 8px rgba(0, 0, 0, .20),
+                      0 9px 20px rgba(0, 0, 0, .12);
+  --gamo-card-shadow-hover: 0 6px 17px rgba(0, 0, 0, .31),
+                            0 16px 32px rgba(0, 0, 0, .20);
+  --gamo-panel-shadow: 0 3px 11px rgba(0, 0, 0, .16),
+                       0 9px 23px rgba(0, 0, 0, .10);
+  --gamo-panel-shadow-hover: 0 6px 16px rgba(0, 0, 0, .25),
+                             0 12px 28px rgba(0, 0, 0, .16);
+}
+/* Tarjetas y fichas interiores */
+body :is(.kpi, .entity-card, .stat-pill, .history-source-item,
+         .agency-meta > div, .agency-subpanel, .agenda-day),
+body .dashboard-zone :is(.kpi, .history-source-item) {
+  box-shadow: var(--gamo-card-shadow);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+/* Paneles grandes tienen menor elevación y no se mueven. */
+body .panel,
+body .dashboard-zone .panel {
+  box-shadow: var(--gamo-panel-shadow);
+  transition: box-shadow 180ms ease;
+}
+/* El hover solo se ejecuta con ratón o trackpad, nunca por un toque. */
+@media (hover: hover) and (pointer: fine) {
+  body :is(.kpi, .entity-card, .stat-pill, .history-source-item,
+           .agency-meta > div, .agency-subpanel, .agenda-day):hover,
+  body .dashboard-zone :is(.kpi, .history-source-item):hover {
+    box-shadow: var(--gamo-card-shadow-hover);
+    transform: translateY(-2px);
+  }
+  body .panel:hover,
+  body .dashboard-zone .panel:hover {
+    box-shadow: var(--gamo-panel-shadow-hover);
+  }
+}
+/* Las tarjetas que contienen controles también responden al teclado. */
+body :is(.entity-card, .agenda-day, .agency-subpanel,
+         .history-source-item):focus-within,
+body .dashboard-zone :is(.history-source-item):focus-within {
+  box-shadow: var(--gamo-card-shadow-hover);
+}
+body .panel:focus-within,
+body .dashboard-zone .panel:focus-within {
+  box-shadow: var(--gamo-panel-shadow-hover);
+}
+@media (prefers-reduced-motion: reduce) {
+  body :is(.kpi, .entity-card, .stat-pill, .history-source-item,
+           .agency-meta > div, .agency-subpanel, .agenda-day, .panel),
+  body .dashboard-zone :is(.kpi, .history-source-item, .panel) {
+    transition: none;
+    transform: none;
+  }
+}
+@media print {
+  body :is(.kpi, .entity-card, .stat-pill, .history-source-item,
+           .agency-meta > div, .agency-subpanel, .agenda-day, .panel),
+  body .dashboard-zone :is(.kpi, .history-source-item, .panel) {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}

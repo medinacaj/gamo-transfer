@@ -3220,7 +3220,10 @@ body .sidebar {
   border-right: 1px solid var(--duna-outline);
   box-shadow: none;
 }
-.sidebar .brand-logo, .top-brand-logo { filter: grayscale(1); }
+.sidebar .brand-logo, .top-brand-logo,
+.agency-document-header .agency-gamo-logo,
+.agency-partner img,
+.agency-document-footer img { filter: grayscale(1); }
 .sidebar .brand-logo { background: transparent; }
 .sidebar .nav-caption,
 .sidebar .nav-group-label,

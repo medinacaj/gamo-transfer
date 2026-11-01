@@ -2969,14 +2969,3 @@ body[data-theme="dark"] .agency-document .agency-meta > div:hover {
   .panel.panel--collection{border:0!important;box-shadow:none!important}
   .history-source-flat .history-source-grid{padding:0!important}
 }
-
-/* GAMO CANVAS CONTRAST v1
-   Superficie de aplicación separada de las tarjetas. Sin marcos anidados,
-   franjas decorativas, brillos ni cambios al diseño de las tarjetas. */
-body { background-color: var(--canvas); }
-body[data-theme="dark"] { background-color: var(--canvas); }
-/* Workspace remains transparent, allowing the canvas to reach all modules. */
-.workspace, #content { background-color: transparent; }
-@media print {
-  body, body[data-theme="dark"] { background-color: #fff !important; }
-}

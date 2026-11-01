@@ -99,7 +99,7 @@ root.GamoAgencyReports={
     $("#csv").addEventListener("click",()=>{
      const s=samples[$("#agency").value],headers=["N","Agencia","Conductor","Guia","Servicio","Fecha","Hora","Origen","Destino","Vehiculo","Observacion","Parking","Tarifa base","Precio total"];
      const lines=[headers,...activeRows.map((r,i)=>[i+1,s.name,r[7],r[6],r[8],r[0]+"/2026",r[1],r[2],r[3],"STANDARD",r[9],r[5],r[4],r[4]+r[5]+r[6]])];
-     const escapeCSV=(v)=>{const val=String(v??"");const safe=/^[=+\-@\t\r]/.test(val)?"'"+val:val;return '"'+safe.replace(/"/g,'""')+'"';};
+     const escapeCSV=(v)=>{const val=String(v??"");const safe=/^\s*[=+\-@\t\r]/.test(val)?"'"+val:val;return '"'+safe.replace(/"/g,'""')+'"';};
      const csv="\ufeff"+lines.map((r)=>r.map(escapeCSV).join(";")).join("\r\n");
      const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Gamo_Historico_"+$("#agency").value+"_Oct2026.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
     });

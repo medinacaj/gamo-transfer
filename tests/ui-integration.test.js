@@ -13,12 +13,13 @@ function mount(savedState=null){
   const node=selector=>{
     if(!nodes.has(selector))nodes.set(selector,{
       id:selector.replace(/^#/,""),value:"",textContent:"",innerHTML:"",
-      classList:{toggle(){},remove(){},add(){}},setAttribute(){},removeAttribute(){},
+      classList:{toggle(){},remove(){},add(){}},setAttribute(key,value){this.attrs??={};this.attrs[key]=value;},removeAttribute(){},
       addEventListener(){},focus(){},append(){}
     });
     return nodes.get(selector);
   };
   const document={
+    title:"",
     body:{dataset:{},classList:{toggle(){},remove(){},add(){}}},
     querySelector:node,querySelectorAll(){return[];},
     getElementById:id=>node("#"+id),
@@ -37,8 +38,17 @@ function mount(savedState=null){
   };
   const localStorage={getItem(key){return key==="gamo.demo.v1" && savedState ? JSON.stringify(savedState) : null;},setItem(){}};
   vm.runInNewContext(src,{window,document,location,localStorage,setTimeout,Intl,Date,structuredClone,console});
-  return {nodes,node,location,docListeners,winListeners};
+  return {nodes,node,location,docListeners,winListeners,document};
 }
+test("route changes update the browser title and accessible main-region name",()=>{
+ const {node,location,winListeners,document}=mount();
+ assert.equal(document.title,"Resumen | GAMO TRANSFER");
+ assert.equal(node("#content").attrs["aria-label"],"Resumen — GAMO TRANSFER");
+ location.hash="#/clientes";
+ winListeners.get("hashchange")();
+ assert.equal(document.title,"Empresas | GAMO TRANSFER");
+ assert.equal(node("#content").attrs["aria-label"],"Empresas — GAMO TRANSFER");
+});
 test("main dashboard prioritizes operations, separates demo and history",()=>{
  const {node}=mount();
  const content=node("#content").innerHTML;

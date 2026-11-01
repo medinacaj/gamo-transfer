@@ -8,6 +8,7 @@ const source = fs.readFileSync(path.join(__dirname, "..", "agency-reports.js"), 
 
 function load() {
   const elements = new Map();
+  const exported = [];
   const document = {
     querySelector(selector) {
       if (!elements.has(selector)) {
@@ -32,11 +33,11 @@ function load() {
     window: {},
     document,
     setTimeout() {},
-    Blob: class { constructor() {} },
+    Blob: class { constructor(parts) { exported.push(parts.join('')); } },
     URL: { createObjectURL() { return "blob:test"; }, revokeObjectURL() {} }
   };
   vm.runInNewContext(source, sandbox);
-  return { api: sandbox.window.GamoAgencyReports, elements, document };
+  return { api: sandbox.window.GamoAgencyReports, elements, document, exported };
 }
 
 test("GP Travel: Excel has 22 services and source-faithful amounts", () => {
@@ -113,4 +114,20 @@ test("detail and executive reports provide field labels for no-scroll layout",()
  document.querySelector("#mode").trigger("change");
  assert.match(document.querySelector("#body").innerHTML,/data-label="DESTINO"/);
  assert.doesNotMatch(document.querySelector("#body").innerHTML,/data-label="TARIFA BASE"/);
+});
+
+test("CSV export contains all documented rows without losing monetary values",()=>{
+  const {api,document,exported}=load();
+  api.mount();
+  document.querySelector("#csv").trigger("click");
+  assert.equal(exported.length,1);
+  const lines=exported[0].trim().split(/\r\n/);
+  assert.equal(lines.length,23); // Encabezado + 22 servicios
+  assert.match(lines[0],/Agencia/);
+  assert.match(lines[0],/Tarifa base/);
+  assert.match(lines[1],/GP TRAVEL/);
+  document.querySelector("#agency").value="summa";
+  document.querySelector("#agency").trigger("change");
+  document.querySelector("#csv").trigger("click");
+  assert.equal(exported[1].trim().split(/\r\n/).length,12);
 });

@@ -80,6 +80,23 @@ class DemoTest(unittest.TestCase):
     for excess in checks['agenda']:
      self.assertLessEqual(excess,2,(width,route,'agenda',excess))
 
+ def test_invalid_route_and_modal_focus_isolation(self):
+  self.page.goto('http://127.0.0.1:8765/#/constructor')
+  expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
+  self.navigate('reservas')
+  self.page.get_by_role('button',name='Nueva reserva',exact=True).click()
+  expect(self.page.locator('[role=dialog]')).to_be_visible()
+  self.assertTrue(self.page.evaluate("document.querySelector('#shell').inert"))
+  self.page.keyboard.press('Escape')
+  expect(self.page.locator('[role=dialog]')).to_have_count(0)
+  self.assertFalse(self.page.evaluate("document.querySelector('#shell').inert"))
+  self.navigate('clientes')
+  self.page.get_by_role('button',name='Ver cuenta',exact=True).first.click()
+  expect(self.page.locator('[role=dialog]')).to_be_visible()
+  self.assertTrue(self.page.evaluate("document.querySelector('#shell').inert"))
+  self.page.get_by_role('button',name='Cerrar',exact=True).click()
+  self.assertFalse(self.page.evaluate("document.querySelector('#shell').inert"))
+
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:

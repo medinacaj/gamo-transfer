@@ -63,3 +63,8 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published version and public resources
+        env:
+          DEPLOY_URL: ${{ steps.deployment.outputs.page_url }}
+          BUILD_SHA: ${{ github.sha }}
+        run: python3 scripts/verify_deployment.py "$DEPLOY_URL" "$BUILD_SHA"

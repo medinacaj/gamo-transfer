@@ -29,6 +29,9 @@ jobs:
           node --check agency-reports.js
           node --check ui-preferences.js
           node --check domain.js
+
+      - name: Check deploy-verification and browser-test syntax
+        run: python3 -m py_compile scripts/verify_deployment.py tests/browser.py
       - name: Prepare static website
         run: |
           mkdir _site

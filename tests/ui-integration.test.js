@@ -241,8 +241,8 @@ test("flat card layers preserve shadows and hover on individual cards",()=>{
 
 test("page canvas differs from cards in both themes without introducing nested frames",()=>{
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
- assert.match(css,/--canvas: #d6e1eb;/);
- assert.match(css,/--canvas:#091622;/);
+ assert.match(css,/--canvas: #cedbe6;/);
+ assert.match(css,/--canvas:#07131e;/);
  assert.match(css,/background: var\(--canvas\)/);
  assert.match(css,/body\[data-theme="dark"\] \{ background-color: var\(--canvas\); \}/);
  assert.match(css,/\.workspace, #content \{ background-color: transparent; \}/);
@@ -251,6 +251,6 @@ test("page canvas differs from cards in both themes without introducing nested f
  const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
  const luminance=h=>{const [r,g,b]=srgb(h);return .2126*r+.7152*g+.0722*b;};
  const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
- assert.ok(contrast("#d6e1eb","#ffffff")>=1.35);
- assert.ok(contrast("#091622","#1d3446")>=1.45);
+ assert.ok(contrast("#cedbe6","#ffffff")>=1.35);
+ assert.ok(contrast("#07131e","#1d3446")>=1.45);
 });

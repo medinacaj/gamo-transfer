@@ -251,3 +251,10 @@ El workflow `Browser QA - Gamo Transfer` mantiene la suite completa de Chromium 
 La suite completa de Chromium incorpora `test_local_loading_baseline`. Produce el artefacto `gamo-loading-baseline.json` con los tiempos DOMContentLoaded/load, cantidad de recursos solicitados y bytes transferidos en el servidor HTTP local de pruebas. Se adjunta junto con las capturas visuales en cada ejecución de `Browser QA`.
 
 Estas métricas sirven para comparar versiones en condiciones similares de CI. **No** representan mediciones de usuarios reales, resultados certificados de Core Web Vitals ni garantía de rendimiento en producción. El workflow sigue pendiente de resultado verificado en GitHub Actions.
+
+
+### Estabilización de estilos del resumen
+
+Se eliminó la antigua definición de contenedor con fondo, borde, radio y sombra en `.dashboard-zone`, junto con reglas heredadas de márgenes para densidad compacta y pantalla móvil que ya habían sido reemplazadas por la jerarquía editorial actual. Se preservaron las variables utilizadas por tarjetas y encabezados, los separadores neutros, los títulos sin numeración y la reducción de densidad. Se añadió una prueba de regresión para impedir que regrese la antigua tarjeta exterior.
+
+La consolidación de otras reglas CSS requiere comparación visual real de antes/después. No se ha ejecutado una transformación masiva sin ese control, para evitar alterar el diseño aprobado.

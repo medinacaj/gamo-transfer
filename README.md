@@ -25,6 +25,20 @@ El tema visual se inspira en la referencia de **Apple** compartida para el proye
 
 El estilo vigente está en `styles.css` bajo `GAMO APPLE-INSPIRED OPERATIONS v1` (reemplaza por completo al bloque Duna). Se utilizan fuentes del sistema/Inter; no se distribuyen SF Pro ni archivos de fuentes de terceros.
 
+## Rediseño estructural del Centro de operaciones (2026-11-01)
+
+Esta iteración **modifica la composición del inicio**, no solo la paleta:
+
+- **Escenario operativo:** el encabezado tradicional pasa a ser una superficie oscura independiente con título de mayor escala, acciones directas, cifra principal de servicios de hoy y contexto operativo a la derecha. No es un contenedor para otras tarjetas.
+- **Señales de despacho:** las alertas, reservas confirmadas y recursos disponibles se reúnen en tres tarjetas compactas; el próximo recorrido ocupa un módulo de otro tamaño junto a ellas.
+- **Próximos servicios y atención:** el listado se mantiene sin marco exterior y las alertas conservan su propio panel lateral, evitando recuadros anidados.
+- **Histórico documental:** una cifra protagonista muestra el total de servicios y a su lado aparecen los registros de GP Travel y Grupo Summa. Se preservan sus importes originales y la nota de conciliación.
+- **Finanzas tipo bento:** cuatro indicadores se organizan en dos columnas junto al gráfico de evolución, en lugar de tener una fila de cuatro tarjetas encima de un gráfico de ancho completo. Alternancia de superficies claras y oscuras, sin convertir los contenedores exteriores en tarjetas.
+- **Responsive:** composición de escritorio, tablet y móvil; la vista compacta conserva la misma información con menor altura.
+- **Calidad:** cambios en `app.js` y `styles.css`, nuevos tests de estructura, HTML balanceado y pruebas Chromium de disposición/colores pendientes de ejecución real. La versión `20261101-layout-v16` evita servir archivos anteriores desde caché.
+
+No se han alterado rutas, la lógica de facturación, el almacenamiento ni los datos comerciales.
+
 ## Ejecutar
 
 Desde la raíz del repositorio:

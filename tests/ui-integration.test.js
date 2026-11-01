@@ -8,7 +8,7 @@ const D=require("../domain.js");
 const root=path.join(__dirname,"..");
 const src=fs.readFileSync(path.join(root,"app.js"),"utf8");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
-function mount(){
+function mount(savedState=null){
   const nodes=new Map(), docListeners=new Map(),winListeners=new Map();
   const node=selector=>{
     if(!nodes.has(selector))nodes.set(selector,{
@@ -32,7 +32,7 @@ function mount(){
     ]},
     addEventListener(name,fn){winListeners.set(name,fn);}
   };
-  const localStorage={getItem(){return null;},setItem(){}};
+  const localStorage={getItem(key){return key==="gamo.demo.v1" && savedState ? JSON.stringify(savedState) : null;},setItem(){}};
   vm.runInNewContext(src,{window,document,location,localStorage,setTimeout,Intl,Date,structuredClone,console});
   return {nodes,node,location,docListeners,winListeners};
 }
@@ -140,4 +140,15 @@ test("both modal types use inert background and restore it on close",()=>{
  const app=fs.readFileSync(path.join(root,"app.js"),"utf8");
  assert.equal((app.match(/if \(shell\) shell\.inert = true/g)||[]).length,2);
  assert.equal((app.match(/if \(shell\) shell\.inert = false/g)||[]).length,1);
+});
+
+test("persisted HTML payload is escaped before rendering customer names",()=>{
+ const saved=D.seed("2026-11-01");
+ saved.companies[0].name='<img src=x onerror=alert(1)>';
+ const {node,location,winListeners}=mount(saved);
+ location.hash="#/clientes";
+ winListeners.get("hashchange")();
+ const content=node("#content").innerHTML;
+ assert.ok(content.includes("&lt;img src=x onerror=alert(1)&gt;"));
+ assert.ok(!content.includes('<img src=x onerror=alert(1)>'));
 });

@@ -244,8 +244,8 @@ test("page canvas differs from cards in both themes without introducing nested f
  assert.match(css,/--canvas: #cedbe6;/);
  assert.match(css,/--canvas:#07131e;/);
  assert.match(css,/background: var\(--canvas\)/);
- assert.match(css,/body\[data-theme="dark"\] \{ background-color: var\(--canvas\); \}/);
- assert.match(css,/\.workspace, #content \{ background-color: transparent; \}/);
+ assert.match(css,/background:var\(--canvas\);color:var\(--ink\);/);
+ assert.match(css,/\.dashboard-zone,\.dashboard-zone-ops,\.dashboard-zone-history,\.dashboard-zone-finance\{background:transparent/);
  assert.match(css,/GAMO SINGLE-LEVEL CARDS v1/);
  assert.match(css,/GAMO CARDS DEPTH v1/);
  const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);

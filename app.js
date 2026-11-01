@@ -1952,7 +1952,8 @@
     if (isMobileNavigation() && link?.getAttribute("href") === location.hash) {
       // Volver a seleccionar la sección activa también debe cerrar el menú.
       closeMobileMenu();
-      $("#content").focus();
+      $("#content").focus({ preventScroll: true });
+      window.scrollTo?.(0, 0);
     }
   });
   window.addEventListener("resize", syncMobileMenu);

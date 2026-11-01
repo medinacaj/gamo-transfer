@@ -2,20 +2,26 @@
 
 Demo comercial funcional para un operador argentino cuyos clientes contratan viajes para terceros. La **empresa contratante** recibe el documento y paga; los **pasajeros** reciben el traslado. No requiere backend, instalación de dependencias ni compilación.
 
-## Identidad corporativa
+## Identidad visual · Adaptación editorial Duna
 
-Paleta propuesta a partir del logo de GAMO TRANSFER, con colores planos y sin gradientes:
+La interfaz sigue la referencia editorial **Duna** proporcionada para este proyecto, adaptada a una aplicación de gestión. La marca, los módulos, los documentos y los datos permanecen identificados como **GAMO TRANSFER**. No se copia el logotipo Duna ni se distribuye la tipografía comercial GT America: se utiliza Inter y fuentes de sistema.
 
-| Color | Código | Uso |
+| Token / rol | Color | Aplicación |
 |---|---|---|
-| Azul marino | `#002B49` | Navegación, cabecera destacada y marca |
-| Azul corporativo | `#006BA0` | Botones, enlaces, gráficos y foco |
-| Celeste | `#009EDB` | Acentos decorativos |
-| Azul hielo | `#E7F3FA` | Fondos de avisos y selecciones |
-| Gris claro | `#F4F7FA` | Fondo general |
-| Blanco | `#FFFFFF` | Tarjetas y formularios |
+| Berenjena tinta | `#1B0624` | Titulares, información principal y navegación |
+| Espresso | `#160F0C` | Botones principales y superficies de acción |
+| Lino | `#F7F7F5` | Encabezados y superficies cálidas secundarias |
+| Lienzo adaptado | `#F1F0EC` | Fondo de la aplicación, ligeramente más contrastado que el lino |
+| Papel | `#FFFFFF` | Tarjetas e informes |
+| Hueso | `#EDECE7` | Iconos, avisos y superficies de apoyo |
+| Ceniza cálida | `#766A7C` | Etiquetas y textos secundarios |
+| Borde fino | `#D8D3CE` | Delimitación discreta de tarjetas y controles |
 
-El azul corporativo mantiene contraste con texto blanco. El celeste se reserva para detalles y no para texto pequeño sobre blanco. Verde, ámbar y rojo conservan significado funcional de éxito, advertencia y error.
+**Criterios aplicados:** botones tipo píldora (`999px`), tarjetas con radio `16px`, jerarquía editorial, casi monocromía, sombras muy pequeñas y elevación perceptible solo al pasar el puntero. El Centro de operaciones conserva sus tres bloques con separadores horizontales sin numeración ni marcos exteriores; las tablas adaptables y los metadatos se mantienen sin tarjetas anidadas.
+
+**Adaptaciones justificadas al contexto operativo:** el fondo es algo más contrastado que el lino literal de Duna, los estados de éxito/advertencia/error conservan colores discretos por motivos funcionales, y no se añade el paisaje acuarela de su portada porque desplazaría las métricas y las reservas. Se conserva el modo oscuro y la densidad compacta, con control de movimiento reducido e impresión limpia.
+
+La implementación está al final de `styles.css` bajo `GAMO DUNA EDITORIAL v1`. La hoja se sirve con una versión de caché independiente, sin cargar fuentes, scripts, imágenes ni dependencias de terceros. No se modificaron datos históricos ni comportamiento de exportación.
 
 ## Ejecutar
 

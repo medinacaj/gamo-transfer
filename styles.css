@@ -3501,3 +3501,433 @@ body[data-density="compact"] .dashboard-zone + .dashboard-zone { margin-top: 17p
   body[data-theme="dark"] :is(.kpi-value,.kpi-label,.kpi-foot,.history-source-money,.data-table th,.data-table td) { color: #1d1d1f !important; }
   body .dashboard-zone + .dashboard-zone { border-top-color: #aaa !important; }
 }
+
+
+/* GAMO OPERATIONS COMPOSITION v1
+   Structural redesign, not a palette switch: feature stage, signal rail,
+   dispatch workspace, documentary ledger and side-by-side finance bento.
+   Outer sections remain frameless; independent cards retain their hover. */
+body .operations-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(225px, .65fr);
+  gap: clamp(20px,3vw,52px);
+  align-items: stretch;
+  min-height: 248px;
+  padding: clamp(26px,3vw,42px);
+  margin: 0 0 18px;
+  background: linear-gradient(125deg,#000 12%,#1d1d1f 100%);
+  color: #f5f5f7;
+  border: 1px solid #323237;
+  border-radius: 28px;
+  box-shadow: 0 15px 38px rgba(0,0,0,.16);
+}
+.operations-intro-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.operations-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .105em;
+  color: #c4c4cc;
+}
+.operations-kicker-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #2997ff;
+  box-shadow: 0 0 0 4px rgba(41,151,255,.12);
+  flex: none;
+}
+body .operations-intro h1 {
+  margin: 13px 0 12px;
+  color: #f5f5f7;
+  font-size: clamp(34px,3.5vw,56px);
+  font-weight: 650;
+  letter-spacing: -.052em;
+  line-height: 1.05;
+}
+.operations-intro-copy>p {
+  max-width: 540px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #c0c0c9;
+}
+.operations-intro-actions {
+  display: flex;
+  gap: 13px 19px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 23px;
+}
+.operations-intro-actions .btn {
+  min-height: 41px;
+  padding-inline: 20px;
+}
+.operations-secondary-link {
+  color: #d8eaff;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 8px 0;
+}
+.operations-secondary-link:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.operations-hero-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4px 0 4px clamp(20px,2.6vw,38px);
+  border-left: 1px solid #414147;
+  min-width: 0;
+}
+.operations-hero-label {
+  color: #b4b4c0;
+  font-weight: 650;
+  font-size: 10px;
+  letter-spacing: .105em;
+}
+.operations-hero-value {
+  font-size: clamp(62px,6.3vw,100px);
+  font-weight: 600;
+  line-height: .99;
+  letter-spacing: -.07em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin: 5px 0 9px;
+}
+.operations-hero-foot { font-size: 12px; color: #bfc0cb; }
+.operations-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 19px;
+}
+.operations-hero-meta span {
+  font-size: 10px;
+  line-height: 1.45;
+  color: #e2e2eb;
+  padding: 6px 10px;
+  border: 1px solid #51515b;
+  border-radius: 999px;
+  background: #2b2b32;
+}
+/* Demo disclosure reads as metadata rather than another framed card. */
+body .dashboard-environment-note,
+body[data-theme="dark"] .dashboard-environment-note {
+  background: transparent;
+  border: 0;
+  padding: 3px 0 0;
+  border-radius: 0;
+  margin: 0 0 27px;
+  min-height: 0;
+  gap: 8px 13px;
+  color: var(--muted);
+}
+body .dashboard-environment-note strong,
+body[data-theme="dark"] .dashboard-environment-note strong {
+  font-size: 10px;
+  letter-spacing: .05em;
+  color: var(--ink);
+}
+body .dashboard-environment-note a,
+body[data-theme="dark"] .dashboard-environment-note a { color: var(--apple-link); }
+/* Operational signal rail: three narrow cards and a wider route module. */
+body .dashboard-ops-overview {
+  display: grid;
+  grid-template-columns: minmax(0,2fr) minmax(265px,.9fr);
+  gap: 17px;
+  align-items: stretch;
+  margin-bottom: 23px;
+}
+body .dashboard-ops-overview .ops-kpis {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  align-items: stretch;
+  gap: 13px;
+  margin: 0;
+}
+body .dashboard-ops-overview .ops-kpis .kpi {
+  min-height: 162px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.dashboard-ops-overview .kpi-top { align-items: flex-start; margin-bottom: 10px; }
+.dashboard-ops-overview .kpi-label { max-width: 130px; line-height: 1.35; }
+.dashboard-ops-overview .kpi-value { margin-top: auto; }
+.dashboard-ops-overview .kpi-foot { line-height: 1.45; }
+body .dashboard-ops-overview .dashboard-next-route,
+body[data-theme="dark"] .dashboard-ops-overview .dashboard-next-route {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  padding: 20px 21px;
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 1px solid var(--apple-stroke);
+  border-radius: 22px;
+  min-width: 0;
+}
+.dashboard-ops-overview .dashboard-route-text { width: 100%; gap: 8px; }
+.dashboard-ops-overview .dashboard-route-text strong {
+  font-size: clamp(15px,1.45vw,20px);
+  line-height: 1.35;
+  letter-spacing: -.025em;
+}
+.dashboard-ops-overview .dashboard-next-route .btn { align-self: flex-start; }
+body .dashboard-operations {
+  grid-template-columns: minmax(0,1.8fr) minmax(270px,.7fr);
+  gap: 20px;
+  align-items: start;
+  margin-top: 0;
+}
+body .dashboard-operations>.panel--collection {
+  min-width: 0;
+  align-self: stretch;
+}
+body .dashboard-operations>.panel--collection>.panel-head {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0 0 13px;
+}
+body .dashboard-operations .dashboard-alert-column .panel {
+  min-height: 230px;
+  border-radius: 22px;
+}
+body .dashboard-operations .alert-item { padding-block: 13px; }
+body .dashboard-zone .dashboard-section-heading {
+  align-items: flex-end;
+  margin-bottom: 19px;
+}
+body .dashboard-zone .dashboard-section-heading h2 {
+  font-size: clamp(22px,2.2vw,28px);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -.035em;
+}
+body .dashboard-zone + .dashboard-zone {
+  border-top: 1px solid var(--apple-stroke);
+  margin-top: 43px;
+  padding-top: 33px;
+}
+/* Historical section: a single large number plus independently readable rows. */
+body .history-source-flat.history-ledger,
+body .dashboard-zone .history-source-flat.history-ledger,
+body[data-theme="dark"] .history-source-flat.history-ledger {
+  display: grid;
+  grid-template-columns: minmax(230px,.65fr) minmax(0,1.6fr);
+  gap: 20px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+.history-ledger-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 232px;
+  padding: 26px;
+  background: #1d1d1f;
+  color: #f5f5f7;
+  border: 1px solid #3b3b42;
+  border-radius: 22px;
+}
+.history-ledger-eyebrow {
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: #d0d0d9;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.history-ledger-total {
+  font-size: clamp(64px,6vw,94px);
+  line-height: 1;
+  letter-spacing: -.06em;
+  font-weight: 600;
+  color: #fff;
+  margin: 7px 0 12px;
+  font-variant-numeric: tabular-nums;
+}
+.history-ledger-description {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #d0d0d9;
+  max-width: 270px;
+}
+.history-ledger-details { display: flex; flex-direction: column; gap: 13px; min-width: 0; }
+body .history-ledger .history-source-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px;
+  padding: 0;
+}
+body .history-ledger .history-source-item {
+  border-radius: 22px;
+  padding: 22px;
+  margin: 0;
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+.history-ledger .history-source-item strong { font-size: 18px; line-height: 1.3; }
+.history-ledger .history-source-money { font-size: clamp(20px,2vw,29px); line-height: 1.15; }
+body .history-ledger .history-source-foot {
+  padding: 0;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+/* Finance bento: four metrics beside the revenue evolution, not below it. */
+body .dashboard-finance-layout {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
+  gap: 20px;
+  align-items: stretch;
+}
+body .dashboard-finance-layout .financial-kpis {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-rows: repeat(2,minmax(180px,1fr));
+  gap: 14px;
+  margin: 0;
+}
+body .dashboard-finance-layout .financial-kpis .kpi {
+  padding: 21px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+body .dashboard-finance-layout .financial-kpis .kpi-value {
+  font-size: clamp(18px,1.7vw,25px);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+  margin-top: auto;
+}
+body .dashboard-finance-chart { min-width: 0; }
+body .dashboard-finance-chart>.panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+body .dashboard-finance-chart .chart-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-block: 16px 24px;
+}
+body .dashboard-finance-chart .bar-chart {
+  width: 100%;
+  min-height: 188px;
+  height: min(235px,100%);
+}
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(2),
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) {
+  background: #fff;
+  color: #1d1d1f;
+  border-color: #d0d0d5;
+}
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-value,
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-value { color: #1d1d1f; }
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-label,
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-label,
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-foot,
+body .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-foot { color: #565660; }
+/* Contrast in dark mode: the first and last finance metrics become porcelain. */
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(2),
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) {
+  background: #1d1d1f;
+  color: #f5f5f7;
+  border-color: #414149;
+}
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-value,
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-value { color: #f5f5f7; }
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-label,
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-label,
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-foot,
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-foot { color: #c7c7ce; }
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(2) .kpi-icon,
+body[data-theme="dark"] .dashboard-finance-layout .financial-kpis .kpi:nth-child(3) .kpi-icon { background: #303036; color: #65b7ff; }
+/* Compact mode compresses internal rhythm without sacrificing the grid. */
+body[data-density="compact"] .operations-intro { min-height: 192px; padding: 23px 29px; }
+body[data-density="compact"] .operations-intro h1 { font-size: 33px; }
+body[data-density="compact"] .operations-hero-value { font-size: 64px; }
+body[data-density="compact"] .dashboard-ops-overview .ops-kpis .kpi { min-height: 130px; padding: 13px; }
+body[data-density="compact"] .dashboard-ops-overview .dashboard-next-route { padding: 14px; }
+body[data-density="compact"] .history-ledger-intro { min-height: 180px; padding: 17px; }
+body[data-density="compact"] .history-ledger-total { font-size: 63px; }
+body[data-density="compact"] .history-ledger .history-source-item { padding: 15px; min-height: 140px; }
+body[data-density="compact"] .dashboard-finance-layout .financial-kpis { grid-template-rows: repeat(2,minmax(135px,1fr)); }
+body[data-density="compact"] .dashboard-finance-layout .financial-kpis .kpi { padding: 13px; }
+@media(max-width:1250px) {
+  body .dashboard-ops-overview { grid-template-columns: 1fr; }
+  body .dashboard-ops-overview .dashboard-next-route { flex-direction: row; align-items: center; gap: 20px; }
+  body .dashboard-finance-layout { grid-template-columns: 1fr; }
+  body .dashboard-finance-layout .financial-kpis { grid-template-rows: auto; }
+  body .dashboard-finance-layout .financial-kpis .kpi { min-height: 144px; }
+}
+@media(max-width:950px) {
+  body .operations-intro { grid-template-columns: minmax(0,1.5fr) minmax(175px,.7fr); }
+  body .dashboard-operations { grid-template-columns: 1fr; }
+  body .dashboard-operations .dashboard-alert-column .panel { min-height: 0; }
+  body .history-source-flat.history-ledger { grid-template-columns: 1fr; }
+  body .history-ledger-intro { min-height: 165px; }
+}
+@media(max-width:650px) {
+  body .operations-intro { grid-template-columns: minmax(0,1fr); gap: 23px; min-height: 0; padding: 23px; border-radius: 22px; }
+  body .operations-intro h1 { font-size: clamp(31px,9vw,41px); margin: 12px 0; }
+  body .operations-intro-copy>p { font-size: 13px; }
+  body .operations-hero-stat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 17px;
+    border-left: 0;
+    border-top: 1px solid #414147;
+    padding: 18px 0 0;
+  }
+  .operations-hero-value { grid-row: 1 / span 3; font-size: 71px; margin: 0; }
+  .operations-hero-meta { grid-column: 1/-1; margin-top: 10px; }
+  body .dashboard-ops-overview .ops-kpis { grid-template-columns: 1fr; gap: 9px; }
+  body .dashboard-ops-overview .ops-kpis .kpi { min-height: 0; padding: 17px; }
+  body .dashboard-ops-overview .dashboard-next-route { flex-direction: column; align-items: flex-start; }
+  body .history-ledger .history-source-grid { grid-template-columns: 1fr; }
+  body .dashboard-finance-layout .financial-kpis { grid-template-columns: 1fr; grid-template-rows: auto; }
+  body .dashboard-finance-layout .financial-kpis .kpi { min-height: 118px; }
+  body .dashboard-finance-chart .chart-area { padding: 10px 16px 18px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  body .operations-intro,body .history-ledger-intro { transition: none !important; }
+}
+@media print {
+  body .operations-intro,body .history-ledger-intro { background: #fff !important; border-color: #aaa !important; box-shadow: none !important; color: #111 !important; }
+  body .operations-intro :is(h1,p,strong,span,a),
+  body .history-ledger-intro :is(strong,span) { color: #111 !important; }
+  body .dashboard-finance-layout .financial-kpis .kpi { break-inside: avoid; }
+}

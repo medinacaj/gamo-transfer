@@ -256,13 +256,14 @@ test("page canvas differs from cards in both themes without introducing nested f
 });
 
 
-test("dashboard areas have clear numbered headings and one neutral separator",()=>{
+test("dashboard areas have clear unnumbered headings and one neutral separator",()=>{
  const {node}=mount();
  const content=node("#content").innerHTML;
  assert.equal((content.match(/class="dashboard-zone dashboard-zone-/g)||[]).length,3);
- for(const label of ["01 · PRIORIDAD OPERATIVA","02 · FUENTES DOCUMENTADAS","03 · GESTIÓN FINANCIERA"]){
+ for(const label of ["PRIORIDAD OPERATIVA","FUENTES DOCUMENTADAS","GESTIÓN FINANCIERA"]){
   assert.ok(content.includes(label),label);
  }
+ assert.doesNotMatch(content,/<span class="eyebrow">(?:01|02|03) ·/);
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
  const styles=css.slice(css.indexOf("/* GAMO DASHBOARD SEPARATORS + REAL COMPACT v1"));
  assert.match(styles,/\.dashboard-zone \+ \.dashboard-zone \{[\s\S]*?border-top: 1px solid #afb4b7;/);

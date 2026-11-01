@@ -237,3 +237,10 @@ Se incorporó `version-check.js` con ejecución ligera al abrir la web. El HTML 
 El workflow versiona automáticamente `version-check.js` junto con el resto de los scripts y CSS, y comprueba la marca del HTML público tras desplegar. Se añadieron `tests/version-check.test.js` (sincronización, ausencia de red, prevención de bucles, mantenimiento de ruta) y se ampliaron las pruebas del verificador Python. El detector se desactiva en entornos de desarrollo sin una marca de commit válida.
 
 El mecanismo **no garantiza que el navegador reciba por primera vez el nuevo detector** mientras siga cargando un HTML de una versión que aún no lo incluía. En ese caso, abrir la URL con un parámetro único de consulta o una ventana privada sigue siendo el procedimiento de recuperación hasta que se actualice la caché del HTML.
+
+
+### Compatibilidad de navegadores y evidencias visuales
+
+El workflow `Browser QA - Gamo Transfer` mantiene la suite completa de Chromium e incorpora un trabajo paralelo en **Firefox y WebKit** (motor utilizado por Safari) con pruebas de navegación y vista móvil. Se selecciona el navegador mediante `GAMO_BROWSER` y se evitan argumentos de ejecución exclusivos de Chromium en los otros motores. Las capturas producidas ante fallos se adjuntan a GitHub Actions.
+
+**Limitación:** usar WebKit sobre Linux sirve para detectar incompatibilidades del motor, pero no equivale a validar Safari real en macOS/iOS. Los resultados de estos trabajos seguirán pendientes hasta disponer de ejecuciones exitosas en el CI. Estos trabajos no bloquean el despliegue principal.

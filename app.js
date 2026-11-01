@@ -375,34 +375,34 @@
     <section class="panel" id="booking-results">${bookingTable([...state.bookings].sort((a,b)=>b.date.localeCompare(a.date)))}</section>`
   );
 }
+  function filteredBookings() {
+    const val = id => document.querySelector("#"+id)?.value || "";
+    const q = val("booking-search").trim().toLocaleLowerCase("es"),
+      status=val("booking-status"),company=val("booking-company"),
+      from=val("booking-from"),to=val("booking-to"),
+      origin=val("booking-origin").trim().toLocaleLowerCase("es"),
+      destination=val("booking-destination").trim().toLocaleLowerCase("es"),
+      driver=val("booking-driver"),vehicle=val("booking-vehicle");
+    return state.bookings
+      .filter(b=>
+        (!status || b.status===status) &&
+        (!company || b.companyId===company) &&
+        (!from || b.date.slice(0,10)>=from) &&
+        (!to || b.date.slice(0,10)<=to) &&
+        (!origin || b.origin.toLocaleLowerCase("es").includes(origin)) &&
+        (!destination || b.destination.toLocaleLowerCase("es").includes(destination)) &&
+        (!driver || b.driverId===driver) &&
+        (!vehicle || b.vehicleId===vehicle) &&
+        [b.id,b.passengers,cname(b.companyId),b.origin,b.destination,b.flight,b.status]
+          .join(" ").toLocaleLowerCase("es").includes(q)
+      )
+      .sort((a,b)=>b.date.localeCompare(a.date));
+  }
   function filterBookings() {
-  const val = id => document.querySelector("#"+id)?.value || "";
-  const q = val("booking-search").trim().toLocaleLowerCase("es"),
-    status=val("booking-status"),
-    company=val("booking-company"),
-    from=val("booking-from"),
-    to=val("booking-to"),
-    origin=val("booking-origin").trim().toLocaleLowerCase("es"),
-    destination=val("booking-destination").trim().toLocaleLowerCase("es"),
-    driver=val("booking-driver"),
-    vehicle=val("booking-vehicle");
-  const rows=state.bookings
-    .filter(b=>
-      (!status || b.status===status) &&
-      (!company || b.companyId===company) &&
-      (!from || b.date.slice(0,10)>=from) &&
-      (!to || b.date.slice(0,10)<=to) &&
-      (!origin || b.origin.toLocaleLowerCase("es").includes(origin)) &&
-      (!destination || b.destination.toLocaleLowerCase("es").includes(destination)) &&
-      (!driver || b.driverId===driver) &&
-      (!vehicle || b.vehicleId===vehicle) &&
-      [b.id,b.passengers,cname(b.companyId),b.origin,b.destination,b.flight,b.status]
-        .join(" ").toLocaleLowerCase("es").includes(q)
-    )
-    .sort((a,b)=>b.date.localeCompare(a.date));
-  $("#booking-results").innerHTML=bookingTable(rows);
-  $("#booking-count").textContent=`${rows.length} de ${state.bookings.length} servicios`;
-}
+    const rows = filteredBookings();
+    $("#booking-results").innerHTML=bookingTable(rows);
+    $("#booking-count").textContent=`${rows.length} de ${state.bookings.length} servicios`;
+  }
   function bookingForm(bid) {
     const b = state.bookings.find((x) => x.id === bid) || {
       date: D.today() + "T10:00",
@@ -1586,7 +1586,7 @@
         "Moneda",
         "Tarifa",
       ];
-      rows = state.bookings.map((b) => [
+      rows = (page === "reservas" ? filteredBookings() : state.bookings).map((b) => [
         b.id,
         b.date,
         cname(b.companyId),

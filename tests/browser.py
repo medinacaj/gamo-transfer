@@ -133,6 +133,30 @@ class DemoTest(unittest.TestCase):
    rows=list(csv.reader(f,delimiter=';'))
   self.assertEqual(len(rows),1)
 
+ def test_card_shadows_and_hover_in_light_and_dark(self):
+  # Comparar estilos computados: deben existir sombras y cambiar con el hover.
+  self.assertTrue(self.page.evaluate("matchMedia('(hover: hover) and (pointer: fine)').matches"))
+  for theme in ['light','dark']:
+   actual=self.page.locator('body').get_attribute('data-theme') or 'light'
+   if actual!=theme:
+    self.page.locator('[data-ui-preference="theme"]').click()
+   expect(self.page.locator('body')).to_have_attribute('data-theme',theme)
+   for selector in ['.kpi','.panel','.history-source-item']:
+    card=self.page.locator(selector).first
+    expect(card).to_be_visible()
+    self.page.mouse.move(0,0)
+    idle=card.evaluate('(el) => getComputedStyle(el).boxShadow')
+    card.hover()
+    active=card.evaluate('(el) => getComputedStyle(el).boxShadow')
+    self.assertNotEqual(idle,'none',(theme,selector,'missing shadow'))
+    self.assertNotEqual(idle,active,(theme,selector,'no hover effect'))
+  self.navigate('clientes')
+  card=self.page.locator('.entity-card').first
+  idle=card.evaluate('(el) => getComputedStyle(el).boxShadow')
+  card.hover()
+  active=card.evaluate('(el) => getComputedStyle(el).boxShadow')
+  self.assertNotEqual(idle,active,('dark','entity card','no hover effect'))
+
  def test_dashboard_and_navigation(self):
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   for route in ['reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes']:

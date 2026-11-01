@@ -438,7 +438,7 @@ class DemoTest(unittest.TestCase):
   self.assertTrue(self.page.locator('#sidebar').evaluate('el => el.inert'))
   menu.click()
   self.page.locator('#nav a[data-page="reservas"]').click()
-  expect(self.page.locator('h1')).to_have_text('Reservas')
+  expect(self.page.locator('h1')).to_have_text('Reservas y viajes')
   expect(self.page.locator('#content')).to_be_focused()
   expect(self.page.locator('#content')).to_have_attribute('aria-label','Reservas — GAMO TRANSFER')
   self.assertEqual(self.page.title(),'Reservas | GAMO TRANSFER')

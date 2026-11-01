@@ -48,37 +48,40 @@ class DemoTest(unittest.TestCase):
    self.assertEqual(self.errors,[])
   finally:
    self.context.close()
- def test_duna_editorial_colors_are_computed(self):
-  # Contrastar estilos reales, sin depender solo de la presencia de tokens CSS.
+ def test_apple_operational_palette_computed_in_both_themes(self):
+  # Browser CSS computed styles rather than presence of token strings.
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
   expect(self.page.locator('h1')).to_have_text('Centro de operaciones')
   expression="""() => {
     const style = selector => getComputedStyle(document.querySelector(selector));
     return {
-      canvas: style('body').backgroundColor,
-      card: style('.dashboard-zone .kpi').backgroundColor,
-      sidebar: style('.sidebar').backgroundColor,
-      button: style('.page-header .btn-accent').backgroundColor,
-      buttonRadius: style('.page-header .btn-accent').borderRadius,
-      cardShadow: style('.dashboard-zone .kpi').boxShadow,
-      nestedPanel: style('.dashboard-main .panel--collection').backgroundColor
+      canvas:style('body').backgroundColor,
+      operational:style('.dashboard-zone-ops .kpi:nth-child(2)').backgroundColor,
+      finance:style('.dashboard-zone-finance .kpi').backgroundColor,
+      sidebar:style('.sidebar').backgroundColor,
+      action:style('.page-header .btn-accent').backgroundColor,
+      actionRadius:style('.page-header .btn-accent').borderRadius,
+      shadow:style('.dashboard-zone-ops .kpi:nth-child(2)').boxShadow,
+      collection:style('.dashboard-main .panel--collection').backgroundColor
     };
   }"""
-  light=self.page.evaluate(expression)
-  self.assertEqual(light['canvas'],'rgb(241, 240, 236)')
-  self.assertEqual(light['card'],'rgb(255, 255, 255)')
-  self.assertEqual(light['sidebar'],'rgb(255, 255, 255)')
-  self.assertEqual(light['button'],'rgb(22, 15, 12)')
-  self.assertEqual(light['buttonRadius'],'999px')
-  self.assertNotEqual(light['cardShadow'],'none')
-  self.assertEqual(light['nestedPanel'],'rgba(0, 0, 0, 0)')
-  self.page.locator('[data-ui-preference="theme"]').click()
-  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
   dark=self.page.evaluate(expression)
-  self.assertEqual(dark['canvas'],'rgb(23, 19, 22)')
-  self.assertEqual(dark['card'],'rgb(41, 36, 40)')
-  self.assertEqual(dark['button'],'rgb(245, 238, 234)')
-  self.assertNotEqual(dark['cardShadow'],'none')
-  self.assertEqual(dark['nestedPanel'],'rgba(0, 0, 0, 0)')
+  self.assertEqual(dark['canvas'],'rgb(16, 16, 18)')
+  self.assertEqual(dark['operational'],'rgb(29, 29, 31)')
+  self.assertEqual(dark['finance'],'rgb(245, 245, 247)')
+  self.assertEqual(dark['sidebar'],'rgb(5, 5, 6)')
+  self.assertEqual(dark['action'],'rgb(0, 113, 227)')
+  self.assertEqual(dark['actionRadius'],'9999px')
+  self.assertNotEqual(dark['shadow'],'none')
+  self.assertEqual(dark['collection'],'rgba(0, 0, 0, 0)')
+  self.page.locator('[data-ui-preference="theme"]').click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','light')
+  light=self.page.evaluate(expression)
+  self.assertEqual(light['canvas'],'rgb(237, 237, 240)')
+  self.assertEqual(light['operational'],'rgb(255, 255, 255)')
+  self.assertEqual(light['finance'],'rgb(29, 29, 31)')
+  self.assertEqual(light['action'],'rgb(0, 113, 227)')
+  self.assertEqual(light['collection'],'rgba(0, 0, 0, 0)')
 
  def test_section_dividers_and_compact_mode_reduces_actual_height(self):
   # Esperar al resultado estable del render y al cómputo de CSS.
@@ -117,6 +120,9 @@ class DemoTest(unittest.TestCase):
  def test_theme_density_advanced_filters_and_report(self):
   theme=self.page.locator('[data-ui-preference="theme"]')
   density=self.page.locator('[data-ui-preference="density"]')
+  expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
+  theme.click()
+  expect(self.page.locator('body')).to_have_attribute('data-theme','light')
   theme.click()
   expect(self.page.locator('body')).to_have_attribute('data-theme','dark')
   density.click()

@@ -14,7 +14,7 @@ BASE = "https://example.test/gamo-transfer/"
 
 
 def valid_html():
-    return "\n".join(
+    return f'<meta name="gamo-build" content="{SHA}" />\n' + "\n".join(
         f'<script src="{name}?v={REV}"></script>' for name in VERIFY.ASSETS
     )
 
@@ -48,6 +48,12 @@ class DeploymentVerificationTests(unittest.TestCase):
     def test_missing_asset_is_rejected(self):
         with patch.object(VERIFY, "fetch", side_effect=response(size=5)):
             with self.assertRaisesRegex(ValueError, "incompleto"):
+                VERIFY.verify(BASE, SHA, 1)
+
+    def test_incorrect_html_build_marker_is_rejected(self):
+        html = valid_html().replace(SHA, "b" * 40)
+        with patch.object(VERIFY, "fetch", side_effect=response(html=html)):
+            with self.assertRaisesRegex(ValueError, "commit correcto"):
                 VERIFY.verify(BASE, SHA, 1)
 
 

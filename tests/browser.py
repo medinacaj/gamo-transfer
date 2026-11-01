@@ -19,10 +19,15 @@ class DemoTest(unittest.TestCase):
    cls.server.terminate()
    raise RuntimeError('No se pudo iniciar el servidor HTTP de pruebas')
   cls.pw=sync_playwright().start()
-  browser_path=os.environ.get('GAMO_CHROMIUM_PATH')
-  launch={'headless':True,'args':['--no-sandbox','--disable-dev-shm-usage']}
-  if browser_path: launch['executable_path']=browser_path
-  cls.browser=cls.pw.chromium.launch(**launch)
+  browser_name=os.environ.get('GAMO_BROWSER','chromium').lower()
+  if browser_name not in ('chromium','firefox','webkit'):
+   raise RuntimeError(f'GAMO_BROWSER no soportado: {browser_name}')
+  launch={'headless':True}
+  if browser_name=='chromium':
+   launch['args']=['--no-sandbox','--disable-dev-shm-usage']
+   browser_path=os.environ.get('GAMO_CHROMIUM_PATH')
+   if browser_path: launch['executable_path']=browser_path
+  cls.browser=getattr(cls.pw,browser_name).launch(**launch)
  @classmethod
  def tearDownClass(cls):
   cls.browser.close();cls.pw.stop();cls.server.terminate();cls.server.wait()

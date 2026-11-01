@@ -1,14 +1,28 @@
 """Pruebas funcionales con Chromium instalado. Ejecutar desde la raíz del repo."""
-import subprocess, time, unittest
+import os, subprocess, sys, time, unittest
+from urllib.request import urlopen
+from urllib.error import URLError
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
 class DemoTest(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.server=subprocess.Popen(['python3','-m','http.server','8765','--bind','127.0.0.1','--directory',str(Path(__file__).resolve().parents[2])],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+  cls.server=subprocess.Popen([sys.executable,'-m','http.server','8765','--bind','127.0.0.1','--directory',str(Path(__file__).resolve().parents[1])],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+  for attempt in range(40):
+   try:
+    with urlopen('http://127.0.0.1:8765/', timeout=1) as response:
+     if response.status == 200: break
+   except (URLError, TimeoutError):
+    time.sleep(.25)
+  else:
+   cls.server.terminate()
+   raise RuntimeError('No se pudo iniciar el servidor HTTP de pruebas')
   cls.pw=sync_playwright().start()
-  cls.browser=cls.pw.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--disable-dev-shm-usage','--no-proxy-server'])
+  browser_path=os.environ.get('GAMO_CHROMIUM_PATH')
+  launch={'headless':True,'args':['--no-sandbox','--disable-dev-shm-usage']}
+  if browser_path: launch['executable_path']=browser_path
+  cls.browser=cls.pw.chromium.launch(**launch)
  @classmethod
  def tearDownClass(cls):
   cls.browser.close();cls.pw.stop();cls.server.terminate();cls.server.wait()
@@ -16,7 +30,7 @@ class DemoTest(unittest.TestCase):
   self.context=self.browser.new_context(viewport={'width':1440,'height':1000},accept_downloads=True,reduced_motion='reduce')
   self.page=self.context.new_page();self.errors=[]
   self.page.on('pageerror',lambda error:self.errors.append(str(error)))
-  self.page.goto('http://127.0.0.1:8765/gamo-app/')
+  self.page.goto('http://127.0.0.1:8765/',wait_until='domcontentloaded')
  def tearDown(self):
   self.assertEqual(self.errors,[]);self.context.close()
  def test_theme_density_advanced_filters_and_report(self):
@@ -45,7 +59,7 @@ class DemoTest(unittest.TestCase):
 
  def test_no_horizontal_table_or_agenda_scroll(self):
   # All detail fields remain accessible; the table/card switches with panel width.
-  base='http://127.0.0.1:8765/gamo-app/#/'
+  base='http://127.0.0.1:8765/#/'
   for width in [390,768,1200,1600]:
    self.page.set_viewport_size({'width':width,'height':900})
    for route in ['inicio','reservas','agenda','clientes','conductores','vehiculos',

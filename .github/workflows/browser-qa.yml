@@ -43,3 +43,34 @@ jobs:
             /tmp/gamo-*.png
             /tmp/gamo-documento.pdf
           if-no-files-found: ignore
+
+  cross-browser-smoke:
+    name: Cross-browser smoke (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    env:
+      GAMO_BROWSER: ${{ matrix.browser }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright and browser
+        run: |
+          python -m pip install --disable-pip-version-check "playwright==1.55.0"
+          python -m playwright install --with-deps "$GAMO_BROWSER"
+      - name: Run cross-browser navigation and mobile smoke tests
+        run: |
+          python -m unittest discover -s tests -p browser.py -k test_dashboard_and_navigation -k test_mobile_navigation_no_page_overflow -v
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamo-${{ matrix.browser }}-screenshots
+          path: |
+            /tmp/gamo-*.png
+          if-no-files-found: ignore

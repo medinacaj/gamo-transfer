@@ -8,6 +8,7 @@
   --muted: #42576b;
   --line: #dfe8ef;
   --bg: #f4f7fa;
+  --canvas: #d6e1eb;
   --card: #fff;
   --shadow: 0 5px 25px rgba(25, 41, 63, 0.035);
   --radius: 15px;
@@ -25,7 +26,7 @@ html {
 }
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--canvas);
   font-family:
     Inter,
     ui-sans-serif,
@@ -2237,11 +2238,11 @@ body[data-density="compact"] .field-select{height:36px}
 /* Dark theme with independently legible surfaces and consistent semantic colors. */
 body[data-theme="dark"]{
   color-scheme:dark;
-  --ink:#e9f2fb;--muted:#bdcede;--line:#39536b;--bg:#0c1928;
+  --ink:#e9f2fb;--muted:#bdcede;--line:#39536b;--bg:#0c1928;--canvas:#091622;
   --card:#182a3b;--surface-raised:#14283a;--surface-soft:#1d3548;
   --surface-strong:#254257;--border-strong:#52718a;--text-secondary:#c5d5e3;
   --accent-soft:#234257;
-  background:var(--bg);color:var(--ink);
+  background:var(--canvas);color:var(--ink);
 }
 body[data-theme="dark"] .topbar,
 body[data-theme="dark"] .panel,
@@ -2967,4 +2968,16 @@ body[data-theme="dark"] .agency-document .agency-meta > div:hover {
 @media print{
   .panel.panel--collection{border:0!important;box-shadow:none!important}
   .history-source-flat .history-source-grid{padding:0!important}
+}
+
+/* GAMO CANVAS CONTRAST v1
+   Superficie de aplicación separada de las tarjetas. Sin marcos anidados,
+   franjas decorativas, brillos ni cambios al diseño de las tarjetas. */
+:root { --app-card-canvas: #d6e1eb; }
+body { background-color: var(--canvas); }
+body[data-theme="dark"] { --app-card-canvas: #091622; background-color: var(--canvas); }
+/* Workspace remains transparent, allowing the canvas to reach all modules. */
+.workspace, #content { background-color: transparent; }
+@media print {
+  body, body[data-theme="dark"] { background-color: #fff !important; }
 }

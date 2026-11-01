@@ -98,7 +98,7 @@ test("dashboard separation uses whitespace rather than decorative borders",()=>{
  const v5=css.slice(css.indexOf("/* JERARQUÍA EDITORIAL v5"));
  assert.ok(v5.includes("background:transparent;border:0;border-radius:0;box-shadow:none"));
  assert.doesNotMatch(v5,/border-(?:left|top):[34]px/);
- assert.ok(html.includes("styles.css?v=20261101-canvas-v11"));
+ assert.ok(html.includes("styles.css?v=20261101-neutral-v12"));
 });
 
 test("tables carry field labels for adaptive card layout",()=>{
@@ -241,8 +241,8 @@ test("flat card layers preserve shadows and hover on individual cards",()=>{
 
 test("page canvas differs from cards in both themes without introducing nested frames",()=>{
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
- assert.match(css,/--canvas: #cedbe6;/);
- assert.match(css,/--canvas:#07131e;/);
+ assert.match(css,/--canvas: #dadad8;/);
+ assert.match(css,/--canvas:#10100f;/);
  assert.match(css,/background: var\(--canvas\)/);
  assert.match(css,/background:var\(--canvas\);color:var\(--ink\);/);
  assert.match(css,/\.dashboard-zone,\s*\.dashboard-zone-ops,\s*\.dashboard-zone-history,\s*\.dashboard-zone-finance\{background:transparent/);
@@ -251,6 +251,6 @@ test("page canvas differs from cards in both themes without introducing nested f
  const srgb=h=>h.replace("#","").match(/../g).map(c=>parseInt(c,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
  const luminance=h=>{const [r,g,b]=srgb(h);return .2126*r+.7152*g+.0722*b;};
  const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
- assert.ok(contrast("#cedbe6","#ffffff")>=1.35);
- assert.ok(contrast("#07131e","#1d3446")>=1.45);
+ assert.ok(contrast("#dadad8","#ffffff")>=1.35);
+ assert.ok(contrast("#10100f","#1d3446")>=1.45);
 });

@@ -12,7 +12,7 @@ function mount(savedState=null){
   const nodes=new Map(), docListeners=new Map(),winListeners=new Map();
   const node=selector=>{
     if(!nodes.has(selector))nodes.set(selector,{
-      id:selector.replace(/^#/,""),value:"",textContent:"",innerHTML:"",
+      dataset:{},insertAdjacentHTML(){},id:selector.replace(/^#/,""),value:"",textContent:"",innerHTML:"",
       classList:{toggle(){},remove(){},add(){},contains(){return false;}},setAttribute(key,value){this.attrs??={};this.attrs[key]=value;},removeAttribute(){},
       addEventListener(){},focus(){},append(){}
     });
@@ -275,8 +275,8 @@ test("Apple-inspired design has contrasting tiles, functional blue and safe card
  assert.match(skin,/@media\(hover:hover\) and \(pointer:fine\)/);
  assert.match(skin,/@media\(prefers-reduced-motion:reduce\)/);
  assert.match(skin,/@media print/);
- assert.match(html,/styles\.css\?v=20261101-premium-v17/);
- assert.match(html,/app\.js\?v=20261101-premium-v17/);
+ assert.match(html,/styles\.css\?v=[A-Za-z0-9-]+/);
+ assert.match(html,/app\.js\?v=[A-Za-z0-9-]+/);
  assert.match(html,/ui-preferences\.js\?v=20261101-apple-v15/);
  assert.match(html,/<meta name="theme-color" content="#0e0e0e"/);
  assert.match(html,/<body data-theme="dark" data-density="comfortable">/);

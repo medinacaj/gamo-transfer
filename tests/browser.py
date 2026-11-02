@@ -48,6 +48,118 @@ class DemoTest(unittest.TestCase):
    self.assertEqual(self.errors,[])
   finally:
    self.context.close()
+ def test_editing_preserves_entity_and_booking_filters(self):
+  self.navigate('vehiculos')
+  self.page.locator('#entity-search').fill('Corolla')
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  self.page.get_by_role('button',name='Editar ficha',exact=True).click()
+  self.page.locator('#f-km').fill('20001')
+  self.save()
+  expect(self.page.locator('#entity-search')).to_have_value('Corolla')
+  expect(self.page.locator('#entity-results tbody tr')).to_have_count(1)
+  expect(self.page.locator('#entity-results')).to_contain_text('20001 km')
+  self.navigate('reservas')
+  self.page.locator('#booking-search').fill('Pasajero demo 19')
+  self.page.locator('#booking-advanced').evaluate('(e) => e.open=true')
+  self.page.get_by_role('button',name='Ver / editar',exact=True).click()
+  self.save()
+  expect(self.page.locator('#booking-search')).to_have_value('Pasajero demo 19')
+  self.assertTrue(self.page.locator('#booking-advanced').evaluate('(e) => e.open'))
+  expect(self.page.locator('#booking-results tbody tr')).to_have_count(1)
+
+ def test_agenda_without_alerts_is_not_marked_as_error(self):
+  self.navigate('agenda')
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  cells=self.page.locator('#agenda-results td[data-label="Alertas de despacho"]').filter(has_text='Sin alertas')
+  self.assertGreater(cells.count(),0)
+  expect(cells.locator('.negative')).to_have_count(0)
+
+ def test_agency_totals_keep_labels_in_cards_and_compact_list(self):
+  self.navigate('reportes-agencias')
+  for view in ('Tarjetas','Lista compacta'):
+   self.page.get_by_role('button',name=view,exact=True).click()
+   for label in ('Guías','Parking','Tarifa base','Precio total'):
+    cell=self.page.locator('#foot td[data-label="'+label+'"]')
+    expect(cell).to_be_visible()
+    self.assertEqual(cell.evaluate('(el) => getComputedStyle(el,"::before").content'), '"'+label+'"')
+   self.page.locator('#mode').select_option('ejecutivo')
+   expect(self.page.locator('#foot td[data-label="Precio total"]')).to_be_visible()
+   self.page.locator('#mode').select_option('detallado')
+
+ def test_collection_views_preserve_search_actions_and_section_preferences(self):
+  self.page.goto('http://127.0.0.1:8765/#/vehiculos')
+  search=self.page.locator('#entity-search')
+  search.fill('Corolla')
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  expect(search).to_have_value('Corolla')
+  expect(self.page.locator('#entity-results tbody tr')).to_have_count(1)
+  expect(self.page.locator('#entity-results')).to_contain_text('Toyota Corolla')
+  self.page.get_by_role('button',name='Editar ficha',exact=True).click()
+  expect(self.page.get_by_role('dialog')).to_be_visible()
+  self.page.keyboard.press('Escape')
+  self.page.get_by_role('button',name='Lista compacta',exact=True).click()
+  expect(self.page.locator('#entity-results .entity-card')).to_have_count(1)
+  search.fill('sin-coincidencias-xyz')
+  expect(self.page.locator('#entity-results')).to_contain_text('Sin coincidencias')
+  self.page.goto('http://127.0.0.1:8765/#/clientes')
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  self.page.goto('http://127.0.0.1:8765/#/vehiculos')
+  expect(self.page.get_by_role('button',name='Lista compacta',exact=True)).to_have_attribute('aria-pressed','true')
+  self.page.reload()
+  expect(self.page.get_by_role('button',name='Lista compacta',exact=True)).to_have_attribute('aria-pressed','true')
+  self.page.get_by_role('button',name='Tarjetas',exact=True).click()
+  expect(self.page.locator('#entity-results .entity-card')).to_have_count(8)
+
+ def test_collection_views_tolerate_corrupt_and_unwritable_preferences(self):
+  self.page.evaluate("localStorage.setItem('gamo.collection.views.v1','{broken')")
+  self.page.goto('http://127.0.0.1:8765/#/conductores')
+  self.page.reload()
+  self.page.evaluate("""() => {
+    const save=Storage.prototype.setItem;
+    Storage.prototype.setItem=function(key,value) {
+      if(key==='gamo.collection.views.v1') throw new DOMException('Blocked','SecurityError');
+      return save.call(this,key,value);
+    };
+  }""")
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  expect(self.page.locator('#entity-results tbody tr')).to_have_count(6)
+  self.page.get_by_role('button',name='Tarjetas',exact=True).click()
+  expect(self.page.locator('#entity-results .entity-card')).to_have_count(6)
+
+ def test_collection_views_keep_agenda_alerts_and_real_dashboard_tables(self):
+  self.page.goto('http://127.0.0.1:8765/#/agenda')
+  alerts=self.page.locator('#agenda-results .negative').all_text_contents()
+  expected=[text for text in alerts if text.strip()]
+  self.assertTrue(expected)
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  expect(self.page.locator('#agenda-results')).to_contain_text('Alertas de despacho')
+  for text in expected:
+   expect(self.page.locator('#agenda-results')).to_contain_text(text)
+  self.page.goto('http://127.0.0.1:8765/#/inicio')
+  self.page.get_by_role('button',name='Tabla',exact=True).click()
+  expect(self.page.locator('.operations-service-list table')).to_be_visible()
+  expect(self.page.locator('.history-ledger-details table')).to_be_visible()
+  self.page.locator('.operations-service-list [data-action="dashboard-select"]').nth(1).click()
+  expect(self.page.locator('.operations-service-list [data-action="dashboard-select"]').nth(1)).to_have_attribute('aria-pressed','true')
+  self.page.locator('#dashboard-service-detail [data-action="booking"]').click()
+  expect(self.page.get_by_role('dialog')).to_be_visible()
+
+ def test_collection_views_all_sections_and_mobile(self):
+  for route in ('inicio','reservas','agenda','conductores','vehiculos','clientes','facturacion','cobros','finanzas','reportes','reportes-agencias'):
+   self.page.goto('http://127.0.0.1:8765/#/'+route)
+   for view in ('Tarjetas','Tabla','Lista compacta'):
+    self.page.get_by_role('button',name=view,exact=True).click()
+    expect(self.page.get_by_role('button',name=view,exact=True)).to_have_attribute('aria-pressed','true')
+    self.page.set_viewport_size({'width':390,'height':844})
+    for theme in ('light','dark'):
+     self.page.evaluate('(theme) => window.GamoUI.setTheme(theme)',theme)
+     self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth-innerWidth'),1,route+' '+view+' '+theme)
+   if route=='agenda':
+    expect(self.page.locator('#agenda-view')).to_be_visible()
+    self.page.get_by_role('button',name='Tabla',exact=True).click()
+    expect(self.page.locator('#agenda-results table')).to_be_visible()
+   self.page.set_viewport_size({'width':1440,'height':1000})
+
  def test_premium_v2_palette_and_real_dashboard_controls(self):
   # Computed CSS; no invented business values or unlicensed interface assets.
   expect(self.page.locator('body')).to_have_attribute('data-theme','dark')

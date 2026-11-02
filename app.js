@@ -101,6 +101,39 @@
     `<span class="badge ${statusTone[text] || "neutral"}" title="Estado: ${esc(text)}"><span class="status-dot" aria-hidden="true"></span>${esc(text)}</span>`;
   const empty = (text) =>
     `<div class="empty"><strong>${esc(text)}</strong><span>Probá con otro período o creá un registro nuevo.</span></div>`;
+  const VIEW_KEY = "gamo.collection.views.v1";
+  const collectionViews = Object.create(null);
+  try {
+    const saved = JSON.parse(localStorage.getItem(VIEW_KEY) || "{}");
+    if (saved && typeof saved === "object") {
+      for (const [section, view] of Object.entries(saved)) {
+        if (["cards", "table", "list"].includes(view)) collectionViews[section] = view;
+      }
+    }
+  } catch {} // Visual preferences must never prevent using the application.
+  const collectionView = () => collectionViews[page] || "native";
+  function collectionControls() {
+    const nativeView = ["inicio", "agenda", "clientes", "conductores", "vehiculos"].includes(page) ? "cards" : "table";
+    const active = collectionViews[page] || nativeView;
+    return `<div class="collection-view-controls" role="group" aria-label="Vista de registros">${[
+      ["cards", "Tarjetas"], ["table", "Tabla"], ["list", "Lista compacta"],
+    ].map(([value, label]) => `<button type="button" class="btn btn-light" data-collection-view="${value}" aria-pressed="${value === active}">${label}</button>`).join("")}</div>`;
+  }
+  function setCollectionView(view) {
+    if (!["cards", "table", "list"].includes(view)) return;
+    collectionViews[page] = view;
+    try { localStorage.setItem(VIEW_KEY, JSON.stringify(collectionViews)); } catch {}
+    $("#content").dataset.collectionView = view;
+    document.querySelectorAll("button[data-collection-view]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.collectionView === view));
+    });
+    if (["clientes", "conductores", "vehiculos"].includes(page)) filterEntities();
+    if (page === "agenda") agendaResults();
+    if (page === "inicio") {
+      render();
+      document.querySelector(`button[data-collection-view="${view}"]`)?.focus();
+    }
+  }
   const table = (headers, rows) =>
     rows.length
       ? `<div class="table-scroll"><table class="data-table ${headers.length >= 7 ? "table-many-columns" : "table-few-columns"}"><thead><tr>${headers.map((h) => `<th scope="col">${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td data-label="${esc(headers[i] || "")}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
@@ -245,7 +278,7 @@
       btn("Ver / editar", "booking", b.id),
     ]);
   }
-  function bookingTable(bookings) {
+  function bookingTable(bookings, withAlerts = false) {
     return table(
       [
         "Servicio · hora argentina",
@@ -255,28 +288,51 @@
         "Tarifa / facturación",
         "Operación",
         "Acción",
+        ...(withAlerts ? ["Alertas de despacho"] : []),
       ],
-      bookingRows(bookings),
+      bookingRows(bookings).map((row, index) => {
+        if (!withAlerts) return row;
+        const alerts = D.dispatchAlerts(state, bookings[index]);
+        return [...row, `<span class="${alerts.length ? "negative" : "muted"}">${esc(alerts.join(" · ") || "Sin alertas")}</span>`];
+      }),
     );
   }
   function historicalOverview() {
     const imported = window.GamoAgencyReports?.overview?.() || [];
     if (!imported.length) return "";
     const totalServices = imported.reduce((n, row) => n + row.count, 0);
+    const historyTable = collectionView() === "table"
+      ? table(["Agencia", "Servicios", "Importe ARS", "Fuente", "Período"], imported.map(row =>
+        [esc(row.name), esc(row.count), esc(money(row.total, "ARS")), esc(row.source), esc(row.week)]))
+      : "";
+
     return `<div class="history-source-panel history-source-flat history-ledger" aria-label="Histórico inicial de agencias">
       <div class="history-ledger-intro"><span class="history-ledger-eyebrow">SERVICIOS DOCUMENTADOS · OCTUBRE 2026</span><strong class="history-ledger-total">${totalServices}</strong><span class="history-ledger-description">Traslados registrados en fuentes externas, separados de las operaciones de demostración.</span></div>
-      <div class="history-ledger-details"><div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
+      <div class="history-ledger-details">${historyTable || `<div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
         <span class="history-source-name">${esc(row.name)}</span>
         <strong>${row.count} servicios</strong>
         <span class="history-source-money">${esc(money(row.total, "ARS"))}</span>
         <small>${esc(row.source)} · ${esc(row.week)}</small>
-      </div>`).join("")}</div>
+      </div>`).join("")}</div>`}
       <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p></div>
     </div>`;
   }
 
   function dashboardServiceList(bookings,selectedId) {
     if (!bookings.length) return empty("No hay servicios próximos");
+    if (collectionView() === "table") {
+      return '<div class="operations-service-list">' + table(
+        ["Fecha y hora", "Servicio / recorrido", "Contratante", "Estado", "Detalle"],
+        bookings.slice(0, 5).map(b => [
+          esc(date(b.date.slice(0, 10))) + " · " + esc(b.date.slice(11, 16)),
+          esc(b.id) + '<span class="secondary-cell">' + esc(b.origin) + " → " + esc(b.destination) + '</span>',
+          esc(b.count) + " pasajero(s) · " + esc(cname(b.companyId)),
+          badge(b.status),
+          `<button type="button" class="btn btn-light" data-action="dashboard-select" data-id="${esc(b.id)}" aria-pressed="${b.id === selectedId}">Ver detalle</button>`,
+        ]),
+      ) + '</div>';
+    }
+
     return '<ol class="operations-service-list">'+bookings.slice(0,5).map(b=>{
       const active=b.id===selectedId;
       return '<li><button type="button" class="operations-service-row'+(active?' is-selected':'')+
@@ -669,6 +725,13 @@
   function agendaResults() {
     const from = $("#agenda-date").value || D.today(),
       days = Number($("#agenda-view").value);
+    if (collectionView() === "table") {
+      const until = D.shift(from, days);
+      const records = state.bookings.filter(b => b.date.slice(0, 10) >= from && b.date.slice(0, 10) < until && b.status !== "Cancelado")
+        .sort((a, b) => a.date.localeCompare(b.date));
+      $("#agenda-results").innerHTML = bookingTable(records, true);
+      return;
+    }
     $("#agenda-results").innerHTML =
       `<div class="agenda-grid ${days === 1 ? "single-day" : ""}">${Array.from(
         { length: days },
@@ -708,10 +771,26 @@
         config[1],
         btn("Nuevo registro", config[2] + "-new", "", "accent"),
       ) +
-      `<label class="search-wrap entity-search"><input id="entity-search" placeholder="Buscar por nombre, país o patente" aria-label="Buscar registros"></label><div class="cards-3" id="entity-results">${config[3].map((e) => entityCard(type, e)).join("")}</div>`
+      `<label class="search-wrap entity-search"><input id="entity-search" placeholder="Buscar por nombre, país o patente" aria-label="Buscar registros"></label><div class="${collectionView() === "table" ? "entity-table" : "cards-3"}" id="entity-results">${entityResults(type, config[3])}</div>`
     );
   }
-  function entityCard(type, e) {
+  function entityResults(type, records) {
+    if (!records.length) return empty("Sin coincidencias");
+    if (collectionView() === "table") {
+      const rows = records.map(record => entityCard(type, record, true));
+      return table(rows[0].headers, rows.map(row => row.cells));
+    }
+    return records.map(record => entityCard(type, record)).join("");
+  }
+  function filterEntities() {
+    const q = ($("#entity-search")?.value || "").toLowerCase();
+    const list = {clientes: "companies", conductores: "drivers", vehiculos: "vehicles"}[page];
+    const results = $("#entity-results");
+    results.className = collectionView() === "table" ? "entity-table" : "cards-3";
+    results.innerHTML = entityResults(page, state[list].filter(record =>
+      [record.name, record.country, record.plate].join(" ").toLowerCase().includes(q)));
+  }
+  function entityCard(type, e, asRow = false) {
     const bookings = state.bookings.filter(
         (b) =>
           b[
@@ -763,6 +842,12 @@
         : type === "conductores"
           ? "driver"
           : "vehicle";
+    if (asRow) return {
+      headers: ["Nombre", "Detalle", ...meta.map(([label]) => label), "Acciones"],
+      cells: [esc(e.name), esc(e.tradeName || e.phone || e.category),
+        ...meta.map(([label, value]) => label === "Estado" ? badge(value) : esc(value)),
+        (type === "clientes" ? btn("Ver cuenta", "company-detail", e.id) : btn("Servicios y gastos", "resource-detail", action + ":" + e.id)) + btn("Editar ficha", action, e.id)],
+    };
     return `<article class="entity-card"><div class="entity-top"><span class="avatar">${
       type === "vehiculos"
         ? iconSVG("car")
@@ -1787,6 +1872,9 @@
     );
   }
   function render() {
+    const previousPage = document.body.dataset.page;
+    const filters = Array.from(document.querySelectorAll("#content input[id], #content select[id], #content details[id]"))
+      .map(control => ({id: control.id, value: control.value, checked: control.checked, open: control.open}));
     page = location.hash.replace("#/", "") || "inicio";
     const screens = {
       inicio: dashboard,
@@ -1807,6 +1895,9 @@
       (storageError
         ? `<div class="storage-error" role="alert">${esc(storageError)} ${btn("Descargar copia", "backup")}${btn("Restaurar", "reset")}</div>`
         : "") + screens[page]();
+    $("#content").dataset.collectionView = collectionView();
+    const header = $("#content .page-header") || $("#content .operations-intro");
+    if (header) header.insertAdjacentHTML("afterend", collectionControls());
     const sectionName = {
       inicio: "Resumen",
       reservas: "Reservas",
@@ -1834,6 +1925,18 @@
     document
       .querySelectorAll("[data-icon]")
       .forEach((e) => (e.innerHTML = iconSVG(e.dataset.icon)));
+    // Rebuilding a section after saving must not reset the user's working filters.
+    if (previousPage === page) {
+      for (const filter of filters) {
+        const control = document.getElementById(filter.id);
+        if (!control) continue;
+        if (typeof filter.value === "string") control.value = filter.value;
+        if (typeof filter.checked === "boolean") control.checked = filter.checked;
+        if (typeof filter.open === "boolean") control.open = filter.open;
+      }
+      if (filters.length && page === "reservas") filterBookings();
+      if (filters.length && ["clientes", "conductores", "vehiculos"].includes(page)) filterEntities();
+    }
     if (page === "agenda") agendaResults();
     if (page === "reportes") reportResults();
     document.body.classList.toggle("agency-report-active", page === "reportes-agencias");
@@ -1841,22 +1944,7 @@
   }
   document.addEventListener("input", (e) => {
     if (["booking-search", "booking-origin", "booking-destination"].includes(e.target.id)) filterBookings();
-    if (e.target.id === "entity-search") {
-      const q = e.target.value.toLowerCase(),
-        list =
-          page === "clientes"
-            ? "companies"
-            : page === "conductores"
-              ? "drivers"
-              : "vehicles";
-      $("#entity-results").innerHTML =
-        state[list]
-          .filter((x) =>
-            [x.name, x.country, x.plate].join(" ").toLowerCase().includes(q),
-          )
-          .map((x) => entityCard(page, x))
-          .join("") || empty("Sin coincidencias");
-    }
+    if (e.target.id === "entity-search") filterEntities();
   });
   document.addEventListener("change", (e) => {
     if (["booking-status","booking-company","booking-from","booking-to","booking-driver","booking-vehicle"].includes(e.target.id))
@@ -1866,6 +1954,9 @@
       reportResults();
   });
   document.addEventListener("click", (e) => {
+    const viewButton = e.target.closest("button[data-collection-view]");
+    if (viewButton) { setCollectionView(viewButton.dataset.collectionView); return; }
+
     if (e.target.closest("#booking-reset")) {
       const fields=["booking-search","booking-status","booking-company","booking-from","booking-to","booking-origin","booking-destination","booking-driver","booking-vehicle"];
       fields.forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});

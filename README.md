@@ -299,3 +299,13 @@ Estas métricas sirven para comparar versiones en condiciones similares de CI. *
 Se eliminó la antigua definición de contenedor con fondo, borde, radio y sombra en `.dashboard-zone`, junto con reglas heredadas de márgenes para densidad compacta y pantalla móvil que ya habían sido reemplazadas por la jerarquía editorial actual. Se preservaron las variables utilizadas por tarjetas y encabezados, los separadores neutros, los títulos sin numeración y la reducción de densidad. Se añadió una prueba de regresión para impedir que regrese la antigua tarjeta exterior.
 
 La consolidación de otras reglas CSS requiere comparación visual real de antes/después. No se ha ejecutado una transformación masiva sin ese control, para evitar alterar el diseño aprobado.
+
+
+### Vistas de registros por sección
+
+Cada sección ofrece los botones **Tarjetas**, **Tabla** y **Lista compacta**. La elección se guarda por sección en este navegador, separada de los datos del demo. Cambiar la presentación conserva búsquedas, filtros y acciones. En Agenda, el selector de día/semana continúa disponible; la tabla muestra los servicios del mismo período. En móvil, las tablas se desplazan dentro de su contenedor y las tarjetas/listas se adaptan al ancho disponible. El resumen aplica la presentación a sus próximos servicios y registros, conservando indicadores y gráficos.
+
+
+### Continuidad al editar y claridad de reportes
+
+Guardar una edición en la misma sección conserva los filtros, la búsqueda, el período de Agenda y la apertura de filtros avanzados. La tabla de Agenda distingue los servicios sin alertas de los que requieren atención. Los totales de guías, parking, tarifa base y precio total conservan sus etiquetas al alternar los reportes por agencia a tarjetas o lista compacta. Los importes y las reglas comerciales se mantienen.

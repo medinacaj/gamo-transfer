@@ -38,7 +38,7 @@ jobs:
       - name: Prepare static website
         run: |
           mkdir _site
-          cp index.html styles.css domain.js app.js agency-reports.js ui-preferences.js version-check.js reportes-agencias.html gamo-logo.svg gp-travel-logo.svg _site/
+          cp index.html styles.css domain.js app.js agency-reports.js ui-preferences.js version-check.js reportes-agencias.html gamo-logo.svg _site/
           # SVG de vehículo usado por el hero Premium V2; debe viajar con Pages.
           cp -R assets _site/
           touch _site/.nojekyll

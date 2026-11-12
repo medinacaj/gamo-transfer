@@ -68,6 +68,8 @@ jobs:
           Path("_site/build-info.txt").write_text(f"commit={build}\n", encoding="utf-8")
           print(f"Asset cache revision: {revision}")
           PY
+      - name: Reject private or unexpected files before Pages upload
+        run: node scripts/check-pages-output.mjs _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

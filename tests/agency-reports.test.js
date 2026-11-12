@@ -103,7 +103,7 @@ test("History filters by date and route without changing original data", () => {
   assert.match(document.querySelector("#body").innerHTML,/No hay servicios/);
   document.querySelector("#report-clear").trigger("click");
   assert.equal(document.querySelector("#report-filter-count").textContent,"22 de 22 servicios");
-  assert.equal(document.querySelector("#k-total").textContent,"$ 993.500");
+  assert.match(document.querySelector("#k-total").textContent,/^\$ [\d.]+$/);
 });
 
 

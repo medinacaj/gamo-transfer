@@ -369,7 +369,7 @@ test("operational home uses distinct Apple-style composition rather than the old
  const finance=page.slice(page.indexOf('class="dashboard-finance-layout"'));
  assert.equal((finance.match(/class="kpi"/g)||[]).length,4);
  assert.match(finance,/class="dashboard-finance-chart"/);
- assert.match(page,/GP Travel: diferencia de \$60\.000/);
+ assert.match(page,/Informe completamente sintético/);
  const css=fs.readFileSync(path.join(root,"styles.css"),"utf8");
  const layout=css.slice(css.indexOf("/* GAMO OPERATIONS COMPOSITION v1"));
  assert.match(layout,/\.operations-intro \{/);

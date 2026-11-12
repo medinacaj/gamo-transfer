@@ -307,14 +307,14 @@
       : "";
 
     return `<div class="history-source-panel history-source-flat history-ledger" aria-label="Histórico inicial de agencias">
-      <div class="history-ledger-intro"><span class="history-ledger-eyebrow">SERVICIOS DOCUMENTADOS · OCTUBRE 2026</span><strong class="history-ledger-total">${totalServices}</strong><span class="history-ledger-description">Traslados registrados en fuentes externas, separados de las operaciones de demostración.</span></div>
+      <div class="history-ledger-intro"><span class="history-ledger-eyebrow">SIMULACIÓN · OCTUBRE 2026</span><strong class="history-ledger-total">${totalServices}</strong><span class="history-ledger-description">Traslados ficticios generados para probar reportes y filtros; no representan operaciones externas.</span></div>
       <div class="history-ledger-details">${historyTable || `<div class="history-source-grid">${imported.map(row => `<div class="history-source-item">
         <span class="history-source-name">${esc(row.name)}</span>
         <strong>${row.count} servicios</strong>
         <span class="history-source-money">${esc(money(row.total, "ARS"))}</span>
         <small>${esc(row.source)} · ${esc(row.week)}</small>
       </div>`).join("")}</div>`}
-      <p class="history-source-foot">Histórico de referencia separado de las reservas, facturas y cobros de demostración. GP Travel: diferencia de $60.000 pendiente de conciliación entre Excel e imagen.</p></div>
+      <p class="history-source-foot">Informe completamente sintético. No contiene datos de agencias, tarifas comerciales ni documentación real.</p></div>
     </div>`;
   }
 

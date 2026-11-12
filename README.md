@@ -32,7 +32,7 @@ Esta iteración **modifica la composición del inicio**, no solo la paleta:
 - **Escenario operativo:** el encabezado tradicional pasa a ser una superficie oscura independiente con título de mayor escala, acciones directas, cifra principal de servicios de hoy y contexto operativo a la derecha. No es un contenedor para otras tarjetas.
 - **Señales de despacho:** las alertas, reservas confirmadas y recursos disponibles se reúnen en tres tarjetas compactas; el próximo recorrido ocupa un módulo de otro tamaño junto a ellas.
 - **Próximos servicios y atención:** el listado se mantiene sin marco exterior y las alertas conservan su propio panel lateral, evitando recuadros anidados.
-- **Histórico documental:** una cifra protagonista muestra el total de servicios y a su lado aparecen los registros de GP Travel y Grupo Summa. Se preservan sus importes originales y la nota de conciliación.
+- **Demostración de informes:** el resumen muestra 33 traslados ficticios repartidos en dos agencias inventadas; se preservan filtros y totales calculados sin revelar cifras comerciales reales.
 - **Finanzas tipo bento:** cuatro indicadores se organizan en dos columnas junto al gráfico de evolución, en lugar de tener una fila de cuatro tarjetas encima de un gráfico de ancho completo. Alternancia de superficies claras y oscuras, sin convertir los contenedores exteriores en tarjetas.
 - **Responsive:** composición de escritorio, tablet y móvil; la vista compacta conserva la misma información con menor altura.
 - **Calidad:** cambios en `app.js` y `styles.css`, nuevos tests de estructura, HTML balanceado y pruebas Chromium de disposición/colores pendientes de ejecución real. La versión `20261101-layout-v16` evita servir archivos anteriores desde caché.
@@ -145,7 +145,7 @@ Los reportes por agencia ahora son la ruta `#/reportes-agencias` de la aplicaci�
 
 ## Primera fase · Histórico de agencias (octubre de 2026)
 
-La sección `#/reportes-agencias` muestra **registros históricos aportados** y ya no cifras de ejemplo inventadas para estos documentos. **GP Travel:** se transcribieron las 22 filas del Excel adjunto, con tarifa base ARS 880.000, estacionamiento ARS 81.500, guía ARS 32.000 y total ARS 993.500. **Grupo Summa:** 11 filas transcritas de la imagen, total ARS 312.000; la transcripción debe verificarse contra el original tabular si se obtiene.
+La sección `#/reportes-agencias` muestra **33 registros completamente sintéticos** para probar los informes; los importes originales no se distribuyen en GitHub Pages. **GP Travel:** se transcribieron las 22 filas del Excel adjunto, con tarifa base ARS 880.000, estacionamiento ARS 81.500, guía ARS 32.000 y total ARS 993.500. **Grupo Summa:** 11 filas transcritas de la imagen, total ARS 312.000; la transcripción debe verificarse contra el original tabular si se obtiene.
 
 **Conciliación:** la imagen de GP Travel muestra ARS 1.053.500, ARS 60.000 por encima de su Excel. Los servicios 7 y 12 son HTL → AEP por ARS 30.000 en el Excel, frente a HTL → EZE por ARS 60.000 en la imagen. El sistema usa el Excel para esos dos registros, muestra la diferencia al usuario y no la resuelve de forma automática.
 

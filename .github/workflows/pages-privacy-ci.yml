@@ -1,0 +1,37 @@
+name: Check public demo privacy (no deployment)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pages.yml'
+      - '.github/workflows/pages-privacy-ci.yml'
+      - 'scripts/check-pages-output.mjs'
+      - 'agency-reports.js'
+      - 'app.js'
+      - 'index.html'
+      - 'reportes-agencias.html'
+      - 'assets/**'
+  push:
+    branches: [fix/public-demo-synthetic-reports-20261112]
+permissions:
+  contents: read
+jobs:
+  public-demo-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Node regression tests
+        run: node --test tests/*.test.js
+      - name: Stage only reviewed Pages files (no deployment)
+        run: |
+          mkdir _site
+          cp index.html styles.css domain.js app.js agency-reports.js ui-preferences.js version-check.js reportes-agencias.html gamo-logo.svg _site/
+          cp -R assets _site/
+          touch _site/.nojekyll
+          echo 'commit=synthetic-ci-only' > _site/build-info.txt
+      - name: Audit complete staging output
+        run: node scripts/check-pages-output.mjs _site

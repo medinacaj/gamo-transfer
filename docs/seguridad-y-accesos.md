@@ -4,10 +4,10 @@
 
 ## Limitación de seguridad actual
 
-- El repositorio `medinacaj/gamo-transfer` es **público**. Los archivos `agency-reports.js` contienen importes históricos de GP Travel y Grupo Summa que fueron incorporados para la primera fase. Cualquier visitante puede consultar sus fuentes y datos.
+- El repositorio `medinacaj/gamo-transfer` es **público**. La rama publicada todavía puede contener importes históricos de agencias y su código fue accesible anteriormente. El [PR de sanitización](https://github.com/medinacaj/gamo-transfer/pull/6) propone reemplazar esos archivos por informes ficticios y retirar el logo de un cliente. **Esto no borra copias previas ni el historial público de Git; requiere evaluación de exposición y migración segura de originales**.
 - Una pantalla de inicio de sesión añadida al HTML **no restringiría** los archivos públicos. Por ese motivo no se implementa un login cosmético ni un listado de usuarios en JavaScript.
 - La persistencia actual es local al navegador: no existen sesiones compartidas, permisos efectivos, bloqueo de acceso, auditoría inmutable ni respaldo remoto.
-- Las métricas de reservas, facturas y cobros permanecen ficticias y deben mostrarse siempre separadas de los informes históricos.
+- Las métricas de reservas, facturas, cobros e informes de la demo deben ser **enteramente sintéticas**. Los originales históricos/comerciales no se sirven desde Pages.
 
 ## Modelo de acceso recomendado
 
@@ -49,3 +49,7 @@ La autorización debe validarse en el **servidor o directamente en PostgreSQL co
 **Pendiente de conexión de backend:** login verdadero, cuentas por usuario, roles y permisos efectivos, importación protegida, sincronización y auditoría.
 
 No se ha conectado ni modificado ninguna base de datos de otro proyecto. Este documento es una guía de implementación y no equivale a una revisión de seguridad en producción.
+
+## Gate adicional de despliegue público
+
+Antes de poner datos o cuentas reales: (a) verificar con owner la clasificación y titularidad de los reportes originales; (b) migrar datos autorizados a storage privado con autenticación/tenant RLS; (c) evaluar medidas para contenido ya publicado en Git y caches; (d) auditar que `_site` contenga solo fixtures sintéticos y activos propios; (e) verificar no haber fugas de nombres, tarifas, CSV ni datos de pasajeros; (f) ejecutar CI/QA y aprobar explícitamente publicación. Una bandera frontend o una ruta `noindex` nunca protegen secretos.

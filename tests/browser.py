@@ -295,7 +295,8 @@ class DemoTest(unittest.TestCase):
   self.page.locator('#report-from').fill('2026-10-25')
   expect(self.page.locator('#report-filter-count')).to_have_text('3 de 22 servicios')
   self.page.locator('#report-clear').click()
-  expect(self.page.locator('#k-total')).to_have_text('$ 993.500')
+  expect(self.page.locator('#k-total')).to_contain_text('$ ')
+  expect(self.page.locator('#source-note')).to_contain_text('Datos sintéticos')
 
 
  def test_no_horizontal_table_or_agenda_scroll(self):

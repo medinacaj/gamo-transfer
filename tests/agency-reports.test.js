@@ -40,23 +40,25 @@ function load() {
   return { api: sandbox.window.GamoAgencyReports, elements, document, exported };
 }
 
-test("GP Travel: Excel has 22 services and source-faithful amounts", () => {
+test("agencia demo Norte publica 22 servicios exclusivamente ficticios", () => {
   const { api } = load();
   const gp = api.overview().find((r) => r.key === "gp");
   assert.equal(gp.count, 22);
-  assert.equal(gp.base, 880000);
-  assert.equal(gp.parking, 81500);
-  assert.equal(gp.guide, 32000);
-  assert.equal(gp.total, 993500);
-  assert.equal(1053500 - gp.total, 60000);
+  assert.ok(gp.base>0);
+  assert.ok(gp.parking>0);
+  assert.ok(gp.guide>0);
+  assert.equal(gp.total,gp.base+gp.parking+gp.guide);
+  assert.equal(gp.source,"Datos sintéticos");
+  assert.notEqual(gp.total,993500);
 });
 
-test("Grupo Summa: source image contains 11 services", () => {
+test("agencia demo Sur publica 11 servicios exclusivamente ficticios", () => {
   const { api } = load();
   const summa = api.overview().find((r) => r.key === "summa");
   assert.equal(summa.count, 11);
-  assert.equal(summa.total, 312000);
-  assert.equal(summa.base, 312000);
+  assert.equal(summa.total,summa.base+summa.parking+summa.guide);
+  assert.equal(summa.source,"Datos sintéticos");
+  assert.notEqual(summa.total,312000);
 });
 
 test("Report page contains agency selection and integrated print/export controls", () => {
@@ -72,19 +74,20 @@ test("Report renders matching totals and source warning for each agency", () => 
   const { api, elements, document } = load();
   api.mount();
   assert.equal(document.querySelector("#k-count").textContent, 22);
-  assert.equal(document.querySelector("#k-total").textContent, "$ 993.500");
-  assert.match(document.querySelector("#source-note").innerHTML, /conciliar/);
+  assert.match(document.querySelector("#k-total").textContent,/^\$ [\d.]+$/);
+  assert.match(document.querySelector("#source-note").textContent, /Datos sintéticos/);
   const agency = document.querySelector("#agency");
   agency.value = "summa";
   agency.trigger("change");
   assert.equal(document.querySelector("#k-count").textContent, 11);
-  assert.equal(document.querySelector("#k-total").textContent, "$ 312.000");
-  assert.match(document.querySelector("#source-note").innerHTML, /Grupo Summa/);
+  assert.match(document.querySelector("#k-total").textContent,/^\$ [\d.]+$/);
+  assert.match(document.querySelector("#source-note").textContent,/no son operaciones comerciales reales/);
 });
 
-test("Public data excludes driver first names from the source file", () => {
-  assert.equal(source.includes('"ALEX"'), false);
-  assert.equal(source.includes('"ROI"'), false);
+test("Public data excludes commercial source values, agency identities and private report artifacts", () => {
+  for (const forbidden of ['"ALEX"','"ROI"','GP Travel','Grupo Summa','993.500','1.053.500','880000','312000']) assert.equal(source.includes(forbidden),false);
+  assert.match(source,/AGENCIA DEMO NORTE/);
+  assert.match(source,/Datos sintéticos/);
 });
 
 
@@ -100,7 +103,7 @@ test("History filters by date and route without changing original data", () => {
   assert.match(document.querySelector("#body").innerHTML,/No hay servicios/);
   document.querySelector("#report-clear").trigger("click");
   assert.equal(document.querySelector("#report-filter-count").textContent,"22 de 22 servicios");
-  assert.equal(document.querySelector("#k-total").textContent,"$ 993.500");
+  assert.match(document.querySelector("#k-total").textContent,/^\$ [\d.]+$/);
 });
 
 
@@ -125,7 +128,7 @@ test("CSV export contains all documented rows without losing monetary values",()
   assert.equal(lines.length,23); // Encabezado + 22 servicios
   assert.match(lines[0],/Agencia/);
   assert.match(lines[0],/Tarifa base/);
-  assert.match(lines[1],/GP TRAVEL/);
+  assert.match(lines[1],/AGENCIA DEMO NORTE/);
   document.querySelector("#agency").value="summa";
   document.querySelector("#agency").trigger("change");
   document.querySelector("#csv").trigger("click");

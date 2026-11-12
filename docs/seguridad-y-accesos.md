@@ -4,7 +4,7 @@
 
 ## Limitación de seguridad actual
 
-- El repositorio `medinacaj/gamo-transfer` es **público**. La rama publicada todavía puede contener importes históricos de agencias y su código fue accesible anteriormente. El [PR de sanitización](https://github.com/medinacaj/gamo-transfer/pull/5) propone reemplazar esos archivos por informes ficticios y retirar el logo de un cliente. **Esto no borra copias previas ni el historial público de Git; requiere evaluación de exposición y migración segura de originales**.
+- El repositorio `medinacaj/gamo-transfer` es **público**. La rama publicada todavía puede contener importes históricos de agencias y su código fue accesible anteriormente. El [PR de sanitización](https://github.com/medinacaj/gamo-transfer/pull/6) propone reemplazar esos archivos por informes ficticios y retirar el logo de un cliente. **Esto no borra copias previas ni el historial público de Git; requiere evaluación de exposición y migración segura de originales**.
 - Una pantalla de inicio de sesión añadida al HTML **no restringiría** los archivos públicos. Por ese motivo no se implementa un login cosmético ni un listado de usuarios en JavaScript.
 - La persistencia actual es local al navegador: no existen sesiones compartidas, permisos efectivos, bloqueo de acceso, auditoría inmutable ni respaldo remoto.
 - Las métricas de reservas, facturas, cobros e informes de la demo deben ser **enteramente sintéticas**. Los originales históricos/comerciales no se sirven desde Pages.

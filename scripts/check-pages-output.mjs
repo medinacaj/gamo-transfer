@@ -35,6 +35,29 @@ for(const file of actual){
     if(pattern.test(content))throw Error('Posible dato comercial/privado en Pages: '+file+' ('+pattern.source+')');
   }
 }
+// SVG can execute active content when opened directly, even when the main
+// application embeds it as an image. Pages permits only passive artwork.
+function assertPassiveSvg(name,content){
+  if(!/^\s*<svg\b/i.test(content) ||
+     /<!DOCTYPE|<!ENTITY|<\s*(?:script|style|foreignObject|iframe|object|embed)\b/i.test(content) ||
+     /\son[a-z]+\s*=/i.test(content))
+    throw Error('SVG activo o inválido en Pages: '+name);
+  for(const match of content.matchAll(/\b(?:href|xlink:href)\s*=\s*(["'])(.*?)\1/gi)){
+    const value=match[2];
+    // The brand SVG contains one embedded raster JPEG. No other inline
+    // external resources or remote fetches are allowed.
+    if(value.startsWith('#'))continue;
+    if(name==='gamo-logo.svg'&&/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(value))continue;
+    throw Error('Referencia SVG no autorizada en Pages: '+name);
+  }
+  for(const match of content.matchAll(/\burl\s*\(\s*['"]?([^)'"]+)/gi)){
+    if(!match[1].startsWith('#'))throw Error('URL CSS no autorizada en SVG: '+name);
+  }
+}
+for(const name of actual.filter(file=>file.endsWith('.svg'))){
+  assertPassiveSvg(name,readFileSync(join(directory,name),'utf8'));
+}
+
 const agency=readFileSync(join(directory,'agency-reports.js'),'utf8');
 for(const marker of ['AGENCIA DEMO NORTE','AGENCIA DEMO SUR','Datos sintéticos']){
   if(!agency.includes(marker))throw Error('Reporte no indica datos sintéticos: '+marker);

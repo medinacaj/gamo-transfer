@@ -1,12 +1,12 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
-import { cpSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+'use strict';
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const { spawnSync }=require('node:child_process');
+const { cpSync, mkdtempSync, mkdirSync, writeFileSync, rmSync }=require('node:fs');
+const { tmpdir }=require('node:os');
+const { join, resolve }=require('node:path');
 
-const root=resolve(fileURLToPath(new URL('../',import.meta.url)));
+const root=resolve(__dirname,'..');
 const gate=join(root,'scripts/check-pages-output.mjs');
 const staticFiles=[
   'index.html','styles.css','domain.js','app.js','agency-reports.js',

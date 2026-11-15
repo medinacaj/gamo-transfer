@@ -4533,3 +4533,8 @@ body[data-density="compact"] .operations-hero-stat {min-height:200px;}
   }
 }
 @media print { .collection-view-controls { display: none !important; } }
+
+/* Persistent, accessible notice when browser storage refuses theme/density settings. */
+.ui-storage-warning{margin:8px 20px;padding:10px 14px;border:1px solid #986c33;border-radius:10px;background:#fff5e4;color:#48331d;font-size:12px;line-height:1.5}
+body[data-theme="dark"] .ui-storage-warning{background:#352c23;color:#ffe6c3;border-color:#9d7847}
+.ui-storage-warning[hidden]{display:none}

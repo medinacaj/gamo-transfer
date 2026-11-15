@@ -33,7 +33,15 @@
     }
   }
   function save(){
-    try{root.localStorage?.setItem(KEY,JSON.stringify(state));}catch{}
+    let persisted=false;
+    try{
+      if(root.localStorage){
+        root.localStorage.setItem(KEY,JSON.stringify(state));
+        persisted=true;
+      }
+    }catch{ /* Settings still work for the current page. */ }
+    const warning=document.querySelector("#ui-storage-warning");
+    if(warning)warning.hidden=persisted;
     sync();
   }
   function setTheme(value){

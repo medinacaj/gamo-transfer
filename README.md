@@ -1,6 +1,6 @@
 # GAMO TRANSFER · Transporte ejecutivo B2B internacional
 
-> **Seguridad de la demo pública (revisión propuesta, no desplegada):** la versión pública debe usar exclusivamente datos y agencias sintéticas. Los reportes comerciales originales pertenecen a un flujo privado, sin exponerse en JavaScript de GitHub Pages ni en documentación pública. La eliminación del contenido de la rama actual no elimina automáticamente su historial de Git; antes de manejar registros reales, migrarlos a un repositorio privado/servicio protegido y evaluar la exposición histórica.
+> **Estado de privacidad de la demo pública (14/11/2026):** la sanitización para usar agencias e informes sintéticos se integró mediante [PR #6](https://github.com/medinacaj/gamo-transfer/pull/6) el 12/11/2026; [el workflow de validación y publicación](https://github.com/medinacaj/gamo-transfer/actions/runs/43549739008) terminó correctamente para la revisión `131cb6e23a`. **No se ha verificado en esta auditoría el contenido servido por el navegador ni la exposición histórica en Git/cachés.** No usar el sitio estático para datos reales, reservas productivas, cuentas ni documentos financieros. Revisar los antiguos reportes y, si procede, migrarlos a almacenamiento privado y aplicar medidas de contención.
 
 Demo comercial funcional para un operador argentino cuyos clientes contratan viajes para terceros. La **empresa contratante** recibe el documento y paga; los **pasajeros** reciben el traslado. No requiere backend, instalación de dependencias ni compilación.
 

@@ -5,7 +5,7 @@ const vm=require("node:vm");
 const fs=require("node:fs");
 const path=require("node:path");
 const source=fs.readFileSync(path.join(__dirname,"..","ui-preferences.js"),"utf8");
-function setup(saved){
+function setup(saved, storageFails=false){
   const db=new Map(saved?[["gamo.ui.preferences.v1",JSON.stringify(saved)]]:[]);
   const listeners=new Map();
   const nodes=new Map();
@@ -17,7 +17,7 @@ function setup(saved){
     },
     addEventListener(kind,fn){listeners.set(kind,fn);}
   };
-  const window={localStorage:{getItem:k=>db.get(k)||null,setItem:(k,v)=>db.set(k,v)}};
+  const window={localStorage:{getItem:k=>db.get(k)||null,setItem:(k,v)=>{if(storageFails)throw new Error('Sin cuota');db.set(k,v);}}};
   vm.runInNewContext(source,{window,document});
   return {window,document,db,listeners,nodes};
 }
@@ -41,6 +41,26 @@ test("invalid values in browser storage are ignored",()=>{
  assert.equal(window.GamoUI.read().theme,"dark");
  assert.equal(window.GamoUI.read().density,"comfortable");
 });
+test("fallo de almacenamiento muestra aviso sin deshacer los ajustes visibles",()=>{
+ const {window,document,db,nodes}=setup(null,true);
+ const warning=nodes.get("#ui-storage-warning")||document.querySelector("#ui-storage-warning");
+ warning.hidden=true;
+ assert.equal(window.GamoUI.setTheme("light"),true);
+ assert.equal(window.GamoUI.setDensity("compact"),true);
+ assert.equal(document.body.dataset.theme,"light");
+ assert.equal(document.body.dataset.density,"compact");
+ assert.equal(warning.hidden,false);
+ assert.equal(db.has("gamo.ui.preferences.v1"),false);
+});
+
+test("al volver a guardar se oculta un aviso anterior",()=>{
+ const {window,document}=setup();
+ const warning=document.querySelector("#ui-storage-warning");
+ warning.hidden=false;
+ window.GamoUI.setTheme("light");
+ assert.equal(warning.hidden,true);
+});
+
 test("preferences can be toggled from accessible buttons",()=>{
  const {window,listeners}=setup();
  const button={dataset:{uiPreference:"theme"}};

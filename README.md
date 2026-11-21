@@ -311,3 +311,17 @@ Cada sección ofrece los botones **Tarjetas**, **Tabla** y **Lista compacta**. L
 ### Continuidad al editar y claridad de reportes
 
 Guardar una edición en la misma sección conserva los filtros, la búsqueda, el período de Agenda y la apertura de filtros avanzados. La tabla de Agenda distingue los servicios sin alertas de los que requieren atención. Los totales de guías, parking, tarifa base y precio total conservan sus etiquetas al alternar los reportes por agencia a tarjetas o lista compacta. Los importes y las reglas comerciales se mantienen.
+
+## Continuidad y estado verificable · 21/11/2026
+
+**Propósito:** Demo de operaciones de transporte ejecutivo B2B.
+
+**Límite del alcance:** No utilizar datos de clientes ni financieros reales.
+
+- **Código:** revisar la rama por defecto, los PR y los commits antes de afirmar novedades; las evidencias históricas anteriores mantienen su fecha.
+- **Pruebas:** consultar los workflows correspondientes al commit evaluado. Esta modificación documental no verifica funcionalidades mediante pruebas de aplicación.
+- **Entorno:** no confundir demo, CI y código fusionado con despliegue funcional o producción comprobada.
+- **Próxima acción:** identificar el bloqueo vigente en los issues y registrar en este repositorio rama, SHA, pruebas, entorno verificado, pendientes y siguiente paso.
+- **Seguridad:** preservar los datos ficticios útiles y no publicar secretos ni información personal.
+
+**Fuente de verdad:** las decisiones y la documentación del propio producto.  
